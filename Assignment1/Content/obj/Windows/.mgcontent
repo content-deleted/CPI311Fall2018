@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>Windows</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Users/Jacob/source/repos/CPI311Fall2018/Assignment1/Content/explorer.png</File>
+    <File>C:/Users/Jacob/source/repos/CPI311Fall2018/Assignment1/Content/bullet_1.png</File>
+    <File>C:/Users/Jacob/source/repos/CPI311Fall2018/Assignment1/Content/bullet_2.png</File>
+    <File>C:/Users/Jacob/source/repos/CPI311Fall2018/Assignment1/Content/hitbox.png</File>
+    <File>C:/Users/Jacob/source/repos/CPI311Fall2018/Assignment1/Content/mouse.png</File>
+    <File>C:/Users/Jacob/source/repos/CPI311Fall2018/Assignment1/Content/bar.png</File>
+    <File>C:/Users/Jacob/source/repos/CPI311Fall2018/Assignment1/Content/inner.png</File>
+    <File>C:/Users/Jacob/source/repos/CPI311Fall2018/Assignment1/Content/font.spritefont</File>
+    <File>C:/Users/Jacob/source/repos/CPI311Fall2018/Assignment1/Content/diamondspurple.png</File>
+    <File>C:/Users/Jacob/source/repos/CPI311Fall2018/Assignment1/Content/DOGGIE.png</File>
+    <File>C:/Users/Jacob/source/repos/CPI311Fall2018/Assignment1/Content/elemental.png</File>
+    <File>C:/Users/Jacob/source/repos/CPI311Fall2018/Assignment1/Content/p_u_r_p_b_o_y_s.jpg</File>
+    <File>C:/Users/Jacob/source/repos/CPI311Fall2018/Assignment1/Content/space.png</File>
+    <File>C:/Users/Jacob/source/repos/CPI311Fall2018/Assignment1/Content/offset.fx</File>
+  </SourceFiles>
+</SourceFileCollection>

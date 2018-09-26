@@ -1,0 +1,7 @@
+C:\Users\Jacob\source\repos\CPI311Fall2018\Build\Game Engine.dll
+C:\Users\Jacob\source\repos\CPI311Fall2018\Build\Game Engine.pdb
+C:\Users\Jacob\source\repos\CPI311Fall2018\Game Engine\obj\x86\Debug\Game Engine.csprojAssemblyReference.cache
+C:\Users\Jacob\source\repos\CPI311Fall2018\Game Engine\obj\x86\Debug\Game Engine.csproj.CoreCompileInputs.cache
+C:\Users\Jacob\source\repos\CPI311Fall2018\Game Engine\obj\x86\Debug\Game Engine.csproj.CopyComplete
+C:\Users\Jacob\source\repos\CPI311Fall2018\Game Engine\obj\x86\Debug\Game Engine.dll
+C:\Users\Jacob\source\repos\CPI311Fall2018\Game Engine\obj\x86\Debug\Game Engine.pdb

@@ -1,0 +1,31 @@
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\obj\x86\Debug\Lab4.csprojAssemblyReference.cache
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\obj\x86\Debug\Lab4.csproj.CoreCompileInputs.cache
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\Lab4.exe.config
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\Lab4.exe
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\Lab4.pdb
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\Game Engine.dll
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\MonoGame.Framework.dll
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\SharpDX.MediaFoundation.dll
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\SharpDX.dll
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\SharpDX.XAudio2.dll
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\SharpDX.DXGI.dll
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\SharpDX.Direct3D11.dll
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\SharpDX.Direct2D1.dll
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\SharpDX.XInput.dll
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\SharpDX.Direct3D9.dll
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\Game Engine.pdb
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\MonoGame.Framework.xml
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\SharpDX.MediaFoundation.xml
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\SharpDX.xml
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\SharpDX.XAudio2.xml
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\SharpDX.DXGI.xml
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\SharpDX.Direct3D11.xml
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\SharpDX.Direct2D1.xml
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\SharpDX.XInput.xml
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\obj\x86\Debug\Lab4.csproj.CopyComplete
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\obj\x86\Debug\Lab4.exe
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\obj\x86\Debug\Lab4.pdb
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\Content\Plane.xnb
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\Content\Sphere.xnb
+C:\Users\Jacob\source\repos\CPI311Fall2018\Lab4\bin\Windows\x86\Debug\Content\Torus.xnb
