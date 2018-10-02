@@ -111,6 +111,54 @@ float4 PhongPixel(PhongVertexOutput input) : COLOR0
 	return float4(AmbientColor + diffuse * DiffuseColor + specular * SpecularColor, 1);
 }
 
+// Phong-Blinn (don't compute R)
+float4 PhongBlinnPixel(PhongVertexOutput input) : COLOR0
+{
+	// The lighting operation, same as in the Gouraud vertex method
+	float3 lightDirection = normalize(LightPosition - input.WorldPosition.xyz);
+	float3 viewDirection = normalize(CameraPosition - input.WorldPosition.xyz);
+
+	// Need to normalize my incoming normal, length could be less than 1
+	input.WorldNormal = normalize(input.WorldNormal);
+
+	// Now, compute the lighing components
+	// I_D = L · N 
+	float diffuse = max(dot(lightDirection, input.WorldNormal), 0) * tex2D(DiffuseSampler, input.UV);
+
+	// I_S = (R · V) ^ S
+    // float specular = pow(max(dot(reflectDirection, viewDirection), 0), Shininess);
+
+	// I_S = ((L + V) · N) ^ S
+    float specular = pow(max(dot(normalize(lightDirection + viewDirection), input.WorldNormal), 0), Shininess);
+	return float4(AmbientColor + diffuse * DiffuseColor + specular * SpecularColor, 1);
+}
+
+// Schlick (don't use exponent)
+float4 SchlickPixel(PhongVertexOutput input) : COLOR0
+{
+	// The lighting operation, same as in the Gouraud vertex method
+    float3 lightDirection = normalize(LightPosition - input.WorldPosition.xyz);
+    float3 viewDirection = normalize(CameraPosition - input.WorldPosition.xyz);
+
+	// Need to normalize my incoming normal, length could be less than 1
+    input.WorldNormal = normalize(input.WorldNormal);
+	float3 reflectDirection = -reflect(lightDirection, input.WorldNormal);
+
+	// Now, compute the lighing components
+	// I_D = L · N 
+    float diffuse = max(dot(lightDirection, input.WorldNormal), 0) * tex2D(DiffuseSampler, input.UV);
+
+	// I_S = (R · V) ^ S
+    // float specular = pow(max(dot(reflectDirection, viewDirection), 0), Shininess);
+
+	// t = R · V
+    float3 t = max(dot(reflectDirection, viewDirection), 0);
+
+	// I_S = t / (s + t – t*s)
+    float specular = t / (Shininess + t - t * Shininess);
+    return float4(AmbientColor + diffuse * DiffuseColor + specular * SpecularColor, 1);
+}
+
 // Now the different techniques
 technique Gouraud
 {
@@ -126,5 +174,21 @@ technique Phong
 	{
 		VertexShader = compile vs_4_0 PhongVertex();
 		PixelShader = compile ps_4_0 PhongPixel();
+	}
+}
+technique PhongBlinn
+{
+	pass Pass1
+	{
+		VertexShader = compile vs_4_0 PhongVertex();
+		PixelShader = compile ps_4_0 PhongBlinnPixel();
+	}
+}
+technique Schlick
+{
+	pass Pass1
+	{
+		VertexShader = compile vs_4_0 PhongVertex();
+		PixelShader = compile ps_4_0 SchlickPixel();
 	}
 }

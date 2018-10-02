@@ -43,11 +43,11 @@ namespace Lab4
             InputManager.Initialize();
             Time.Initialize();
 
-            playerTransform.LocalPosition = new Vector3(2, 2, 2);
+            playerTransform.LocalPosition = new Vector3(0, 0, 0);
 
             torusTransform.LocalPosition = new Vector3(2, 0, 0);
 
-            camera.Transform.LocalPosition = new Vector3(10, 1, 1);
+            camera.Transform.LocalPosition = new Vector3(0, 3, 10);
 
             foreach (ModelMesh mesh in playerModel.Meshes)
                 foreach (BasicEffect e in mesh.Effects)

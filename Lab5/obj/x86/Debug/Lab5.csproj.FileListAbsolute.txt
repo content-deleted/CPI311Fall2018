@@ -29,3 +29,5 @@ C:\dev\CPI311Fall2018\Lab5\obj\x86\Debug\Lab5.pdb
 C:\dev\CPI311Fall2018\Lab5\bin\Windows\x86\Debug\Content\SimpleShading.xnb
 C:\dev\CPI311Fall2018\Lab5\bin\Windows\x86\Debug\Content\Square.xnb
 C:\dev\CPI311Fall2018\Lab5\bin\Windows\x86\Debug\Content\Torus.xnb
+C:\dev\CPI311Fall2018\Lab5\bin\Windows\x86\Debug\Content\Plane.xnb
+C:\dev\CPI311Fall2018\Lab5\bin\Windows\x86\Debug\Content\Sphere.xnb

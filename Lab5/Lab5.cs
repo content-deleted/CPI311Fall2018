@@ -21,8 +21,14 @@ namespace Lab5 {
 
         Camera camera = new Camera();
 
+        Effect effect;
+        Texture2D texture;
+
+        int index = 0;
+
         public Lab5() {
             graphics = new GraphicsDeviceManager(this);
+            graphics.GraphicsProfile = GraphicsProfile.HiDef;
             Content.RootDirectory = "Content";
         }
 
@@ -39,11 +45,11 @@ namespace Lab5 {
             InputManager.Initialize();
             Time.Initialize();
 
-            playerTransform.LocalPosition = new Vector3(2, 2, 2);
+            playerTransform.LocalPosition = new Vector3(0, 0, 0);
 
-            torusTransform.LocalPosition = new Vector3(2, 0, 0);
+            torusTransform.LocalPosition = new Vector3(0, 0, 0);
 
-            camera.Transform.LocalPosition = new Vector3(10, 1, 1);
+            camera.Transform.LocalPosition = new Vector3(0, 0, 3);
 
             foreach (ModelMesh mesh in playerModel.Meshes)
                 foreach (BasicEffect e in mesh.Effects)
@@ -71,6 +77,9 @@ namespace Lab5 {
             planeModel = Content.Load<Model>("Plane");
             playerModel = Content.Load<Model>("Sphere");
             torusModel = Content.Load<Model>("Torus");
+
+            effect = Content.Load<Effect>("SimpleShading");
+            texture = Content.Load<Texture2D>("Square");
         }
 
         /// <summary>
@@ -91,11 +100,14 @@ namespace Lab5 {
                 Exit();
 
             // TODO: Add your update logic here
-            float rot = 5;
+            float rot = 0.5f;
             float speed = 10;
 
             InputManager.Update();
             Time.Update(gameTime);
+
+
+            if (InputManager.IsKeyPressed(Keys.Tab)) index = (index + 1) % 4;
 
             if (InputManager.IsKeyDown(Keys.W)) camera.Transform.LocalPosition += speed * camera.Transform.Forward * Time.ElapsedGameTime;
             if (InputManager.IsKeyDown(Keys.S)) camera.Transform.LocalPosition += speed * camera.Transform.Backward * Time.ElapsedGameTime;
@@ -106,7 +118,7 @@ namespace Lab5 {
             if (InputManager.IsKeyDown(Keys.Up)) playerTransform.LocalPosition += Vector3.Forward;
             if (InputManager.IsKeyDown(Keys.Down)) playerTransform.LocalPosition += Vector3.Backward;
 
-            playerTransform.Rotate(Vector3.Up, rot * Time.ElapsedGameTime);
+            //playerTransform.Rotate(Vector3.Up, rot * Time.ElapsedGameTime); 
 
             base.Update(gameTime);
         }
@@ -118,10 +130,33 @@ namespace Lab5 {
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            Matrix view = camera.View;
+            Matrix projection = camera.Projection;
 
-            playerModel.Draw(playerTransform.World, camera.View, camera.Projection);
-            planeModel.Draw(planeTransform.World, camera.View, camera.Projection);
-            torusModel.Draw(torusTransform.World, camera.View, camera.Projection);
+            effect.CurrentTechnique = effect.Techniques[index]; //"0" is the first technique
+            effect.Parameters["World"].SetValue(torusTransform.World);
+            effect.Parameters["View"].SetValue(view);
+            effect.Parameters["Projection"].SetValue(projection);
+            effect.Parameters["LightPosition"].SetValue(Vector3.Backward * 10 + Vector3.Right * 5);
+            effect.Parameters["CameraPosition"].SetValue(camera.Transform.Position);
+            effect.Parameters["Shininess"].SetValue(20f);
+            effect.Parameters["AmbientColor"].SetValue(new Vector3(0.2f, 0.2f, 0.2f));
+            effect.Parameters["DiffuseColor"].SetValue(new Vector3(0.5f, 0, 0));
+            effect.Parameters["SpecularColor"].SetValue(new Vector3(0, 0, 0.5f));
+            effect.Parameters["DiffuseTexture"].SetValue(texture);
+
+            foreach (EffectPass pass in effect.CurrentTechnique.Passes) {
+                pass.Apply();
+                foreach (ModelMesh mesh in torusModel.Meshes)
+                    foreach (ModelMeshPart part in mesh.MeshParts) {
+                        GraphicsDevice.SetVertexBuffer(part.VertexBuffer);
+                        GraphicsDevice.Indices = part.IndexBuffer;
+                        GraphicsDevice.DrawIndexedPrimitives(
+                            PrimitiveType.TriangleList, part.VertexOffset, 0,
+                            part.NumVertices, part.StartIndex, part.PrimitiveCount);
+                    }
+            }
+
 
             base.Draw(gameTime);
         }
