@@ -62,7 +62,8 @@ namespace CPI311.GameEngine
 
         public bool visible = true;
 
-        public static bool intersects(Sprite a, Sprite b) {
+        // Square collision 
+        /*public static bool intersects(Sprite a, Sprite b) {
             float aw = (a.collisionBox.X * a.Scale.X) / 2;
             float ah = (a.collisionBox.Y * a.Scale.Y) / 2;
 
@@ -72,8 +73,9 @@ namespace CPI311.GameEngine
             return
             ((b.Position.X + bw) >= a.Position.X - aw && b.Position.X - bw <= (a.Position.X + aw))
             && ((b.Position.Y + bh) >= a.Position.Y - ah && b.Position.Y - bh <= (a.Position.Y + ah));
-        }
- 
+        }*/
+
+        public static bool intersects(Sprite a, Sprite b) => (a.collisionBox.X * a.Scale.X) / 2 + (b.collisionBox.X * b.Scale.X) / 2 > Vector2.Distance(a.Position, b.Position);
 
         public Sprite(Texture2D texture)
         {

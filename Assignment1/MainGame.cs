@@ -85,10 +85,10 @@ namespace Assignment1
             b.bulletSpeed = 2;
             b.bulletAmount = 3;            
             
-            b.bulletfrequency = 5; // ms 
+            b.bulletfrequency = 0.05f; // ms 
 
             b.spin = 0.3f;
-            b.wave = 0.2f;
+            b.Wave = 0.2f;
 
             b.bulletSprite = bulletSprite;
             b.scale = Vector2.One * 0.4f;

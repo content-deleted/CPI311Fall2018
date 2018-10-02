@@ -23,10 +23,12 @@ namespace Assignment1
         public float ArcOffset = 0;
 
         private float currentOffset;
-        public int bulletfrequency = 15; // ms 
+        public float bulletfrequency = 0.15f; // ms 
 
         public float spin;
-        public float wave;
+        private float wave;
+
+        public float Wave { get=> wave; set { counter = 0; wave = value; } }
 
         private float counter;
         public Texture2D bulletSprite;

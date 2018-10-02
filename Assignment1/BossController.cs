@@ -15,6 +15,7 @@ namespace Assignment1 {
 
         private enemyHealth health;
         private BulletSpawner spawner;
+
         int state = 0;
 
         public override void Start() {
@@ -28,8 +29,10 @@ namespace Assignment1 {
             base.Update();
             updateHealthbar();
 
+            if(state == 0) spawner.scale = Vector2.One * (float) (Math.Abs(Math.Sin(Time.TotalGameTimeMilli * 100))* .75 + 0.33) ;
+
             if (state == 2) {
-                spawner.bulletSpeed = (float)Math.Sin(Time.TotalGameTimeMilli * 100) * 10 ;
+                spawner.bulletSpeed = (float)Math.Sin(Time.TotalGameTimeMilli * 100) * 5 ;
             }
         }
 
@@ -49,14 +52,14 @@ namespace Assignment1 {
                     spawner.bulletSpeed = 4;
                     spawner.bulletAmount = 6;
 
-                    spawner.bulletfrequency = 5; // ms 
+                    spawner.bulletfrequency = 0.05f; // ms 
 
                     spawner.spin = 1.9f;
-                    spawner.wave = 0;
+                    spawner.Wave = 0;
 
                     spawner.bulletTint = Color.ForestGreen;
                     //spawner.bulletSprite = bulletSprite;
-                    spawner.scale = Vector2.One * 0.55f;
+                    spawner.scale = Vector2.One * .75f;
 
                     break;
 

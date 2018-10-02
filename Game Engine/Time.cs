@@ -8,10 +8,10 @@ using Microsoft.Xna.Framework;
 namespace CPI311.GameEngine
 {
     public class EventTimer {
-        public int ticks;
+        public float ticks;
         public Action action;
 
-        public EventTimer(Action a, int t) {
+        public EventTimer(Action a, float t) {
             action = a;
             ticks = t;
         }
@@ -37,7 +37,7 @@ namespace CPI311.GameEngine
 
             // Update timers
             foreach (EventTimer timer in timers.ToList()) {
-                timer.ticks--;
+                timer.ticks -= ElapsedGameTime;
                 if(timer.ticks <= 0) timer.action();
             }
             timers.RemoveAll(x => x.ticks <= 0);

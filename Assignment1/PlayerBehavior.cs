@@ -15,7 +15,7 @@ namespace Assignment1
     public class PlayerBehavior : Behavior2d
     {
         int lives = 5;
-        float speed = 5f;
+        float speed = 4f;
         bool invicible = false;
 
         public Texture2D playerBullet;
@@ -44,7 +44,7 @@ namespace Assignment1
 
             // Check if shift and adjust speed
             if (InputManager.IsKeyDown(Keys.LeftShift)) {
-                speed = 2;
+                speed = 2.5f;
                 (objSprite as AnimatedSprite).animationSpeed = 0.05F;
             }
             else {
@@ -107,7 +107,7 @@ namespace Assignment1
             hitbox.sprite.visible = false;
 
             // Start counter
-            Time.timers.Add(new EventTimer(respawnPlayer, 100));
+            Time.timers.Add(new EventTimer(respawnPlayer, 0.5f));
 
             // Reduce lives
             invicible = true;
@@ -119,7 +119,7 @@ namespace Assignment1
             hitbox.sprite.visible = true;
             // Probably start a blinking thing and return player to middle of screen
             objSprite.Color = Color.Red;
-            Time.timers.Add(new EventTimer(endIframes, 75));
+            Time.timers.Add(new EventTimer(endIframes, 2));
         }
 
         public void endIframes() {

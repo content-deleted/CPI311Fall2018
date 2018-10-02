@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Jacob/source/repos/CPI311Fall2018/Assignment1/Content/inner.png</SourceFile>
+  <SourceFile>C:/dev/CPI311Fall2018/Assignment1/Content/inner.png</SourceFile>
   <SourceTime>2018-09-25T10:53:44.5932469-07:00</SourceTime>
-  <DestFile>C:/Users/Jacob/source/repos/CPI311Fall2018/Assignment1/Content/bin/Windows/inner.xnb</DestFile>
-  <DestTime>2018-09-25T14:34:58.9841515-07:00</DestTime>
+  <DestFile>C:/dev/CPI311Fall2018/Assignment1/Content/bin/Windows/inner.xnb</DestFile>
+  <DestTime>2018-10-01T19:54:13.6396892-07:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T08:05:36-07:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
