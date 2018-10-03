@@ -22,4 +22,8 @@ namespace CPI311.GameEngine
     {
        public Sprite objSprite { get => (obj as GameObject2d).sprite; set => (obj as GameObject2d).sprite = value; }
     }
+
+    public abstract class Behavior3d : Behavior {
+        public Transform objSprite { get => (obj as GameObject3d).transform; set => (obj as GameObject3d).transform = value; }
+    }
 }

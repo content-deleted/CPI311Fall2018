@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using CPI311.GameEngine;
 
 namespace Lab6 {
     /// <summary>
@@ -23,6 +24,8 @@ namespace Lab6 {
         /// </summary>
         protected override void Initialize() {
             // TODO: Add your initialization logic here
+            InputManager.Initialize();
+            Time.Initialize();
 
             base.Initialize();
         }
@@ -55,7 +58,10 @@ namespace Lab6 {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            InputManager.Update();
+            Time.Update(gameTime);
+
+            GameObject2d.UpdateObjects();
 
             base.Update(gameTime);
         }
