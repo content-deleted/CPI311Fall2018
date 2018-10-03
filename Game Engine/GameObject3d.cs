@@ -21,6 +21,9 @@ namespace CPI311.GameEngine
         public static GameObject3d Initialize()
         {
             GameObject3d g = new GameObject3d();
+
+            g.transform = new Transform();
+
             activeGameObjects.Add(g);
             return g;
         }
@@ -44,7 +47,8 @@ namespace CPI311.GameEngine
         }
 
         override public void Render(dynamic Renderer) {
-
+            Camera c = (Renderer as Camera);
+            mesh.Draw(transform.World, c.View, c.Projection);
         }
 
         override public void Destroy()

@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using CPI311.GameEngine;
+using System;
+using System.Linq;
 
 namespace Lab6 {
     /// <summary>
@@ -10,6 +12,12 @@ namespace Lab6 {
     public class Lab6 : Game {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        Camera camera = new Camera();
+
+        Model sphere;
+
+        Random random;
 
         public Lab6() {
             graphics = new GraphicsDeviceManager(this);
@@ -38,6 +46,42 @@ namespace Lab6 {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            // Load the models
+            sphere = Content.Load<Model>("Sphere");
+
+            // Misc Setup
+
+            camera.Transform.LocalPosition = new Vector3(0, 0, 5);
+
+            random = new Random();
+
+            for (int i = 0; i < 2; i++) {
+                Transform transform = new Transform();
+                transform.LocalPosition += new Vector3(i, 0, 0); //avoid overlapping each sphere 
+
+                Rigidbody rigidbody = new Rigidbody();
+                rigidbody.Mass = 1;
+
+                Vector3 direction = new Vector3(
+                  (float)random.NextDouble(), (float)random.NextDouble(),
+                  (float)random.NextDouble());
+                direction.Normalize();
+                rigidbody.Velocity = direction * ((float) random.NextDouble() * 0.001f);
+
+                SphereCollider sphereCollider = new SphereCollider();
+                sphereCollider.Radius = 2.5f * transform.LocalScale.Y;
+
+                GameObject3d g = GameObject3d.Initialize();
+                g.transform = transform;
+                g.mesh = sphere;
+
+                g.addBehavior(rigidbody);
+                g.addBehavior(sphereCollider);
+
+                /*transforms.Add(transform);
+                colliders.Add(sphereCollider);
+                rigidbodies.Add(rigidbody); */
+            }
 
             //init
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects) gameObject.Start();
@@ -62,8 +106,24 @@ namespace Lab6 {
 
             InputManager.Update();
             Time.Update(gameTime);
+            Collider.Update(gameTime);
 
             GameObject3d.UpdateObjects();
+
+            Collider.Update(gameTime);
+
+
+            //DEBUG CAM MOVEMENT
+
+            float speed = 2;
+            float rot = 2;
+
+            if (InputManager.IsKeyDown(Keys.W)) camera.Transform.LocalPosition += speed * camera.Transform.Forward * Time.ElapsedGameTime;
+            if (InputManager.IsKeyDown(Keys.S)) camera.Transform.LocalPosition += speed * camera.Transform.Backward * Time.ElapsedGameTime;
+
+            if (InputManager.IsKeyDown(Keys.A)) camera.Transform.Rotate(Vector3.Up, rot * Time.ElapsedGameTime);
+            if (InputManager.IsKeyDown(Keys.D)) camera.Transform.Rotate(Vector3.Down, rot * Time.ElapsedGameTime);
+
 
             base.Update(gameTime);
         }
@@ -76,6 +136,7 @@ namespace Lab6 {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            foreach (GameObject3d gameObject in GameObject3d.activeGameObjects.ToList()) gameObject.Render(camera);
 
             base.Draw(gameTime);
         }
