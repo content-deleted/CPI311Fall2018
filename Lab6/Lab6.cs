@@ -38,7 +38,9 @@ namespace Lab6 {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+
+            //init
+            foreach (GameObject3d gameObject in GameObject3d.activeGameObjects) gameObject.Start();
         }
 
         /// <summary>
@@ -61,7 +63,7 @@ namespace Lab6 {
             InputManager.Update();
             Time.Update(gameTime);
 
-            GameObject2d.UpdateObjects();
+            GameObject3d.UpdateObjects();
 
             base.Update(gameTime);
         }
