@@ -20,7 +20,7 @@ namespace CPI311.GameEngine
     public static class Time {
         public static float ElapsedGameTime { get; private set; }
         public static TimeSpan TotalGameTime { get; private set; }
-        public static float TotalGameTimeMilli { get => TotalGameTime.Milliseconds; }
+        public static double TotalGameTimeMilli { get => TotalGameTime.TotalMilliseconds; }
 
         public static List<EventTimer> timers = new List<EventTimer>();
         

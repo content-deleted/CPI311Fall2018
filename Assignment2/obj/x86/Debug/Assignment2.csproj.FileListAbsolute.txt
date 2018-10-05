@@ -27,3 +27,10 @@ C:\dev\CPI311Fall2018\Assignment2\obj\x86\Debug\Assignment2.exe
 C:\dev\CPI311Fall2018\Assignment2\obj\x86\Debug\Assignment2.pdb
 C:\dev\CPI311Fall2018\Assignment2\bin\Windows\x86\Debug\Content\Sphere.xnb
 C:\dev\CPI311Fall2018\Assignment2\obj\x86\Debug\Assignment2.csprojAssemblyReference.cache
+C:\dev\CPI311Fall2018\Assignment2\bin\Windows\x86\Debug\Content\DisplacementEffect.xnb
+C:\dev\CPI311Fall2018\Assignment2\bin\Windows\x86\Debug\Content\StandardShading.xnb
+C:\dev\CPI311Fall2018\Assignment2\bin\Windows\x86\Debug\Content\earthTexture.xnb
+C:\dev\CPI311Fall2018\Assignment2\bin\Windows\x86\Debug\Content\lunaTexture.xnb
+C:\dev\CPI311Fall2018\Assignment2\bin\Windows\x86\Debug\Content\mercuryTexture.xnb
+C:\dev\CPI311Fall2018\Assignment2\bin\Windows\x86\Debug\Content\noise.xnb
+C:\dev\CPI311Fall2018\Assignment2\bin\Windows\x86\Debug\Content\ramp.xnb

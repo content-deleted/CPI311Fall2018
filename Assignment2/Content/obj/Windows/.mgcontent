@@ -5,5 +5,12 @@
   <Config />
   <SourceFiles>
     <File>C:/dev/CPI311Fall2018/Assignment2/Content/Sphere.FBX</File>
+    <File>C:/dev/CPI311Fall2018/Assignment2/Content/DisplacementEffect.fx</File>
+    <File>C:/dev/CPI311Fall2018/Assignment2/Content/StandardShading.fx</File>
+    <File>C:/dev/CPI311Fall2018/Assignment2/Content/earthTexture.jpg</File>
+    <File>C:/dev/CPI311Fall2018/Assignment2/Content/mercuryTexture.jpg</File>
+    <File>C:/dev/CPI311Fall2018/Assignment2/Content/noise.png</File>
+    <File>C:/dev/CPI311Fall2018/Assignment2/Content/ramp.png</File>
+    <File>C:/dev/CPI311Fall2018/Assignment2/Content/lunaTexture.jpg</File>
   </SourceFiles>
 </SourceFileCollection>
