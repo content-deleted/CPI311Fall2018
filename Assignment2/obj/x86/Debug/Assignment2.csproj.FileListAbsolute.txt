@@ -26,3 +26,4 @@ C:\dev\CPI311Fall2018\Assignment2\obj\x86\Debug\Assignment2.csproj.CopyComplete
 C:\dev\CPI311Fall2018\Assignment2\obj\x86\Debug\Assignment2.exe
 C:\dev\CPI311Fall2018\Assignment2\obj\x86\Debug\Assignment2.pdb
 C:\dev\CPI311Fall2018\Assignment2\bin\Windows\x86\Debug\Content\Sphere.xnb
+C:\dev\CPI311Fall2018\Assignment2\obj\x86\Debug\Assignment2.csprojAssemblyReference.cache

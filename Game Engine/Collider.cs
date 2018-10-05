@@ -40,8 +40,8 @@ namespace CPI311.GameEngine {
                             inner.rigidbody.Velocity - outer.rigidbody.Velocity) * -2
                                * normal * inner.rigidbody.Mass * outer.rigidbody.Mass;
 
-                        inner.rigidbody.Impulse += velocityNormal / 2;
-                        outer.rigidbody.Impulse += -velocityNormal / 2;
+                        inner.rigidbody.Impulse += -velocityNormal / 2;
+                        outer.rigidbody.Impulse += velocityNormal / 2;
                     }
                 }
             } 

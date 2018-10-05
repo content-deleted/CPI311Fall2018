@@ -9,10 +9,11 @@ namespace CPI311.GameEngine
 {
     public class Camera
     {
+        public const float standardAspc = 16f / 9f;
         private float fov = 1;
         public float FieldOfView { get=>fov; set => fov = (value < Math.PI && value > 0) ? value : fov; }
 
-        private float aspect = 16/9;
+        private float aspect = standardAspc;
         public float AspectRatio { get => aspect; set => aspect = value; }
 
         float near = 1;
