@@ -34,3 +34,4 @@ C:\dev\CPI311Fall2018\Assignment2\bin\Windows\x86\Debug\Content\lunaTexture.xnb
 C:\dev\CPI311Fall2018\Assignment2\bin\Windows\x86\Debug\Content\mercuryTexture.xnb
 C:\dev\CPI311Fall2018\Assignment2\bin\Windows\x86\Debug\Content\noise.xnb
 C:\dev\CPI311Fall2018\Assignment2\bin\Windows\x86\Debug\Content\ramp.xnb
+C:\dev\CPI311Fall2018\Assignment2\bin\Windows\x86\Debug\Content\mouse.xnb

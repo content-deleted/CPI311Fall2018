@@ -21,15 +21,17 @@ namespace Assignment2 {
         Transform mercuryTransform = new Transform();
 
         Texture2D earthTexture;
-        Texture2D solTexture;
         Texture2D lunaTexture;
         Texture2D mercuryTexture;
+
+        Texture2D mouse;
 
         // Special textures used for sun shader
         Texture2D noise;
         Texture2D ramp;
         
         Camera firstPerson = new Camera();
+        Camera thirdPerson = new Camera();
         Camera topDown = new Camera();
 
         Camera camera = new Camera();
@@ -45,26 +47,19 @@ namespace Assignment2 {
         Dictionary<Transform, Texture2D> solarBodies = new Dictionary<Transform, Texture2D>();
 
         public float loopduration = 1000f;
-        public float pulseAmount = 0.1f;
+        public float pulseAmount = 0.2f;
         public float pulseOffset = 0.15f;
-        public float pulseTiming = 0.002f;
-
+        public float pulseTiming = 0.005f;
+    
         public MainGame() {
             graphics = new GraphicsDeviceManager(this);
             graphics.GraphicsProfile = GraphicsProfile.HiDef;
             Content.RootDirectory = "Content";
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
         protected override void Initialize() {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
+
             InputManager.Initialize();
             Time.Initialize();
 
@@ -89,6 +84,9 @@ namespace Assignment2 {
 
             topDown.Transform.LocalPosition = new Vector3(0, 100, 0);
             topDown.Transform.Rotate(Vector3.Left, (float)Math.PI/2f);
+
+            thirdPerson.Transform.Parent = firstPerson.Transform;
+            thirdPerson.Transform.LocalPosition = new Vector3(0, 2, 7);
         }
 
         /// <summary>
@@ -101,9 +99,10 @@ namespace Assignment2 {
             sphereModel = Content.Load<Model>("Sphere");
 
             earthTexture = Content.Load<Texture2D>("earthTexture");
-            //solTexture = Content.Load<Texture2D>("solTexture");
             lunaTexture = Content.Load<Texture2D>("lunaTexture");
             mercuryTexture = Content.Load<Texture2D>("mercuryTexture");
+
+            mouse = Content.Load<Texture2D>("mouse");
 
             // Special textures used for sun shader
             noise = Content.Load<Texture2D>("noise");
@@ -119,10 +118,13 @@ namespace Assignment2 {
             solarBodies.Add(lunaTransform, lunaTexture);
             solarBodies.Add(mercuryTransform, mercuryTexture);
 
+            // Set the mouse
+            Mouse.SetCursor(MouseCursor.FromTexture2D(mouse, 0, 0));
+            this.IsMouseVisible = true;
         }
        
         float rot = 2;
-        float speed = 10;
+        float speed = 20;
         protected override void Update(GameTime gameTime) {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
@@ -130,17 +132,29 @@ namespace Assignment2 {
             InputManager.Update();
             Time.Update(gameTime);
 
-            if (InputManager.IsKeyPressed(Keys.Tab)) camera = (camera == firstPerson) ? topDown : firstPerson;
+            if (InputManager.IsKeyPressed(Keys.Tab)) camera = (camera != firstPerson) ? ((camera == topDown) ? firstPerson : topDown) : thirdPerson;
 
-            if(camera == firstPerson) {
+            if(camera != topDown) {
                 if (InputManager.IsKeyDown(Keys.W)) firstPerson.Transform.LocalPosition += speed * firstPerson.Transform.Forward * Time.ElapsedGameTime;
                 if (InputManager.IsKeyDown(Keys.S)) firstPerson.Transform.LocalPosition += speed * firstPerson.Transform.Backward * Time.ElapsedGameTime;
 
-                if (InputManager.IsKeyDown(Keys.A)) firstPerson.Transform.Rotate(Vector3.Up, rot * Time.ElapsedGameTime);
-                if (InputManager.IsKeyDown(Keys.D)) firstPerson.Transform.Rotate(Vector3.Down, rot * Time.ElapsedGameTime);
+                if (InputManager.IsKeyDown(Keys.A)) firstPerson.Transform.LocalPosition += speed * firstPerson.Transform.Left * Time.ElapsedGameTime;
+                if (InputManager.IsKeyDown(Keys.D)) firstPerson.Transform.LocalPosition += speed * firstPerson.Transform.Right * Time.ElapsedGameTime; 
 
-                if (InputManager.IsKeyDown(Keys.Up)) earthTransform.LocalPosition += Vector3.Forward;
-                if (InputManager.IsKeyDown(Keys.Down)) earthTransform.LocalPosition += Vector3.Backward;
+                if (InputManager.IsKeyDown(Keys.Left))  firstPerson.Transform.Rotate(Vector3.Up, rot * Time.ElapsedGameTime);
+                if (InputManager.IsKeyDown(Keys.Right)) firstPerson.Transform.Rotate(Vector3.Down, rot * Time.ElapsedGameTime);
+
+
+                // Mouse Controls
+                MouseState state = Mouse.GetState();
+                // Get angle
+                Vector3 direction = new Vector3(state.Position.X - GraphicsDevice.Viewport.Width / 2, 0, 0);
+
+                if (state.LeftButton == ButtonState.Pressed) 
+                    firstPerson.Transform.LocalPosition += Vector3.Normalize(firstPerson.Transform.Forward + direction/100) / 2;
+                if (state.RightButton == ButtonState.Pressed) 
+                    firstPerson.Transform.LocalPosition += Vector3.Normalize(firstPerson.Transform.Backward + direction/100) / 2;
+
             }
 
             // Solar Body Rotations
@@ -152,13 +166,10 @@ namespace Assignment2 {
             if (InputManager.IsKeyDown(Keys.Space)) camera.FieldOfView -= 0.05f;
             if (InputManager.IsKeyDown(Keys.LeftShift)) camera.FieldOfView += 0.05f;
 
-
+            if (InputManager.IsKeyDown(Keys.Q)) rot -= 0.1f;
+            if (InputManager.IsKeyDown(Keys.E)) rot += 0.1f;
 
             // Update shader values
-            ChannelFactor = new Vector3((float)random.NextDouble(), (float)random.NextDouble(), (float)random.NextDouble());
-            Displacement = 0.5f + (float)Math.Sin(Time.TotalGameTimeMilli) / 6f;
-
-
             float r = (float) (Math.Sin((Time.TotalGameTimeMilli / loopduration) * (2 * Math.PI)) * 0.25f + 0.25f);
             float g = (float) (Math.Sin((Time.TotalGameTimeMilli / loopduration + 0.33333333f) * 2 * Math.PI) * 0.25f + 0.25f);
             float b = (float) (Math.Sin((Time.TotalGameTimeMilli / loopduration + 0.66666667f) * 2 * Math.PI) * 0.25f + 0.25f);
@@ -193,7 +204,7 @@ namespace Assignment2 {
             standardLighting.Parameters["LightPosition"].SetValue(Vector3.Zero);
             standardLighting.Parameters["CameraPosition"].SetValue(camera.Transform.Position);
             standardLighting.Parameters["Shininess"].SetValue(20f);
-            standardLighting.Parameters["AmbientColor"].SetValue(new Vector3(0.1f, 0.1f, 0.1f));
+            standardLighting.Parameters["AmbientColor"].SetValue(new Vector3(0.05f, 0.05f, 0.05f));
             standardLighting.Parameters["SpecularColor"].SetValue(new Vector3(0.3f, 0.3f, 0.5f));
 
             // Iterate over models and draw with our shaders
@@ -239,6 +250,8 @@ namespace Assignment2 {
                             part.NumVertices, part.StartIndex, part.PrimitiveCount);
                     }
             }
+
+            if (camera != firstPerson) sphereModel.Draw(firstPerson.Transform.World, camera.View, camera.Projection);
 
             base.Draw(gameTime);
         }
