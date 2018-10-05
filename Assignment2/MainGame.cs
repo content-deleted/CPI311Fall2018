@@ -14,9 +14,9 @@ namespace Assignment2 {
         Model sphereModel;
 
         Transform earthTransform = new Transform();
-        Transform sunTransform = new Transform();
+        Transform solTransform = new Transform();
         Transform lunaTransform = new Transform();
-        Transform marsTransform = new Transform();
+        Transform mercuryTransform = new Transform();
 
         Camera camera = new Camera();
 
@@ -43,15 +43,26 @@ namespace Assignment2 {
             InputManager.Initialize();
             Time.Initialize();
 
-            earthTransform.LocalPosition = new Vector3(5, 0, 0);
-            lunaTransform.LocalPosition = new Vector3(3, 0, 0);
+            solTransform.LocalPosition = new Vector3(0, 0, 0);
+            solTransform.LocalScale = Vector3.One * 5;
 
-            camera.Transform.LocalPosition = new Vector3(0, 0, 5);
+            mercuryTransform.LocalPosition = new Vector3(3, 0, 0);
+            mercuryTransform.LocalScale = Vector3.One * 2f/5f;
+
+            lunaTransform.LocalPosition = new Vector3(3, 0, 0);
+            lunaTransform.LocalScale = Vector3.One * 1f/3f;
+
+            earthTransform.LocalPosition = new Vector3(8, 0, 0);
+            earthTransform.LocalScale = Vector3.One * 3f/5f;
+
+            camera.Transform.LocalPosition = new Vector3(0, 0, 10);
 
             foreach (ModelMesh mesh in sphereModel.Meshes)
                 foreach (BasicEffect e in mesh.Effects)
                     e.EnableDefaultLighting();
 
+            earthTransform.Parent = solTransform;
+            mercuryTransform.Parent = solTransform;
             lunaTransform.Parent = earthTransform;
         }
 
@@ -101,7 +112,8 @@ namespace Assignment2 {
             if (InputManager.IsKeyDown(Keys.Up)) earthTransform.LocalPosition += Vector3.Forward;
             if (InputManager.IsKeyDown(Keys.Down)) earthTransform.LocalPosition += Vector3.Backward;
 
-            earthTransform.Rotate(Vector3.Up, rot * Time.ElapsedGameTime); 
+            earthTransform.Rotate(Vector3.Up, rot * Time.ElapsedGameTime);
+            solTransform.Rotate(Vector3.Up, rot * Time.ElapsedGameTime);
 
             base.Update(gameTime);
         }
@@ -113,6 +125,8 @@ namespace Assignment2 {
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            sphereModel.Draw(solTransform.World, camera.View, camera.Projection);
+            sphereModel.Draw(mercuryTransform.World, camera.View, camera.Projection);
             sphereModel.Draw(earthTransform.World, camera.View, camera.Projection);
             sphereModel.Draw(lunaTransform.World, camera.View, camera.Projection);
 

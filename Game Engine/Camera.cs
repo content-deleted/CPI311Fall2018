@@ -19,7 +19,7 @@ namespace CPI311.GameEngine
         float near = 1;
         public float NearPlane { get => near; set => near = (value < far) ? far : value; }
 
-        float far = 100;
+        float far = 1000;
         public float FarPlane { get => far; set => far = (value > near) ? far : value; }
 
         public Transform Transform { get; set; }

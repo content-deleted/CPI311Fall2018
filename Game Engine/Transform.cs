@@ -20,8 +20,8 @@ namespace CPI311.GameEngine
             world = Matrix.CreateScale(localScale) * Matrix.CreateFromQuaternion(localRotation) * Matrix.CreateTranslation(localPosition);
             if (parent != null)  world *= parent.World;
             foreach (Transform child in Children) child.UpdateWorld();
-
         }
+
         public Matrix World { get => world; }
 
         public Vector3 LocalPosition
