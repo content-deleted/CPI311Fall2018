@@ -159,7 +159,7 @@ namespace Assignment1
             backgrounds.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
 
             offset.Parameters["height"].SetValue(1000f);
-            offset.Parameters["offset"].SetValue(Time.TotalGameTimeMilli/1000);
+            offset.Parameters["offset"].SetValue((float)Time.TotalGameTimeMilli/1000);
             offset.CurrentTechnique.Passes[0].Apply();
 
 
