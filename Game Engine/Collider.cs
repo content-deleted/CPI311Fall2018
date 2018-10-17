@@ -27,21 +27,33 @@ namespace CPI311.GameEngine {
         public static void Update(GameTime gameTime) {
             Vector3 normal;
 
+            // Note this is problematic because it computes collisions twice
             foreach (Collider outer in colliders) {
                 foreach (Collider inner in colliders) {
                     if (inner == outer) continue;
                     if (outer.Collides(inner, out normal)) {
                         numberCollisions++;
-                        if (Vector3.Dot(normal, inner.rigidbody.Velocity) < 0)
-                            inner.rigidbody.Impulse +=  Vector3.Dot(normal, inner.rigidbody.Velocity) * -2 * normal;
-                        
+                        if (inner.rigidbody != null && outer.rigidbody != null) {
 
-                        Vector3 velocityNormal = Vector3.Dot(normal,
-                            inner.rigidbody.Velocity - outer.rigidbody.Velocity) * -2
-                               * normal * inner.rigidbody.Mass * outer.rigidbody.Mass;
+                            // Fuck this
+                            /*
+                            Vector3 velocityNormal = Vector3.Dot(normal, inner.rigidbody.Velocity - outer.rigidbody.Velocity) * -2
+                                                    * normal * inner.rigidbody.Mass * outer.rigidbody.Mass;
 
-                        inner.rigidbody.Impulse += -velocityNormal / 2;
-                        outer.rigidbody.Impulse += velocityNormal / 2;
+                            // problematic multi collisions
+                            inner.rigidbody.Impulse = -velocityNormal / 2;
+                            outer.rigidbody.Impulse = velocityNormal / 2; */
+
+                            inner.rigidbody.Velocity = -inner.rigidbody.Velocity.Length() * normal;
+                            outer.rigidbody.Velocity = outer.rigidbody.Velocity.Length() * normal;
+
+                        }
+                        else {
+                            if (inner.rigidbody != null || outer.rigidbody != null) {
+                                Rigidbody rb = (inner.rigidbody == null) ? outer.rigidbody : inner.rigidbody;
+                                if (Vector3.Dot(normal, rb.Velocity) < 0) rb.Impulse =  Vector3.Dot(normal, rb.Velocity) * -2 * normal;
+                            }
+                        }
                     }
                 }
             } 

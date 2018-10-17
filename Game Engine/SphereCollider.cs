@@ -17,6 +17,7 @@ namespace CPI311.GameEngine {
                 double pow = Math.Pow(Radius + collider.Radius, 2);
                 if ( dist < pow ) {
                     normal = Vector3.Normalize(transform.Position - collider.transform.Position);
+                    normal.Normalize();
                     return true;
                 }
             }

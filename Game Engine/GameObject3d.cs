@@ -8,6 +8,8 @@ namespace CPI311.GameEngine
 {
     public class GameObject3d : GameObject
     {
+        public bool drawable = true;
+
         public static List<GameObject3d> activeGameObjects = new List<GameObject3d>();
 
         public new Behavior3d GetBehavior<T>() => behaviors.Where(x => x is T).First() as Behavior3d;
@@ -47,6 +49,7 @@ namespace CPI311.GameEngine
         }
 
         override public void Render(dynamic Renderer) {
+            if (!drawable) return;
             Camera c = (Renderer as Camera);
             mesh.Draw(transform.World, c.View, c.Projection);
         }

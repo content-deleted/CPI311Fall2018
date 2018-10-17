@@ -40,20 +40,38 @@ namespace CPI311.GameEngine {
                         Vector3 b = vertices[indices[baseIndex + 1]] * Size;
                         Vector3 c = vertices[indices[baseIndex + 2]] * Size;
                         Vector3 n = normals[i];
-                        /*float d = Math.Abs( ??? );// calculate the distance to the plane 
+                        Vector3 aPrime = collider.transform.Position - a;
+                        float d = Math.Abs(Vector3.Dot(aPrime,n));// calculate the distance to the plane 
 
                         if (d < collider.Radius) {
-                            Vector3 pointOnPlane = ???  // calculate the closest point
-                            float area1 = ??? // check if the point is inside of triangle
-                            float area2 = ???
-                            float area3 = ???
-                           if (!(area1 < 0 || area2 < 0 || area3 < 0)) {
+                            Vector3 pNormal = Vector3.Dot(aPrime, n) * n;
+                            Vector3 pTangent = aPrime - pNormal;
+                            Vector3 pointOnPlane = pTangent + a;  // calculate the closest point
+                                                                  // Compute vectors        
+                            Vector3 v0 = c - a;
+                            Vector3 v1 = b - a;
+                            Vector3 v2 = pointOnPlane - a;
+
+                            // Compute dot products
+                            float dot00 = Vector3.Dot(v0, v0);
+                            float dot01 = Vector3.Dot(v0, v1);
+                            float dot02 = Vector3.Dot(v0, v2);
+                            float dot11 = Vector3.Dot(v1, v1);
+                            float dot12 = Vector3.Dot(v1, v2);
+
+                            // Compute barycentric coordinates
+                            float invDenom = 1 / (dot00 * dot11 - dot01 * dot01);
+                            float u = (dot11 * dot02 - dot01 * dot12) * invDenom;
+                            float v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+
+                            // Check if point is in triangle
+                            if((u >= 0) && (v >= 0) && (u + v < 1)) { 
                                 normal += n;
                                 j = 1; // skip second triangle, if necessary
                                 if (i % 2 == 0) i += 1; // skip opposite side if necessary
                                 isColliding = true;
                             }
-                        } */
+                        } 
                     }
                 }
                 normal.Normalize();

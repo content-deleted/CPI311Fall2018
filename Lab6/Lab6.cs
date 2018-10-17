@@ -48,16 +48,26 @@ namespace Lab6 {
 
             // Load the models
             sphere = Content.Load<Model>("Sphere");
+            foreach (ModelMesh mesh in sphere.Meshes)
+                foreach (BasicEffect e in mesh.Effects)
+                    e.EnableDefaultLighting();
 
             // Misc Setup
-
-            camera.Transform.LocalPosition = new Vector3(0, 0, 5);
+            camera.Transform.LocalPosition = new Vector3(0, 0, 20);
 
             random = new Random();
 
+            BoxCollider boxCollider;
+            boxCollider = new BoxCollider();
+            boxCollider.Size = 10;
+
+            GameObject3d b = GameObject3d.Initialize();
+            b.drawable = false;
+            b.addBehavior(boxCollider);
+
             for (int i = 0; i < 2; i++) {
                 Transform transform = new Transform();
-                transform.LocalPosition += new Vector3(i, 0, 0); //avoid overlapping each sphere 
+                transform.LocalPosition += new Vector3(i*5, 0, 0); //avoid overlapping each sphere 
 
                 Rigidbody rigidbody = new Rigidbody();
                 rigidbody.Mass = 1;
@@ -66,10 +76,10 @@ namespace Lab6 {
                   (float)random.NextDouble(), (float)random.NextDouble(),
                   (float)random.NextDouble());
                 direction.Normalize();
-                rigidbody.Velocity = direction * ((float) random.NextDouble() * 0.001f);
+                rigidbody.Velocity = direction * ((float) random.NextDouble() * 5 + 5);
 
                 SphereCollider sphereCollider = new SphereCollider();
-                sphereCollider.Radius = 2.5f * transform.LocalScale.Y;
+                sphereCollider.Radius = 2 * transform.LocalScale.Y;
 
                 GameObject3d g = GameObject3d.Initialize();
                 g.transform = transform;
@@ -77,10 +87,6 @@ namespace Lab6 {
 
                 g.addBehavior(rigidbody);
                 g.addBehavior(sphereCollider);
-
-                /*transforms.Add(transform);
-                colliders.Add(sphereCollider);
-                rigidbodies.Add(rigidbody); */
             }
 
             //init
