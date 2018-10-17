@@ -91,6 +91,7 @@ namespace Lab6 {
 
             //init
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects) gameObject.Start();
+            GameObject.gameStarted = true;
         }
 
         /// <summary>
@@ -107,6 +108,7 @@ namespace Lab6 {
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime) {
+            
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 

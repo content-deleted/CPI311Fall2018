@@ -1,0 +1,2 @@
+C:\dev\CPI311Fall2018\Lab7\obj\x86\Release\Lab7.csprojAssemblyReference.cache
+C:\dev\CPI311Fall2018\Lab7\obj\x86\Release\Lab7.csproj.CoreCompileInputs.cache

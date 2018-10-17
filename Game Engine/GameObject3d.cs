@@ -18,6 +18,8 @@ namespace CPI311.GameEngine
 
         public Model mesh;
 
+        public Material material = new DefaultMaterial();
+
         public GameObject3d() => transform = new Transform();
 
         public static GameObject3d Initialize()
@@ -50,8 +52,10 @@ namespace CPI311.GameEngine
 
         override public void Render(dynamic Renderer) {
             if (!drawable) return;
-            Camera c = (Renderer as Camera);
-            mesh.Draw(transform.World, c.View, c.Projection);
+            Tuple<Camera, GraphicsDevice> t = Renderer as Tuple<Camera, GraphicsDevice>;
+            Camera c = t.Item1;
+            GraphicsDevice g = t.Item2;
+            material.Render(c, transform, mesh, g);
         }
 
         override public void Destroy()

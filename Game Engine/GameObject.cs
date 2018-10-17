@@ -8,6 +8,7 @@ namespace CPI311.GameEngine
 {
     public abstract class GameObject
     {
+        public static bool gameStarted = false;
         //public static List<GameObject> activeGameObjects = new List<GameObject>();
 
         protected List<Behavior> behaviors = new List<Behavior>();
