@@ -20,8 +20,13 @@ namespace Lab7 {
 
         Random random;
 
+        SpriteBatch backgrounds;
+        public static Texture2D background;
+        Effect offset;
+
         public Lab7() {
             graphics = new GraphicsDeviceManager(this);
+            graphics.GraphicsProfile = GraphicsProfile.HiDef;
             Content.RootDirectory = "Content";
         }
 
@@ -45,7 +50,13 @@ namespace Lab7 {
         /// </summary>
         protected override void LoadContent() {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            backgrounds = new SpriteBatch(GraphicsDevice);
+
+            // Load shaders 
+            SpeedAndCollideEffect.effect = Content.Load<Effect>("SpeedEffectShader");
+            SpeedAndCollideEffect.disperseSample = Content.Load<Texture2D>("noiseTexture");
+            offset = Content.Load<Effect>("offset");
+            background = Content.Load<Texture2D>("DOGGIE");//"p_u_r_p_b_o_y_s"); 
 
             // Load the models
             sphere = Content.Load<Model>("Sphere");
@@ -78,7 +89,7 @@ namespace Lab7 {
         private void makeThatSphere() {
             Transform transform = new Transform();
             transform.LocalPosition += new Vector3((float)random.NextDouble() * 5, (float)random.NextDouble() * 5, (float)random.NextDouble() * 5); //avoid overlapping each sphere 
-
+            
             Rigidbody rigidbody = new Rigidbody();
             rigidbody.Mass = 1;
 
@@ -87,16 +98,21 @@ namespace Lab7 {
               (float)random.NextDouble());
             direction.Normalize();
             rigidbody.Velocity = direction * ((float)random.NextDouble() * 5 + 5);
+            rigidbody.Mass = 1f + (float)random.NextDouble();
 
             SphereCollider sphereCollider = new SphereCollider();
             sphereCollider.Radius = 1 * transform.LocalScale.Y;
 
+            SpeedColorEffectController effectControl = new SpeedColorEffectController();
+
             GameObject3d g = GameObject3d.Initialize();
             g.transform = transform;
             g.mesh = sphere;
+            g.material = new SpeedAndCollideEffect();
 
             g.addBehavior(rigidbody);
             g.addBehavior(sphereCollider);
+            g.addBehavior(effectControl);
 
             if (GameObject.gameStarted) g.Start();
         }
@@ -124,12 +140,9 @@ namespace Lab7 {
 
             GameObject3d.UpdateObjects();
 
-            Collider.Update(gameTime);
-
-
             //DEBUG CAM MOVEMENT
 
-            float speed = 2;
+            float speed = 6;
             float rot = 2;
 
             if (InputManager.IsKeyDown(Keys.W)) camera.Transform.LocalPosition += speed * camera.Transform.Forward * Time.ElapsedGameTime;
@@ -151,7 +164,16 @@ namespace Lab7 {
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            backgrounds.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+
+            offset.Parameters["height"].SetValue(600f);
+            offset.Parameters["offset"].SetValue((float)Time.TotalGameTimeMilli / 1000);
+            offset.CurrentTechnique.Passes[0].Apply();
+            
+            backgrounds.Draw(background, new Rectangle(0, 0, 1000, 600), Color.White); //new Rectangle(0, 0, playerSpriteSheet.Width, playerSpriteSheet.Height), Color.White,0 , new Vector2 (300,1000), effec)
+
+            backgrounds.End();
+
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects.ToList()) gameObject.Render( Tuple.Create(camera,GraphicsDevice) );
 
             base.Draw(gameTime);

@@ -3,7 +3,7 @@
   <SourceFile>C:/dev/CPI311Fall2018/Lab7/Content/Sphere.FBX</SourceFile>
   <SourceTime>2018-09-18T17:50:42.6260718-07:00</SourceTime>
   <DestFile>C:/dev/CPI311Fall2018/Lab7/Content/bin/Windows/Sphere.xnb</DestFile>
-  <DestTime>2018-10-16T18:15:12.708549-07:00</DestTime>
+  <DestTime>2018-10-23T15:05:36.9956315-07:00</DestTime>
   <Importer>FbxImporter</Importer>
   <ImporterTime>2017-03-01T08:05:36-07:00</ImporterTime>
   <Processor>ModelProcessor</Processor>

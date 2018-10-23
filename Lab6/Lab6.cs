@@ -118,8 +118,6 @@ namespace Lab6 {
 
             GameObject3d.UpdateObjects();
 
-            Collider.Update(gameTime);
-
 
             //DEBUG CAM MOVEMENT
 

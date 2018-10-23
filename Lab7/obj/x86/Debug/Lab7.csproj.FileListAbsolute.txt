@@ -27,3 +27,7 @@ C:\dev\CPI311Fall2018\Lab7\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
 C:\dev\CPI311Fall2018\Lab7\obj\x86\Debug\Lab7.csproj.CopyComplete
 C:\dev\CPI311Fall2018\Lab7\obj\x86\Debug\Lab7.exe
 C:\dev\CPI311Fall2018\Lab7\obj\x86\Debug\Lab7.pdb
+C:\dev\CPI311Fall2018\Lab7\bin\Windows\x86\Debug\Content\noiseTexture.xnb
+C:\dev\CPI311Fall2018\Lab7\bin\Windows\x86\Debug\Content\SpeedEffectShader.xnb
+C:\dev\CPI311Fall2018\Lab7\bin\Windows\x86\Debug\Content\DOGGIE.xnb
+C:\dev\CPI311Fall2018\Lab7\bin\Windows\x86\Debug\Content\offset.xnb

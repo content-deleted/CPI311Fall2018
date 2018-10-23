@@ -5,5 +5,9 @@
   <Config />
   <SourceFiles>
     <File>C:/dev/CPI311Fall2018/Lab7/Content/Sphere.FBX</File>
+    <File>C:/dev/CPI311Fall2018/Lab7/Content/SpeedEffectShader.fx</File>
+    <File>C:/dev/CPI311Fall2018/Lab7/Content/noiseTexture.jpg</File>
+    <File>C:/dev/CPI311Fall2018/Lab7/Content/offset.fx</File>
+    <File>C:/dev/CPI311Fall2018/Lab7/Content/DOGGIE.png</File>
   </SourceFiles>
 </SourceFileCollection>
