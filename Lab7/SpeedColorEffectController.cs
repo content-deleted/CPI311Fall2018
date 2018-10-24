@@ -18,6 +18,13 @@ namespace Lab7 {
             c = obj.GetBehavior<Collider>() as Collider;
         }
 
+        public override void OnDestory() {
+            base.OnDestory();
+            m = null;
+            r = null;
+            c = null;
+        }
+
         public override void Update() {
             float speed = Math.Min(r.Velocity.Length()/2 * r.Velocity.Length()/2 , 1);
             m.diffuseColor = new Vector3(0.5f, 0.5f, speed);

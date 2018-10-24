@@ -52,7 +52,7 @@ StandardVertexOutput EffectVertex(VertexInput input)
 	StandardVertexOutput output;
 
     float3 dcolor = tex2Dlod(DisperseSampler, float4(input.UV.xy, 0, 0));
-    float d = (dcolor.r + dcolor.g * 2 - dcolor.b);
+    float d = (dcolor.r  + dcolor.g * 2 - dcolor.b);
     d *= timeSinceCol * timeSinceCol;
     input.Position += float4(input.Normal * d, 1); //  Offset at random
 

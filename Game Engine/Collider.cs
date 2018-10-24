@@ -24,6 +24,12 @@ namespace CPI311.GameEngine {
             return false;
         }
 
+        public override void OnDestory() {
+            base.OnDestory();
+            rigidbody = null;
+            colliders.Remove(this);
+        }
+
         public static int numberCollisions;
 
         public static void Update(GameTime gameTime) {
@@ -66,5 +72,7 @@ namespace CPI311.GameEngine {
                 }
             } 
         }
+
+        public virtual float? Intersects(Ray ray) { return null; }
     }
 }

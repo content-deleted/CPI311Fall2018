@@ -12,7 +12,6 @@ namespace Lab7 {
     /// </summary>
     public class Lab7 : Game {
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
 
         Camera camera = new Camera();
 
@@ -56,7 +55,7 @@ namespace Lab7 {
             SpeedAndCollideEffect.effect = Content.Load<Effect>("SpeedEffectShader");
             SpeedAndCollideEffect.disperseSample = Content.Load<Texture2D>("noiseTexture");
             offset = Content.Load<Effect>("offset");
-            background = Content.Load<Texture2D>("DOGGIE");//"p_u_r_p_b_o_y_s"); 
+            background = Content.Load<Texture2D>("DOGGIE"); 
 
             // Load the models
             sphere = Content.Load<Model>("Sphere");
@@ -140,7 +139,7 @@ namespace Lab7 {
 
             GameObject3d.UpdateObjects();
 
-            //DEBUG CAM MOVEMENT
+            //CAM MOVEMENT
 
             float speed = 6;
             float rot = 2;
@@ -152,8 +151,7 @@ namespace Lab7 {
             if (InputManager.IsKeyDown(Keys.D)) camera.Transform.Rotate(Vector3.Down, rot * Time.ElapsedGameTime);
 
             if (InputManager.IsKeyDown(Keys.Space)) makeThatSphere();
-
-
+            
             base.Update(gameTime);
         }
 
