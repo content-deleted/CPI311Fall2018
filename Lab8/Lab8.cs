@@ -1,18 +1,35 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using CPI311.GameEngine;
+using Microsoft.Xna.Framework.Audio;
+using System;
+using System.Linq;
 
 namespace Lab8 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
     public class Lab8 : Game {
+        SpriteBatch backgrounds;
+        public static Texture2D background;
+
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+
+        SoundEffect gunSound;
+        SoundEffectInstance soundInstance;
+
+        Model model;
+        Camera camera1, topDownCamera;
+        List<Camera> cameras = new List<Camera>();
+        
+        Effect offset;
+
 
         public Lab8() {
             graphics = new GraphicsDeviceManager(this);
+            graphics.GraphicsProfile = GraphicsProfile.HiDef;
             Content.RootDirectory = "Content";
         }
 
@@ -27,7 +44,7 @@ namespace Lab8 {
             InputManager.Initialize();
             ScreenManager.Initialize(graphics);
 
-
+            this.IsMouseVisible = true;
             base.Initialize();
         }
 
@@ -36,10 +53,46 @@ namespace Lab8 {
         /// all of your content.
         /// </summary>
         protected override void LoadContent() {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            backgrounds = new SpriteBatch(GraphicsDevice);
+            StandardLightingMaterial.effect = Content.Load<Effect>("Standard");
+            model = Content.Load<Model>("model");
+            background = Content.Load<Texture2D>("DOGGIE");
+            offset = Content.Load<Effect>("offset");
 
-            // TODO: use this.Content to load your game content here
+            // *** Lab 8 Item ***********************
+            ScreenManager.Setup(false, 1080, 720);
+            //***************************************
+
+            camera1 = new Camera();
+            camera1.Transform = new Transform();
+            camera1.Transform.LocalPosition = Vector3.Backward * 5;
+            camera1.Position = new Vector2(0f, 0f);
+            camera1.Size = new Vector2(0.5f, 1f);
+            camera1.AspectRatio = camera1.Viewport.AspectRatio;
+
+            topDownCamera = new Camera();
+            topDownCamera.Transform = new Transform();
+            topDownCamera.Transform.LocalPosition = Vector3.Up * 10;
+            topDownCamera.Transform.Rotate(Vector3.Right, -MathHelper.PiOver2);
+            topDownCamera.Position = new Vector2(0.5f, 0f);
+            topDownCamera.Size = new Vector2(0.5f, 1f);
+            topDownCamera.AspectRatio = topDownCamera.Viewport.AspectRatio;
+
+            cameras.Add(topDownCamera);
+            cameras.Add(camera1);
+
+            // Add sphere
+            Transform transform = new Transform();
+            SphereCollider sphereCollider = new SphereCollider();
+            sphereCollider.Radius = 1 * transform.LocalScale.Y;
+            GameObject3d g = GameObject3d.Initialize();
+            g.transform = transform;
+            g.mesh = model;
+            g.material = new StandardLightingMaterial();
+
+            //init
+            foreach (GameObject3d gameObject in GameObject3d.activeGameObjects) gameObject.Start();
+            GameObject.gameStarted = true;
         }
 
         /// <summary>
@@ -59,10 +112,35 @@ namespace Lab8 {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            InputManager.Update();
+            Time.Update(gameTime);
+            Collider.Update(gameTime);
+
+            GameObject3d.UpdateObjects();
+
+            Find();
 
             base.Update(gameTime);
         }
+
+
+        public void Find() {
+            Ray ray = camera1.ScreenPointToWorldRay(InputManager.GetMousePosition());
+
+            foreach (Collider collider in Collider.colliders) {
+                if (collider.Intersects(ray) != null) {
+                    
+                    //effect.Parameters["DiffuseColor"].SetValue(Color.Red.ToVector3());
+                    ((collider.obj as GameObject3d).material as StandardLightingMaterial).diffuseColor = Color.Blue.ToVector3();
+                }
+                else {
+                    //effect.Parameters["DiffuseColor"].SetValue(Color.Blue.ToVector3());
+                    ((collider.obj as GameObject3d).material as StandardLightingMaterial).diffuseColor = Color.Red.ToVector3();
+                    //(cube.Meshes[0].Effects[0] as BasicEffect).DiffuseColor = Color.Red.ToVector3();
+                }
+            }
+        }
+
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -71,7 +149,19 @@ namespace Lab8 {
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            backgrounds.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+
+            offset.Parameters["height"].SetValue((float)ScreenManager.Height);
+            offset.Parameters["offset"].SetValue((float)Time.TotalGameTimeMilli / 1000);
+            offset.CurrentTechnique.Passes[0].Apply();
+
+            backgrounds.Draw(background, new Rectangle(0, 0, ScreenManager.Width, ScreenManager.Height), Color.White); //new Rectangle(0, 0, playerSpriteSheet.Width, playerSpriteSheet.Height), Color.White,0 , new Vector2 (300,1000), effec)
+
+            backgrounds.End();
+
+            foreach(Camera camera in cameras)
+            foreach (GameObject3d gameObject in GameObject3d.activeGameObjects.ToList()) gameObject.Render(Tuple.Create(camera, GraphicsDevice));
+
 
             base.Draw(gameTime);
         }

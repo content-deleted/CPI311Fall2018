@@ -18,7 +18,7 @@ namespace CPI311.GameEngine {
     }
 
     public class StandardLightingMaterial : Material {
-        public Effect effect;
+        public static Effect effect;
 
         public float shininess = 20f;
         public Vector3 ambientColor = new Vector3(0.2f, 0.2f, 0.2f);

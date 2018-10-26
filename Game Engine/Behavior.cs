@@ -8,7 +8,7 @@ namespace CPI311.GameEngine
 {
     public abstract class Behavior
     {
-        protected GameObject obj;
+        public GameObject obj;
         public void assign(GameObject g) => obj = g;
         virtual public void Start() { }
         virtual public void Update() { }

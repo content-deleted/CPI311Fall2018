@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework;
 
 namespace CPI311.GameEngine
 {
@@ -13,6 +14,8 @@ namespace CPI311.GameEngine
         static KeyboardState CurrentKeyboardState { get; set; }
         static MouseState PreviousMouseState { get; set; }
         static MouseState CurrentMouseState { get; set; }
+        public static Vector2 GetMousePosition() => new Vector2(CurrentMouseState.X, CurrentMouseState.Y);
+
 
         public static void Initialize()
         {
