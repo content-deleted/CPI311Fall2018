@@ -20,12 +20,15 @@ namespace CPI311.GameEngine {
     public class StandardLightingMaterial : Material {
         public static Effect effect;
 
+        public Vector3 lightPosition = Vector3.Zero;
         public float shininess = 20f;
         public Vector3 ambientColor = new Vector3(0.2f, 0.2f, 0.2f);
         public Vector3 diffuseColor = new Vector3(0.5f, 0, 0);
         public Vector3 specularColor = new Vector3(0, 0, 0.5f);
 
         public Texture2D texture;
+
+        public bool useTexture = true;
 
         public override void Render(Camera c, Transform t, Model m, GraphicsDevice g) {
             Matrix view = c.View;
@@ -35,13 +38,14 @@ namespace CPI311.GameEngine {
             effect.Parameters["World"].SetValue(t.World);
             effect.Parameters["View"].SetValue(view);
             effect.Parameters["Projection"].SetValue(projection);
-            effect.Parameters["LightPosition"].SetValue(Vector3.Backward * 10 + Vector3.Right * 5);
+            effect.Parameters["LightPosition"].SetValue(lightPosition);
             effect.Parameters["CameraPosition"].SetValue(c.Transform.Position);
             effect.Parameters["Shininess"].SetValue(shininess);
             effect.Parameters["AmbientColor"].SetValue(ambientColor);
             effect.Parameters["DiffuseColor"].SetValue(diffuseColor);
             effect.Parameters["SpecularColor"].SetValue(specularColor);
             effect.Parameters["DiffuseTexture"].SetValue(texture);
+            effect.Parameters["UseTexture"].SetValue(useTexture);
 
             foreach (EffectPass pass in effect.CurrentTechnique.Passes) {
                 pass.Apply();

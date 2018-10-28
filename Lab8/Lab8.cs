@@ -88,7 +88,11 @@ namespace Lab8 {
             GameObject3d g = GameObject3d.Initialize();
             g.transform = transform;
             g.mesh = model;
-            g.material = new StandardLightingMaterial();
+            StandardLightingMaterial mat = new StandardLightingMaterial();
+            mat.useTexture = false;
+            mat.lightPosition = transform.Position + Vector3.Backward * 5;
+            g.material = mat;
+            g.addBehavior(sphereCollider);
 
             //init
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects) gameObject.Start();
@@ -125,20 +129,11 @@ namespace Lab8 {
 
 
         public void Find() {
-            Ray ray = camera1.ScreenPointToWorldRay(InputManager.GetMousePosition());
+            Ray ray = cameras.First().ScreenPointToWorldRay(InputManager.GetMousePosition());
 
-            foreach (Collider collider in Collider.colliders) {
-                if (collider.Intersects(ray) != null) {
-                    
-                    //effect.Parameters["DiffuseColor"].SetValue(Color.Red.ToVector3());
-                    ((collider.obj as GameObject3d).material as StandardLightingMaterial).diffuseColor = Color.Blue.ToVector3();
-                }
-                else {
-                    //effect.Parameters["DiffuseColor"].SetValue(Color.Blue.ToVector3());
-                    ((collider.obj as GameObject3d).material as StandardLightingMaterial).diffuseColor = Color.Red.ToVector3();
-                    //(cube.Meshes[0].Effects[0] as BasicEffect).DiffuseColor = Color.Red.ToVector3();
-                }
-            }
+            foreach (Collider collider in Collider.colliders) 
+                ((collider.obj as GameObject3d).material as StandardLightingMaterial).diffuseColor =
+                (collider.Intersects(ray) != null) ? Color.Blue.ToVector3() : Color.Red.ToVector3();
         }
 
 
@@ -150,17 +145,20 @@ namespace Lab8 {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             backgrounds.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-
-            offset.Parameters["height"].SetValue((float)ScreenManager.Height);
-            offset.Parameters["offset"].SetValue((float)Time.TotalGameTimeMilli / 1000);
-            offset.CurrentTechnique.Passes[0].Apply();
-
-            backgrounds.Draw(background, new Rectangle(0, 0, ScreenManager.Width, ScreenManager.Height), Color.White); //new Rectangle(0, 0, playerSpriteSheet.Width, playerSpriteSheet.Height), Color.White,0 , new Vector2 (300,1000), effec)
-
+            foreach (Camera camera in cameras) {
+                offset.Parameters["height"].SetValue((float)ScreenManager.Height);
+                offset.Parameters["offset"].SetValue((float)Time.TotalGameTimeMilli / 1500);
+                offset.CurrentTechnique.Passes[0].Apply();
+                backgrounds.GraphicsDevice.Viewport = camera.Viewport;
+                backgrounds.Draw(background, new Rectangle(0,0,
+                                                          (int)(camera.Size.X * ScreenManager.Width),
+                                                          (int)(camera.Size.Y * ScreenManager.Height)), Color.White);
+            }
             backgrounds.End();
 
-            foreach(Camera camera in cameras)
-            foreach (GameObject3d gameObject in GameObject3d.activeGameObjects.ToList()) gameObject.Render(Tuple.Create(camera, GraphicsDevice));
+           foreach (Camera camera in cameras) 
+               foreach (GameObject3d gameObject in GameObject3d.activeGameObjects.ToList())
+                   gameObject.Render(Tuple.Create(camera, GraphicsDevice));
 
 
             base.Draw(gameTime);

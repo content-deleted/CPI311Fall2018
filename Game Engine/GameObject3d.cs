@@ -55,6 +55,7 @@ namespace CPI311.GameEngine
             Tuple<Camera, GraphicsDevice> t = Renderer as Tuple<Camera, GraphicsDevice>;
             Camera c = t.Item1;
             GraphicsDevice g = t.Item2;
+            g.Viewport = c.Viewport;
             material.Render(c, transform, mesh, g);
         }
 

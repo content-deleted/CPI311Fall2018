@@ -17,17 +17,17 @@ namespace CPI311.GameEngine
         private float aspect = standardAspc;
         public float AspectRatio { get => aspect; set => aspect = value; }
 
-        float near = 1;
+        private float near = 1;
         public float NearPlane { get => near; set => near = (value < far) ? far : value; }
 
-        float far = 1000;
+        private float far = 1000;
         public float FarPlane { get => far; set => far = (value > near) ? far : value; }
 
         public Transform Transform { get; set; }
 
         public Matrix Projection
         {
-            get { return Matrix.CreatePerspectiveFieldOfView(FieldOfView, AspectRatio, NearPlane, FarPlane); }
+            get => Matrix.CreatePerspectiveFieldOfView(FieldOfView, AspectRatio, NearPlane, FarPlane);
         }
 
         public Matrix View
@@ -49,10 +49,8 @@ namespace CPI311.GameEngine
         }
 
         public Ray ScreenPointToWorldRay(Vector2 position) {
-            Vector3 start = Viewport.Unproject(new Vector3(position, 0),
-                Projection, View, Matrix.Identity);
-            Vector3 end = Viewport.Unproject(new Vector3(position, 1),
-                Projection, View, Matrix.Identity);
+            Vector3 start = Viewport.Unproject(new Vector3(position, 0), Projection, View, Matrix.Identity);
+            Vector3 end = Viewport.Unproject(new Vector3(position, 1), Projection, View, Matrix.Identity);
             return new Ray(start, end - start);
         }
 

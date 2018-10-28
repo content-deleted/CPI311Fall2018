@@ -25,12 +25,12 @@ struct VertexShaderOutput
 
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
-    float2 position = float2(input.TextureCoordinates.x +
-    ((input.TextureCoordinates.x > 0.5) 
-    ? offset 
-    : -offset), input.TextureCoordinates.y );
+    float2 position = (input.TextureCoordinates.x > 0.5)
+    ? float2(input.TextureCoordinates.x + offset, 0.2 * abs(input.TextureCoordinates.x - 0.5) / abs(input.TextureCoordinates.y - 0.5))
+ : float2(input.TextureCoordinates.x - offset, 0.2 * abs(input.TextureCoordinates.x - 0.5) / abs(input.TextureCoordinates.y - 0.5));
     position.x %= 1;
     position.x = abs(position.x);
+    if(position.y < 0 || position.y > 1) position.y = position.x;
 	return tex2D(SpriteTextureSampler, position) * input.Color;
 }
 

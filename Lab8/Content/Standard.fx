@@ -9,6 +9,7 @@ float3 AmbientColor;
 float3 DiffuseColor;
 float3 SpecularColor;
 texture DiffuseTexture;
+bool UseTexture;
 
 sampler DiffuseSampler = sampler_state
 {
@@ -64,7 +65,7 @@ float4 PhongPixel(StandardVertexOutput input) : COLOR0
 	float3 reflectDirection = -reflect(lightDirection, input.WorldNormal);
 
 	// Now, compute the lighint components
-	float3 diffuse = max(dot(lightDirection, input.WorldNormal), 0) * tex2D(DiffuseSampler, input.UV);
+    float3 diffuse = max(dot(lightDirection, input.WorldNormal), 0) * ((UseTexture) ? tex2D(DiffuseSampler, input.UV) : DiffuseColor);
 	float specular = pow(max(dot(reflectDirection, viewDirection), 0), Shininess);
 	return float4(AmbientColor + diffuse + specular * SpecularColor, 1);
 }
