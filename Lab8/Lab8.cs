@@ -58,6 +58,7 @@ namespace Lab8 {
             model = Content.Load<Model>("model");
             background = Content.Load<Texture2D>("DOGGIE");
             offset = Content.Load<Effect>("offset");
+            gunSound = Content.Load<SoundEffect>("Gun");
 
             // *** Lab 8 Item ***********************
             ScreenManager.Setup(false, 1080, 720);
@@ -94,6 +95,15 @@ namespace Lab8 {
             g.material = mat;
             g.addBehavior(sphereCollider);
 
+            // Sound shit
+            soundInstance = gunSound.CreateInstance();
+            AudioListener listener = new AudioListener();
+            listener.Position = cameras.First().Transform.Position;
+            listener.Forward = cameras.First().Transform.Forward;
+            AudioEmitter emitter = new AudioEmitter();
+            emitter.Position = Vector3.Zero;
+            soundInstance.Apply3D(listener, emitter);
+
             //init
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects) gameObject.Start();
             GameObject.gameStarted = true;
@@ -121,6 +131,8 @@ namespace Lab8 {
             Collider.Update(gameTime);
 
             GameObject3d.UpdateObjects();
+
+            if(InputManager.IsKeyPressed(Keys.Space)) soundInstance.Play();
 
             Find();
 

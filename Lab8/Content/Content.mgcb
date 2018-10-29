@@ -63,3 +63,9 @@
 /processorParam:DebugMode=Auto
 /build:offset.fx
 
+#begin Gun.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Gun.wav
+
