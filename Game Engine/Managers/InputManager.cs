@@ -35,5 +35,9 @@ namespace CPI311.GameEngine
 
         public static bool IsKeyPressed(Keys key) => CurrentKeyboardState.IsKeyDown(key) && PreviousKeyboardState.IsKeyUp(key);
 
+        public static bool IsMouseDown() => CurrentMouseState.LeftButton == ButtonState.Pressed || CurrentMouseState.RightButton == ButtonState.Pressed || CurrentMouseState.MiddleButton == ButtonState.Pressed;
+
+       // public static bool IsMousePressed(MouseState m) => CurrentKeyboardState.IsKeyDown(key) && PreviousKeyboardState.IsKeyUp(key);
+
     }
 }

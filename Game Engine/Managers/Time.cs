@@ -18,22 +18,25 @@ namespace CPI311.GameEngine
     }
 
     public static class Time {
-        public static float ElapsedGameTime { get; private set; }
-        public static TimeSpan TotalGameTime { get; private set; }
+        public static GameTime gameTime;
+        public static float ElapsedGameTime { get => (float)gameTime.ElapsedGameTime.TotalSeconds; }
+        public static TimeSpan TotalGameTime { get => gameTime.TotalGameTime; }
         public static double TotalGameTimeMilli { get => TotalGameTime.TotalMilliseconds; }
 
         public static List<EventTimer> timers = new List<EventTimer>();
         
         public static void Initialize()
         {
-            ElapsedGameTime = 0;
-            TotalGameTime = new TimeSpan(0);
+            //gameTime = g;
+            //ElapsedGameTime = 0;
+            //TotalGameTime = new TimeSpan(0);
         }
 
-        public static void Update(GameTime gameTime)
+        public static void Update(GameTime g)
         {
-            ElapsedGameTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            TotalGameTime = gameTime.TotalGameTime;
+            //ElapsedGameTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //TotalGameTime = gameTime.TotalGameTime;
+            gameTime = g;
 
             // Update timers
             foreach (EventTimer timer in timers.ToList()) {

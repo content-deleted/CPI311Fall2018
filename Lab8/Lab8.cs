@@ -132,7 +132,7 @@ namespace Lab8 {
 
             GameObject3d.UpdateObjects();
 
-            if(InputManager.IsKeyPressed(Keys.Space)) soundInstance.Play();
+            //if(InputManager.IsKeyPressed(Keys.Space)) soundInstance.Play();
 
             Find();
 
@@ -146,6 +146,8 @@ namespace Lab8 {
             foreach (Collider collider in Collider.colliders) 
                 ((collider.obj as GameObject3d).material as StandardLightingMaterial).diffuseColor =
                 (collider.Intersects(ray) != null) ? Color.Blue.ToVector3() : Color.Red.ToVector3();
+
+            if(InputManager.IsMouseDown()) soundInstance.Play();
         }
 
 

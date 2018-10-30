@@ -5,6 +5,7 @@ using CPI311.GameEngine;
 using System;
 using System.Threading;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Assignment3 {
     /// <summary>
@@ -24,6 +25,8 @@ namespace Assignment3 {
         SpriteBatch backgrounds;
         SpriteBatch text;
         string UITEXT="";
+        float offsetSpeed = 1;
+        float tileAmount = 1;
 
         public static Texture2D background;
         Effect offset;
@@ -152,8 +155,8 @@ namespace Assignment3 {
 
             //CAM MOVEMENT
 
-            float speed = 6;
-            float rot = 2;
+            float speed = 10;
+            float rot = 3;
 
             if (InputManager.IsKeyDown(Keys.W)) camera.Transform.LocalPosition += speed * camera.Transform.Forward * Time.ElapsedGameTime;
             if (InputManager.IsKeyDown(Keys.S)) camera.Transform.LocalPosition += speed * camera.Transform.Backward * Time.ElapsedGameTime;
@@ -176,24 +179,39 @@ namespace Assignment3 {
                     if (b != null) b.Velocity *= 0.95f;
                 }
 
-            UpdateUI();
+            if (InputManager.IsKeyPressed(Keys.T)) offsetSpeed += 0.1f;
+            if (InputManager.IsKeyPressed(Keys.Y)) offsetSpeed -= 0.1f;
+
+            if (InputManager.IsKeyPressed(Keys.G)) tileAmount += 1f;
+            if (InputManager.IsKeyPressed(Keys.H)) tileAmount -= 1f;
+
+            //UpdateUI();
 
             base.Update(gameTime);
         }
 
+        private Queue<int> prevCol = new Queue<int>(new[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, });
 
         void UpdateUI () {
+            prevCol.Dequeue();
             int count=0;
             float totalVelocity = 0;
+            int totalCol = 0;
             foreach (GameObject3d g in GameObject3d.activeGameObjects) {
                 Rigidbody b = g.GetBehavior<Rigidbody>();
                 if (b != null) {
                     count++;
                     totalVelocity += b.Velocity.Length();
-                    //if(col)
+                    SphereCollider s = g.GetBehavior<SphereCollider>();
+                    if(s.collidedThisFrame) totalCol++;
                 }
             }
-           // UITEXT = 
+            prevCol.Enqueue(totalCol);
+
+            UITEXT = $"Ball Count: {count} \n" +
+                     $"Average Velocity: {totalVelocity / (count > 0 ? count : 1)}\n" +
+                     $"Average Collisions Per Frame: {(float) prevCol.Sum()/ prevCol.Count()}\n" +
+                     $"Framerate: {(1 / Time.gameTime.ElapsedGameTime.TotalSeconds)}";
         }
 
         /// <summary>
@@ -206,7 +224,8 @@ namespace Assignment3 {
             backgrounds.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
 
             offset.Parameters["height"].SetValue((float)ScreenManager.Height);
-            offset.Parameters["offset"].SetValue((float)Time.TotalGameTimeMilli / 1000);
+            offset.Parameters["offset"].SetValue(offsetSpeed * (float)Time.TotalGameTimeMilli / 1000);
+            offset.Parameters["tile"].SetValue(tileAmount);
             offset.CurrentTechnique.Passes[0].Apply();
 
             backgrounds.Draw(background, new Rectangle(0, 0,
@@ -215,6 +234,8 @@ namespace Assignment3 {
             backgrounds.End();
 
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects.ToList()) gameObject.Render(Tuple.Create(camera, GraphicsDevice));
+
+            UpdateUI();
 
             text.Begin();
             text.DrawString(font, UITEXT, new Vector2(50, 25), Color.White);
