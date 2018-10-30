@@ -39,6 +39,7 @@ namespace Lab7 {
             // TODO: Add your initialization logic here
             InputManager.Initialize();
             Time.Initialize();
+            ScreenManager.Initialize(graphics);
 
             base.Initialize();
         }
@@ -48,6 +49,7 @@ namespace Lab7 {
         /// all of your content.
         /// </summary>
         protected override void LoadContent() {
+            ScreenManager.Setup(false, 1080, 720);
             // Create a new SpriteBatch, which can be used to draw textures.
             backgrounds = new SpriteBatch(GraphicsDevice);
 
@@ -164,15 +166,16 @@ namespace Lab7 {
 
             backgrounds.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
 
-            offset.Parameters["height"].SetValue(600f);
+            offset.Parameters["height"].SetValue((float)ScreenManager.Height);
             offset.Parameters["offset"].SetValue((float)Time.TotalGameTimeMilli / 1000);
             offset.CurrentTechnique.Passes[0].Apply();
-            
-            backgrounds.Draw(background, new Rectangle(0, 0, 1000, 600), Color.White); //new Rectangle(0, 0, playerSpriteSheet.Width, playerSpriteSheet.Height), Color.White,0 , new Vector2 (300,1000), effec)
 
+            backgrounds.Draw(background, new Rectangle(0, 0,
+                                                          (int)(camera.Size.X * ScreenManager.Width),
+                                                          (int)(camera.Size.Y * ScreenManager.Height)), Color.White);
             backgrounds.End();
 
-            foreach (GameObject3d gameObject in GameObject3d.activeGameObjects.ToList()) gameObject.Render( Tuple.Create(camera,GraphicsDevice) );
+            foreach (GameObject3d gameObject in GameObject3d.activeGameObjects.ToList()) gameObject.Render( Tuple.Create(camera, GraphicsDevice) );
 
             base.Draw(gameTime);
         }

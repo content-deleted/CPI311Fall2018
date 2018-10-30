@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/dev/CPI311Fall2018/Assignment3/Content/offset.fx</SourceFile>
+  <SourceTime>2018-10-23T15:48:20.4691148-07:00</SourceTime>
+  <DestFile>C:/dev/CPI311Fall2018/Assignment3/Content/bin/Windows/offset.xnb</DestFile>
+  <DestTime>2018-10-30T13:20:02.2064408-07:00</DestTime>
+  <Importer>EffectImporter</Importer>
+  <ImporterTime>2017-03-01T08:05:36-07:00</ImporterTime>
+  <Processor>EffectProcessor</Processor>
+  <ProcessorTime>2017-03-01T08:05:36-07:00</ProcessorTime>
+  <Parameters>
+    <Key>DebugMode</Key>
+    <Value>Auto</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

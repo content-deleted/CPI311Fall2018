@@ -12,7 +12,7 @@ namespace CPI311.GameEngine
 
         public static List<GameObject3d> activeGameObjects = new List<GameObject3d>();
 
-        public new Behavior3d GetBehavior<T>() => behaviors.Where(x => x is T).First() as Behavior3d;
+        public new T GetBehavior<T>() where T : class => behaviors.Where(x => x is T).FirstOrDefault() as T;
 
         public Transform transform;
 

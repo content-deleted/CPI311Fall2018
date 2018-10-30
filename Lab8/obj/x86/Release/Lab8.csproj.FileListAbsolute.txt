@@ -1,0 +1,34 @@
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\Content\DOGGIE.xnb
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\Content\font.xnb
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\Content\Gun.xnb
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\Content\model.xnb
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\Content\offset.xnb
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\Content\Standard.xnb
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\Lab8.exe.config
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\Lab8.exe
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\Lab8.pdb
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\Game Engine.dll
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\MonoGame.Framework.dll
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\SharpDX.MediaFoundation.dll
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\SharpDX.dll
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\SharpDX.XAudio2.dll
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\SharpDX.DXGI.dll
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\SharpDX.Direct3D11.dll
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\SharpDX.Direct2D1.dll
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\SharpDX.XInput.dll
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\SharpDX.Direct3D9.dll
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\Game Engine.pdb
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\MonoGame.Framework.xml
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\SharpDX.MediaFoundation.xml
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\SharpDX.xml
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\SharpDX.XAudio2.xml
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\SharpDX.DXGI.xml
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\SharpDX.Direct3D11.xml
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\SharpDX.Direct2D1.xml
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\SharpDX.XInput.xml
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Release\SharpDX.Direct3D9.xml
+C:\dev\CPI311Fall2018\Lab8\obj\x86\Release\Lab8.csprojAssemblyReference.cache
+C:\dev\CPI311Fall2018\Lab8\obj\x86\Release\Lab8.csproj.CoreCompileInputs.cache
+C:\dev\CPI311Fall2018\Lab8\obj\x86\Release\Lab8.csproj.CopyComplete
+C:\dev\CPI311Fall2018\Lab8\obj\x86\Release\Lab8.exe
+C:\dev\CPI311Fall2018\Lab8\obj\x86\Release\Lab8.pdb

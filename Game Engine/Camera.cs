@@ -37,8 +37,9 @@ namespace CPI311.GameEngine
 
         public Camera() => Transform = new Transform();
 
-        public Vector2 Position { get; set; }
-        public Vector2 Size { get; set; }
+        public Vector2 Position = Vector2.Zero;
+        public Vector2 Size = Vector2.One;
+
         public Viewport Viewport {
             get {
                 return new Viewport((int)(ScreenManager.Width * Position.X),
