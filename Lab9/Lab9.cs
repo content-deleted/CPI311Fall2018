@@ -25,7 +25,7 @@ namespace Lab9 {
         AStarSearch search;
         List<Vector3> path;
 
-        int size = 5;
+        int size = 25;
 
 
         SpriteBatch backgrounds;
@@ -84,7 +84,7 @@ namespace Lab9 {
         bool[,] grid = new bool[5,5];
 
         protected override void LoadContent() {
-            ScreenManager.Setup(false, 1080, 720);
+           ScreenManager.Setup(false, 1080, 720);
             // Create a new SpriteBatch, which can be used to draw textures.
             backgrounds = new SpriteBatch(GraphicsDevice);
             text = new SpriteBatch(GraphicsDevice);
@@ -106,7 +106,7 @@ namespace Lab9 {
                     e.EnableDefaultLighting();
 
             // Misc Setup
-            camera.Transform.LocalPosition = new Vector3(0, 0, 20);
+            camera.Transform.LocalPosition = new Vector3(0, 0, 75);
             
 
             BoxCollider boxCollider;
@@ -207,26 +207,31 @@ namespace Lab9 {
             if (InputManager.IsKeyDown(Keys.Left)) camera.Transform.Rotate(Vector3.Up, rot * Time.ElapsedGameTime);
             if (InputManager.IsKeyDown(Keys.Right)) camera.Transform.Rotate(Vector3.Down, rot * Time.ElapsedGameTime);
 
-            
-            if (InputManager.IsKeyPressed(Keys.R))
-                GameObject3d.activeGameObjects.Where(g => g.mesh?.Equals(sphere) == true).FirstOrDefault()?.Destroy();
-
-            if (InputManager.IsKeyDown(Keys.Up))
-                foreach (GameObject3d g in GameObject3d.activeGameObjects) {
-                    Rigidbody b = g.GetBehavior<Rigidbody>();
-                    if (b != null) b.Velocity *= 1.05f;
-                }
-            if (InputManager.IsKeyDown(Keys.Down))
-                foreach (GameObject3d g in GameObject3d.activeGameObjects) {
-                    Rigidbody b = g.GetBehavior<Rigidbody>();
-                    if (b != null) b.Velocity *= 0.95f;
-                }
 
             if (InputManager.IsKeyPressed(Keys.T)) offsetSpeed += 0.1f;
             if (InputManager.IsKeyPressed(Keys.Y)) offsetSpeed -= 0.1f;
 
             if (InputManager.IsKeyPressed(Keys.G)) tileAmount += 1f;
             if (InputManager.IsKeyPressed(Keys.H)) tileAmount -= (tileAmount > 1) ? 1f : 0;
+
+
+            if (InputManager.IsKeyPressed(Keys.R)) {
+                do search.Start = search.Nodes[random.Next(0, size), random.Next(0, size)]; // assign a random start node (passable)
+                while (!search.Start.Passable );
+
+                do search.End = search.Nodes[random.Next(0, size), random.Next(0, size)]; // assign a random end node (passable)
+                while (!search.End.Passable);
+
+                search.Search();
+                path.Clear();
+                AStarNode current = search.End;
+                while (current != null) {
+                    path.Insert(0, current.Position);
+                    current = current.Parent;
+                }
+
+            }
+
 
             //UpdateUI();
 
@@ -267,9 +272,9 @@ namespace Lab9 {
             
             backgrounds.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
 
-            offset.Parameters["height"].SetValue((float)ScreenManager.Height);
+            //offset.Parameters["height"].SetValue((float)ScreenManager.Height);
             offset.Parameters["offset"].SetValue(offsetSpeed * (float)Time.TotalGameTimeMilli / 1000);
-            offset.Parameters["tile"].SetValue(tileAmount);
+            //offset.Parameters["tile"].SetValue(tileAmount);
             offset.CurrentTechnique.Passes[0].Apply();
 
             backgrounds.Draw(background, new Rectangle(0, 0,

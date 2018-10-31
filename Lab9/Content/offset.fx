@@ -26,10 +26,15 @@ struct VertexShaderOutput
 
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
-    float2 position = float2(input.TextureCoordinates.x + offset, input.TextureCoordinates.y) * tile;
-    position.x %= 1;
-    position.y %= 1;
-	return tex2D(SpriteTextureSampler, position) * input.Color;
+    float2 p = input.TextureCoordinates.xy; 
+    p = 2.0 * p - 1;
+    float a = atan2(p.y, p.x ) / (2 * 3.1416);
+    float r = sqrt(dot(p, p)) / sqrt(2);
+    float2 uv;
+    uv.x = (r + offset) % 1;
+    uv.y = a + r;
+
+    return tex2D(SpriteTextureSampler, uv) * input.Color;
 }
 
 technique SpriteDrawing
