@@ -183,7 +183,7 @@ namespace Assignment3 {
             if (InputManager.IsKeyPressed(Keys.Y)) offsetSpeed -= 0.1f;
 
             if (InputManager.IsKeyPressed(Keys.G)) tileAmount += 1f;
-            if (InputManager.IsKeyPressed(Keys.H)) tileAmount -= 1f;
+            if (InputManager.IsKeyPressed(Keys.H)) tileAmount -= (tileAmount > 1) ? 1f : 0;
 
             //UpdateUI();
 
@@ -206,6 +206,7 @@ namespace Assignment3 {
                     if(s.collidedThisFrame) totalCol++;
                 }
             }
+
             prevCol.Enqueue(totalCol);
 
             UITEXT = $"Ball Count: {count} \n" +

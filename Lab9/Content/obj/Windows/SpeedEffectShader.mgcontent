@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/dev/CPI311Fall2018/Lab9/Content/SpeedEffectShader.fx</SourceFile>
+  <SourceTime>2018-10-23T16:02:33.2854721-07:00</SourceTime>
+  <DestFile>C:/dev/CPI311Fall2018/Lab9/Content/bin/Windows/SpeedEffectShader.xnb</DestFile>
+  <DestTime>2018-10-30T17:07:45.8432223-07:00</DestTime>
+  <Importer>EffectImporter</Importer>
+  <ImporterTime>2017-03-01T08:05:36-07:00</ImporterTime>
+  <Processor>EffectProcessor</Processor>
+  <ProcessorTime>2017-03-01T08:05:36-07:00</ProcessorTime>
+  <Parameters>
+    <Key>DebugMode</Key>
+    <Value>Auto</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>Windows</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/dev/CPI311Fall2018/Lab9/Content/offset.fx</File>
+    <File>C:/dev/CPI311Fall2018/Lab9/Content/SpeedEffectShader.fx</File>
+    <File>C:/dev/CPI311Fall2018/Lab9/Content/Sphere.FBX</File>
+    <File>C:/dev/CPI311Fall2018/Lab9/Content/StandardShading.fx</File>
+    <File>C:/dev/CPI311Fall2018/Lab9/Content/DOGGIE.png</File>
+    <File>C:/dev/CPI311Fall2018/Lab9/Content/font.spritefont</File>
+    <File>C:/dev/CPI311Fall2018/Lab9/Content/noiseTexture.jpg</File>
+    <File>C:/dev/CPI311Fall2018/Lab9/Content/Box.fbx</File>
+  </SourceFiles>
+</SourceFileCollection>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/dev/CPI311Fall2018/Assignment3/Content/offset.fx</SourceFile>
-  <SourceTime>2018-10-30T15:37:53.5510037-07:00</SourceTime>
+  <SourceTime>2018-10-30T16:19:00.0036252-07:00</SourceTime>
   <DestFile>C:/dev/CPI311Fall2018/Assignment3/Content/bin/Windows/offset.xnb</DestFile>
-  <DestTime>2018-10-30T15:37:55.3591895-07:00</DestTime>
+  <DestTime>2018-10-30T16:19:01.308134-07:00</DestTime>
   <Importer>EffectImporter</Importer>
   <ImporterTime>2017-03-01T08:05:36-07:00</ImporterTime>
   <Processor>EffectProcessor</Processor>
