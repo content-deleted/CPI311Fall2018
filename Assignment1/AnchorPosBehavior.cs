@@ -10,9 +10,11 @@ using Microsoft.Xna.Framework.Input;
 using CPI311.GameEngine;
 
 namespace Assignment1 {
-    /* Very simple class to anchor to the player object */
+    /* Very simple class to anchor an object to another sprite */
     class AnchorPosBehavior : Behavior2d {
-        override public void Update() => objSprite.Position = PlayerObject.singleton.sprite.Position;
+        Sprite anchor;
+        public AnchorPosBehavior(Sprite s) => anchor = s;
+        override public void Update() => objSprite.Position = anchor.Position;
     }
 
     class AnchorMouseBehavior : Behavior2d {

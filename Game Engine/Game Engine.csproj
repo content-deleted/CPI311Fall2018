@@ -61,6 +61,7 @@
     <Compile Include="SphereCollider.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Managers\Time.cs" />
+    <Compile Include="Tiled.cs" />
     <Compile Include="Transform.cs" />
   </ItemGroup>
   <ItemGroup>

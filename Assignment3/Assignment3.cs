@@ -206,7 +206,7 @@ namespace Assignment3 {
                     if(s.collidedThisFrame) totalCol++;
                 }
             }
-
+            GameObject3d.activeGameObjects.Count();
             prevCol.Enqueue(totalCol);
 
             UITEXT = $"Ball Count: {count} \n" +

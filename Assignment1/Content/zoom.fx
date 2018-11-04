@@ -8,8 +8,7 @@
 #endif
 
 Texture2D SpriteTexture;
-float offset;
-float height;
+float2 zoom;
 
 sampler2D SpriteTextureSampler = sampler_state
 {
@@ -25,8 +24,8 @@ struct VertexShaderOutput
 
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
-	float2 position = float2(input.TextureCoordinates.x, input.TextureCoordinates.y + offset);
-	position.y %= 1;
+    float2 position = input.TextureCoordinates / zoom;
+    position += (zoom - 1) / (2 * zoom);
 	return tex2D(SpriteTextureSampler, position) * input.Color;
 }
 

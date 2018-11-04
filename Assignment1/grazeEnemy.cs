@@ -25,17 +25,18 @@ namespace Assignment1
 
         override public void Update () {
             // Check distance from Player
-            float dis = Vector2.Distance(objSprite.Position, PlayerObject.singleton.sprite.Position);
+            foreach (PlayerObject player in PlayerObject.players) {
+                float dis = Vector2.Distance(objSprite.Position, player.sprite.Position);
 
-            // If less than certain distance check if bounding box 
-            if(dis <= grazeDistance)
-            {
-                if ( Sprite.intersects(PlayerObject.singleton.sprite, objSprite) )
-                    // IF bounding box true then call player death method
-                    (PlayerObject.singleton.GetBehavior<PlayerBehavior>() as PlayerBehavior).onHit();
-                else
-                    // IF false increment graze
-                    grazeScore++; // This might have some other mod as well
+                // If less than certain distance check if bounding box 
+                if (dis <= grazeDistance) {
+                    if (Sprite.intersects(player.sprite, objSprite))
+                        // IF bounding box true then call player death method
+                        (player.GetBehavior<PlayerBehavior>() as PlayerBehavior).onHit();
+                    else
+                        // IF false increment graze
+                        grazeScore++; // This might have some other mod as well
+                }
             }
         }
     }
