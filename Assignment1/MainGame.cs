@@ -92,7 +92,7 @@ namespace Assignment1
 
             PlayerObject.CreatePlayer(new Vector2(300, 700), playerSpriteSheet, hitBoxSpriteSheet, bulletSprite2, mosueSprite);  // Oof
             
-            /*
+            
             GameObject2d spawner = GameObject2d.Initialize();
 
             spawner.sprite = new Sprite(bulletSprite);
@@ -113,7 +113,7 @@ namespace Assignment1
             b.bulletSprite = bulletSprite;
             b.scale = Vector2.One * 0.4f;
             spawner.addBehavior(b);
-            */
+            
 
             // Bar
             Vector2 barscale = Vector2.One * 0.29f;
@@ -134,11 +134,11 @@ namespace Assignment1
             bar.value = 100;
 
             // more boss stuff?
-            //BossController boss = new BossController();
-            //boss.healthbar = bar;
+            BossController boss = new BossController();
+            boss.healthbar = bar;
 
-            //spawner.addBehavior(boss);
-            //spawner.addBehavior(new enemyHealth());
+            spawner.addBehavior(boss);
+            spawner.addBehavior(new enemyHealth());
 
             //init
             foreach (GameObject2d gameObject in GameObject2d.activeGameObjects) gameObject.Start();

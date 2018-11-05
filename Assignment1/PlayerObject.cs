@@ -13,7 +13,7 @@ namespace Assignment1
 {
     public class PlayerObject : GameObject2d
     {
-        public static PlayerObject [] players = new PlayerObject[4];
+        public static List<PlayerObject> players = new List<PlayerObject>();
 
         public const int maxPlayers = 4;
 
@@ -54,7 +54,7 @@ namespace Assignment1
 
             p.addBehavior(b);
 
-            players[currentPlayers] = p;
+            players.Add( p );
 
         }
 
