@@ -83,7 +83,7 @@ namespace Assignment1
             MouseState state = Mouse.GetState();
             if(state.LeftButton == ButtonState.Pressed) {
                 // Get angle
-                Vector2 direction = new Vector2(state.Position.X - objSprite.Position.X, state.Position.Y - objSprite.Position.Y);
+                Vector2 direction = new Vector2(state.Position.X - objSprite.CameraSpacePosition.X, state.Position.Y - objSprite.CameraSpacePosition.Y);
                 direction.Normalize();
 
                 // Spawn a new bullet

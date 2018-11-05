@@ -43,16 +43,18 @@ using Microsoft.Xna.Framework.Graphics;
 namespace CPI311.GameEngine
 {
     public class Sprite {
+        public static Vector2 cameraPosition;
+        public bool enableCam = true;
         public Texture2D Texture { get; set; }
         public Vector2 Position { get; set; }
+        public Vector2 CameraSpacePosition { get => (enableCam) ? Position - cameraPosition : Position; }
         public Rectangle SourceRectangle { get; set; }
         public virtual float Height { get => SourceRectangle.Height; }
         public virtual float Width { get => SourceRectangle.Width; }
 
         //public Rectangle collisionRect { get => new Rectangle((int)(Position.X), (int)(Position.Y), (int)(Width * Scale.X), (int)(Height * Scale.Y)); }
         public Vector2 collisionBox;
-
-        public Rectangle? DestinationRectangle { get; set; }
+        
         public Vector2? Origin { get; set; }
         public float Rotation { get; set; }
         public Vector2 Scale { get; set; }
@@ -98,7 +100,9 @@ namespace CPI311.GameEngine
 
         public virtual void Draw(SpriteBatch s)
         {
-            if(visible) s.Draw(texture: Texture, position: Position, sourceRectangle: SourceRectangle, color: Color, rotation: Rotation, origin: Origin, scale: Scale, effects: Effects, layerDepth: LayerDepth);
+            if (visible) {
+                s.Draw(texture: Texture, position: Position - ((enableCam) ? cameraPosition : Vector2.Zero), sourceRectangle: SourceRectangle, color: Color, rotation: Rotation, origin: Origin, scale: Scale, effects: Effects, layerDepth: LayerDepth);
+            }
         }
     }
 }

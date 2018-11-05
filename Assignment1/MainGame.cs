@@ -87,9 +87,10 @@ namespace Assignment1
             hitBoxSpriteSheet = Content.Load<Texture2D>("hitbox");
             bulletSprite2 = Content.Load<Texture2D>("bullet_2");
             bulletSprite = Content.Load<Texture2D>("bullet_1");
+            Texture2D mosueSprite = Content.Load<Texture2D>("mouse");
 
 
-            PlayerObject.CreatePlayer(new Vector2(300, 700), playerSpriteSheet, hitBoxSpriteSheet, bulletSprite2);  // Oof
+            PlayerObject.CreatePlayer(new Vector2(300, 700), playerSpriteSheet, hitBoxSpriteSheet, bulletSprite2, mosueSprite);  // Oof
             
             /*
             GameObject2d spawner = GameObject2d.Initialize();
@@ -114,11 +115,6 @@ namespace Assignment1
             spawner.addBehavior(b);
             */
 
-            // MOUSE
-            GameObject2d mouse = GameObject2d.Initialize();
-            mouse.sprite = new Sprite(Content.Load<Texture2D>("mouse"));
-            mouse.addBehavior(new AnchorMouseBehavior());
-
             // Bar
             Vector2 barscale = Vector2.One * 0.29f;
             Vector2 barPos = new Vector2(300, 45); 
@@ -128,11 +124,13 @@ namespace Assignment1
             bar.sprite.Position = barPos;
             bar.sprite.Scale = barscale;
             bar.sprite.LayerDepth = 0.01f;
+            bar.sprite.enableCam = false;
 
             bar.innerSprite = new Sprite(Content.Load<Texture2D>("inner"));
             bar.innerSprite.Position = barPos;
             bar.innerSprite.Color = Color.DarkRed;
             bar.innerSprite.Scale = barscale;
+            bar.innerSprite.enableCam = false;
             bar.value = 100;
 
             // more boss stuff?
@@ -178,6 +176,7 @@ namespace Assignment1
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         /// 
         Vector2 loc = Vector2.Zero;
+        Vector2 drawLoc = Vector2.Zero;
         protected override void Draw(GameTime gameTime)
         {
             // Set the context to our render target
@@ -195,10 +194,21 @@ namespace Assignment1
             */
 
             // T I L E M A P   L O G I C
-            map.Draw(backgrounds, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), loc);
-
             loc = PlayerObject.players[0].sprite.Position;
+
             
+            Vector2 newPos = loc - new Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight) / 2;
+            if (!(newPos.X < 0 || newPos.X > 32 * 100 - graphics.PreferredBackBufferWidth*2)) {
+                Sprite.cameraPosition.X = newPos.X;
+                drawLoc.X = loc.X;
+            }
+
+            if( !(newPos.Y < 0 || newPos.Y > 32 * 100 - graphics.PreferredBackBufferHeight*2)) {
+                Sprite.cameraPosition.Y = newPos.Y;
+                drawLoc.Y = loc.Y;
+            }
+            map.Draw(backgrounds, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), drawLoc);
+
             backgrounds.End();
             
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
