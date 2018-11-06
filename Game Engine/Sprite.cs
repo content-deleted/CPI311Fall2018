@@ -104,5 +104,9 @@ namespace CPI311.GameEngine
                 s.Draw(texture: Texture, position: Position - ((enableCam) ? cameraPosition : Vector2.Zero), sourceRectangle: SourceRectangle, color: Color, rotation: Rotation, origin: Origin, scale: Scale, effects: Effects, layerDepth: LayerDepth);
             }
         }
+
+        public static bool onScreen() {
+            return true;
+        }
     }
 }

@@ -28,7 +28,7 @@ namespace Assignment1 {
         override public void Update() {
             objSprite.Position += direction * speed;
             if (facing) objSprite.Rotation = (float)Math.Atan2(direction.Y, direction.X);
-            if (objSprite.CameraSpacePosition.X < -100 || objSprite.CameraSpacePosition.X > 1000 || objSprite.CameraSpacePosition.Y < -100 || objSprite.CameraSpacePosition.Y > 1000) {
+            if (objSprite.CameraSpacePosition.X < -100 || objSprite.CameraSpacePosition.X > 1500 || objSprite.CameraSpacePosition.Y < -100 || objSprite.CameraSpacePosition.Y > 1500) {
                 (obj as GameObject2d).Destroy();
             }
 

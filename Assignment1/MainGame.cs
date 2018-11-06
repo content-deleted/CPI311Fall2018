@@ -49,8 +49,8 @@ namespace Assignment1
             InputManager.Initialize();
             Time.Initialize();
 
-            graphics.PreferredBackBufferWidth = 600;  
-            graphics.PreferredBackBufferHeight = 1000;   
+            graphics.PreferredBackBufferWidth = 1080;  
+            graphics.PreferredBackBufferHeight = 720;   
             graphics.ApplyChanges();
 
 
@@ -91,7 +91,7 @@ namespace Assignment1
 
 
             PlayerObject.CreatePlayer(new Vector2(300, 700), playerSpriteSheet, hitBoxSpriteSheet, bulletSprite2, mosueSprite);  // Oof
-            
+            PlayerObject.players.First().sprite.Position = new Vector2(1000, 1000);
             
             GameObject2d spawner = GameObject2d.Initialize();
 
@@ -162,7 +162,8 @@ namespace Assignment1
 
             GameObject2d.UpdateObjects();
 
-            map.Layers.First().Value.Opacity = (float)(Math.Cos(Math.PI * (gameTime.TotalGameTime.Milliseconds * 4) / 10000));
+            // Just to prove I can
+            //map.Layers.First().Value.Opacity = (float)(Math.Cos(Math.PI * (gameTime.TotalGameTime.Milliseconds * 4) / 10000));
 
             if (InputManager.IsKeyDown(Keys.Up)) { b.X += 0.01f; b.Y += 0.01f; }
             if (InputManager.IsKeyDown(Keys.Down) && b.Length() > 0) { b.X -= 0.01f; b.Y -= 0.01f; }
@@ -183,7 +184,7 @@ namespace Assignment1
             GraphicsDevice.SetRenderTarget(renderTarget);
             GraphicsDevice.Clear(Color.CornflowerBlue);
             
-            backgrounds.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+            backgrounds.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
             /*
             offset.Parameters["height"].SetValue(1000f);
             offset.Parameters["offset"].SetValue((float)Time.TotalGameTimeMilli/1000);
@@ -198,12 +199,13 @@ namespace Assignment1
 
             
             Vector2 newPos = loc - new Vector2(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight) / 2;
-            if (!(newPos.X < 0 || newPos.X > 32 * 100 - graphics.PreferredBackBufferWidth*2)) {
+
+            if (!(newPos.X < 0 || newPos.X > 32 * 100 - graphics.PreferredBackBufferWidth * 2)) {
                 Sprite.cameraPosition.X = newPos.X;
                 drawLoc.X = loc.X;
             }
 
-            if( !(newPos.Y < 0 || newPos.Y > 32 * 100 - graphics.PreferredBackBufferHeight*2)) {
+            if( !(newPos.Y < 0 || newPos.Y > 32 * 100 - graphics.PreferredBackBufferHeight * 2)) {
                 Sprite.cameraPosition.Y = newPos.Y;
                 drawLoc.Y = loc.Y;
             }

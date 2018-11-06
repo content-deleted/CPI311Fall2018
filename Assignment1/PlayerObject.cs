@@ -33,7 +33,7 @@ namespace Assignment1
             p.sprite.Position = position;
 
             // This seems about right
-            p.sprite.collisionBox = new Vector2(8, 8);
+            p.sprite.collisionBox = new Vector2(6, 6);
             activeGameObjects.Add(p);
 
             // Init Hitbox

@@ -45,35 +45,33 @@ namespace Assignment1
             // Check if shift and adjust speed
             if (InputManager.IsKeyDown(Keys.LeftShift)) {
                 speed = 2.5f;
-                (objSprite as AnimatedSprite).animationSpeed = 0.05F;
+                (objSprite as AnimatedSprite).animationSpeed = 0.15F;
             }
             else {
                 speed = 5;
                 (objSprite as AnimatedSprite).animationSpeed = 0.2F;
             }
 
-            if (InputManager.IsKeyDown(Keys.Left) || InputManager.IsKeyDown(Keys.A)) {
-                mov.X -= 1;
-                (objSprite as AnimatedSprite).swapAnimation(16, 8);
-                objSprite.Update();
+            if (InputManager.IsKeyDown(Keys.A))  mov.X -= 1;
+
+            if (InputManager.IsKeyDown(Keys.D)) mov.X += 1;
+
+            if (InputManager.IsKeyDown(Keys.W))  mov.Y -= 1;
+            
+            if (InputManager.IsKeyDown(Keys.S))  mov.Y += 1; 
+
+
+            if(mov.X != 0) {
+                if(mov.X < 0) (objSprite as AnimatedSprite).swapAnimation(16, 8);
+                else (objSprite as AnimatedSprite).swapAnimation(24, 8);
             }
-            if (InputManager.IsKeyDown(Keys.Right) || InputManager.IsKeyDown(Keys.D)) {
-                mov.X += 1;
-                (objSprite as AnimatedSprite).swapAnimation(24, 8);
-                objSprite.Update();
-            }
-            if (InputManager.IsKeyDown(Keys.Up) || InputManager.IsKeyDown(Keys.W)) {
-                mov.Y -= 1;
-                (objSprite as AnimatedSprite).swapAnimation(0, 8);
-                objSprite.Update();
-            }
-            if (InputManager.IsKeyDown(Keys.Down) || InputManager.IsKeyDown(Keys.S)) {
-                (objSprite as AnimatedSprite).swapAnimation(8, 8);
-                objSprite.Update();
-                mov.Y += 1;
+            else if (mov.Y != 0) {
+                if (mov.Y < 0) (objSprite as AnimatedSprite).swapAnimation(0, 8);
+                else (objSprite as AnimatedSprite).swapAnimation(8, 8);
             }
 
             if (mov != Vector2.Zero) {
+                objSprite.Update();
                 mov.Normalize();
                 objSprite.Position += mov * speed;
             }
