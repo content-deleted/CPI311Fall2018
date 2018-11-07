@@ -14,7 +14,7 @@ namespace Assignment1
         [STAThread]
         static void Main()
         {
-            using (var game = new MainGame())
+            using (var game = new Assignment1.Main())
                 game.Run();
         }
     }

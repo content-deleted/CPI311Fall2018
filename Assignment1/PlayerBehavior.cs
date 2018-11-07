@@ -44,11 +44,11 @@ namespace Assignment1
 
             // Check if shift and adjust speed
             if (InputManager.IsKeyDown(Keys.LeftShift)) {
-                speed = 2.5f;
+                speed = 4;
                 (objSprite as AnimatedSprite).animationSpeed = 0.15F;
             }
             else {
-                speed = 5;
+                speed = 6;
                 (objSprite as AnimatedSprite).animationSpeed = 0.2F;
             }
 

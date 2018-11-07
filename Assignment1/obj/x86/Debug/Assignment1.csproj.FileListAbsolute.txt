@@ -86,3 +86,5 @@ C:\dev\CPI311Fall2018\Assignment1\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
 C:\dev\CPI311Fall2018\Assignment1\obj\x86\Debug\Assignment1.csproj.CopyComplete
 C:\dev\CPI311Fall2018\Assignment1\bin\Windows\x86\Debug\Content\TILESET2.xnb
 C:\dev\CPI311Fall2018\Assignment1\bin\Windows\x86\Debug\Content\zoom.xnb
+C:\dev\CPI311Fall2018\Assignment1\bin\Windows\x86\Debug\Content\blank.xnb
+C:\dev\CPI311Fall2018\Assignment1\bin\Windows\x86\Debug\Content\menufont.xnb
