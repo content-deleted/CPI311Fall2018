@@ -60,7 +60,7 @@ namespace Assignment1
             {
                 float angle = ArcOffset + (bulletArc / bulletAmount) * i - bulletArc / 4 + currentOffset;
                 Vector2 direction = new Vector2( (float) Math.Cos(angle), (float) Math.Sin(angle));
-
+                
                 // Spawn a new bullet
                 BulletPoolObject b = BulletPoolObject.Initialize();
 
