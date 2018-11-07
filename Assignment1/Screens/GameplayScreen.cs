@@ -142,12 +142,10 @@ namespace Assignment1 {
 
             GameObject2d.UpdateObjects();
 
-            // Just to prove I can
-            //map.Layers.First().Value.Opacity = (float)(Math.Cos(Math.PI * (gameTime.TotalGameTime.Milliseconds * 4) / 10000));
-
+            // Testing screen stuff
             if (InputManager.IsKeyDown(Keys.Up)) { b.X += 0.01f; b.Y += 0.01f; }
             if (InputManager.IsKeyDown(Keys.Down) && b.Length() > 0) { b.X -= 0.01f; b.Y -= 0.01f; }
-            if (InputManager.IsKeyPressed(Keys.R)) 
+            if (InputManager.IsKeyPressed(Keys.F)) (ScreenManager.Game as Main).graphics.ToggleFullScreen();
         }
 
         Vector2 PlayerLoc = Vector2.Zero;
