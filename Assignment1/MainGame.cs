@@ -11,11 +11,17 @@ using System.Diagnostics;
 using System.IO;
 using Squared.Tiled;
 
+/*
+OLD SHIT
+*/
+
+
 namespace Assignment1
 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
+    [Obsolete("Not using ScreenManager", true)]
     public class MainGame : Game
     {
         GraphicsDeviceManager graphics;
@@ -90,7 +96,7 @@ namespace Assignment1
             Texture2D mosueSprite = Content.Load<Texture2D>("mouse");
 
 
-            PlayerObject.CreatePlayer(new Vector2(300, 700), playerSpriteSheet, hitBoxSpriteSheet, bulletSprite2, mosueSprite);  // Oof
+            PlayerObject.CreatePlayer();//new Vector2(300, 700), playerSpriteSheet, hitBoxSpriteSheet, bulletSprite2, mosueSprite);  // Oof
             PlayerObject.players.First().sprite.Position = new Vector2(1000, 1000);
             
             GameObject2d spawner = GameObject2d.Initialize();

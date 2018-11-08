@@ -22,10 +22,17 @@ namespace Assignment1
         public static void removePlayer(int playerNumber) {
             if(playerNumber<=currentPlayers && playerNumber >1) players[playerNumber]?.Destroy();
         }
-        
-        public static void CreatePlayer (Vector2 position, Texture2D animationSheet, Texture2D hitboxSpriteSheet, Texture2D bulletSprite, Texture2D mouseSprite)
+
+        #region tempSpriteData
+        public static Texture2D animationSheet;
+        public static Texture2D hitboxSpriteSheet;
+        public static Texture2D bulletSprite;
+
+        #endregion
+
+        public static PlayerObject CreatePlayer ( Vector2 position = new Vector2() )
         {
-            if (currentPlayers >= maxPlayers) return;
+            if (currentPlayers >= maxPlayers) return null;
             PlayerObject p = new PlayerObject();
             
             p.sprite = new AnimatedSprite(animationSheet, 8, 32, 32, true, 0);
@@ -41,11 +48,13 @@ namespace Assignment1
             h.sprite = new AnimatedSprite(hitboxSpriteSheet, 3, 8, 8, true, 0);
             h.addBehavior(new AnchorPosBehavior(p.sprite));
 
-            // Init Mouse
+            // Old Mouse
+            /*
             GameObject2d mouse = GameObject2d.Initialize();
             mouse.sprite = new Sprite(mouseSprite);
             mouse.addBehavior(new AnchorMouseBehavior());
             mouse.sprite.enableCam = false;
+            */
 
             // Init playerBehavior
             PlayerBehavior b = new PlayerBehavior();
@@ -56,6 +65,7 @@ namespace Assignment1
 
             players.Add( p );
 
+            return p;
         }
 
     }

@@ -74,7 +74,6 @@ namespace Assignment1 {
                     break;
 
                 case (3):
-                    MainGame.background = MainGame.doggo;
                     enemyHealth.enemies.Remove(health);
                     (obj as GameObject2d).Destroy();
                     break;

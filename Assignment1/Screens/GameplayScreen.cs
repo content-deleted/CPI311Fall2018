@@ -29,8 +29,6 @@ namespace Assignment1 {
         Texture2D bulletSprite;
         Texture2D bulletSprite2;
         Texture2D hitBoxSpriteSheet;
-        public static Texture2D background;
-        public static Texture2D doggo;
 
         SpriteFont font;
         Effect zoom;
@@ -43,7 +41,6 @@ namespace Assignment1 {
         public MainGameplayScreen() {
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
-
 
             InputManager.Initialize();
             Time.Initialize();
@@ -68,9 +65,6 @@ namespace Assignment1 {
             // Load extra
             font = content.Load<SpriteFont>("font");
             zoom = content.Load<Effect>("zoom");
-            background = content.Load<Texture2D>("space");//"p_u_r_p_b_o_y_s"); 
-            doggo = content.Load<Texture2D>("DOGGIE");//"p_u_r_p_b_o_y_s"); 
-
 
             // Load sprites n stuff
             playerSpriteSheet = content.Load<Texture2D>("explorer");
@@ -79,8 +73,12 @@ namespace Assignment1 {
             bulletSprite = content.Load<Texture2D>("bullet_1");
             Texture2D mosueSprite = content.Load<Texture2D>("mouse");
 
+            PlayerObject.animationSheet = playerSpriteSheet;
+            PlayerObject.hitboxSpriteSheet = hitBoxSpriteSheet;
+            PlayerObject.bulletSprite = bulletSprite2;
 
-            PlayerObject.CreatePlayer(new Vector2(300, 700), playerSpriteSheet, hitBoxSpriteSheet, bulletSprite2, mosueSprite);  // Oof
+            PlayerObject.CreatePlayer();  // Oof
+
             PlayerObject.players.First().sprite.Position = new Vector2(1000, 1000);
 
             GameObject2d spawner = GameObject2d.Initialize();
@@ -159,15 +157,7 @@ namespace Assignment1 {
             ScreenManager.GraphicsDevice.SetRenderTarget(renderTarget);
             ScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            backgrounds.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-            /*
-            offset.Parameters["height"].SetValue(1000f);
-            offset.Parameters["offset"].SetValue((float)Time.TotalGameTimeMilli/1000);
-            offset.CurrentTechnique.Passes[0].Apply();
-
-            /*
-            backgrounds.Draw(background, new Rectangle(0, 0, 600, 1000), Color.White); //new Rectangle(0, 0, playerSpriteSheet.Width, playerSpriteSheet.Height), Color.White,0 , new Vector2 (300,1000), effec)
-            */
+            backgrounds.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null);
 
             // T I L E M A P   L O G I C
             PlayerLoc = PlayerObject.players[0].sprite.Position;
@@ -184,6 +174,7 @@ namespace Assignment1 {
                 Sprite.cameraPosition.Y = newPos.Y;
                 drawLoc.Y = PlayerLoc.Y;
             }
+
             map.Draw(backgrounds, new Rectangle(0, 0, PreferredBackBufferWidth, PreferredBackBufferHeight), drawLoc);
 
             backgrounds.End();
