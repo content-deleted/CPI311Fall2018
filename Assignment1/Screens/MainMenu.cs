@@ -18,7 +18,7 @@ namespace Assignment1 {
         }
 
         void StartGameSelected(object sender, PlayerIndexEventArgs e) {
-            ScreenManager.AddScreen(new MainGameplayScreen(), e.PlayerIndex);
+            ScreenManager.AddScreen(new PlayerSelectScreen(), null);
             ScreenManager.RemoveScreen(this);
         }
     }

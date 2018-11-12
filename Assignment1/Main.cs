@@ -23,7 +23,7 @@ namespace Assignment1 {
 
             Components.Add(screenManager);
             
-            screenManager.AddScreen(new PlayerSelectScreen(), null);
+            screenManager.AddScreen(new MainMenu(), null);
         }
 
         protected override void Draw(GameTime gameTime) {

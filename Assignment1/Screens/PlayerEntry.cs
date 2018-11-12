@@ -12,7 +12,7 @@ namespace Assignment1 {
 
         Vector2 position;
 
-        public bool active = true;
+        public bool active = false;
 
         PlayerIndex controllingPlayer;
 
@@ -39,6 +39,18 @@ namespace Assignment1 {
             if (input.IsMenuDown(controllingPlayer)) {
 
             }
+            // Handle starting game
+            PlayerIndex p;
+
+            if (input.IsNewButtonPress(Microsoft.Xna.Framework.Input.Buttons.Start, controllingPlayer, out p)) {
+                active = true;
+            }
+
+            if (input.IsMenuCancel(controllingPlayer, out p)) {
+                active = false;
+            }
+
+
             /*
             float fadeSpeed = (float)gameTime.ElapsedGameTime.TotalSeconds * 4;
 

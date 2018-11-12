@@ -27,18 +27,22 @@ namespace Assignment1 {
         public override void HandleInput(InputState input) {
             PlayerIndex PlayerNum;
 
-            if (input.IsNewButtonPress(Microsoft.Xna.Framework.Input.Buttons.Start, null, out PlayerNum)) {
+            if (input.IsMenuSelect(null, out PlayerNum)) {
                 // Check if the index is in our list of joined players
                 if (!playerEntries.ContainsKey(PlayerNum)) playerEntries.Add(PlayerNum, new PlayerEntry(PlayerNum));
             }
 
-            if(input.IsNewButtonPress(Microsoft.Xna.Framework.Input.Buttons.B, null, out PlayerNum)) {
-                if (playerEntries.ContainsKey(PlayerNum)) playerEntries.Remove(PlayerNum); //playerEntries[PlayerNum].active = false;
+            if(input.IsMenuCancel(null, out PlayerNum)) {
+                if (playerEntries.ContainsKey(PlayerNum) && !playerEntries[PlayerNum].active) playerEntries.Remove(PlayerNum); //playerEntries[PlayerNum].active = false;
             }
 
             foreach (PlayerEntry player in PlayerEntries) 
                 player.Update(this, input);
-            
+
+            if (playerEntries.Any() && playerEntries.All(p => p.Value.active)) {
+                ScreenManager.AddScreen(new MainGameplayScreen(), null);
+                ScreenManager.RemoveScreen(this);
+            }
         }
         
         protected virtual void UpdateMenuEntryLocations() {
