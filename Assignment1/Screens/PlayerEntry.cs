@@ -17,6 +17,7 @@ namespace Assignment1 {
         public JobInfo.jobType job = JobInfo.jobType.Knight;
 
         public PlayerIndex controllingPlayer;
+        public int PlayerNumber;
 
         public Vector2 Position {
             get { return position; }
@@ -24,33 +25,41 @@ namespace Assignment1 {
         }
         public event EventHandler<PlayerIndexEventArgs> Selected;
 
-        public PlayerEntry(PlayerIndex playerIndex) {
-            controllingPlayer = playerIndex;
+        public PlayerEntry(PlayerIndex controllingPlayer, int playerNumber) {
+            this.controllingPlayer = controllingPlayer;
+            PlayerNumber = playerNumber;
             position.X = 0;
         }
 
         public virtual void Update(PlayerSelectScreen screen, InputState input) {
+            // Dumb Handling for keyboard I'm dumb
+            PlayerIndex? queryPlayer = null;
+            if (controllingPlayer != (PlayerIndex)5) queryPlayer = controllingPlayer;
+
 
             // This is where the logic for player selecting class should go
-
-            if (input.IsMenuUp(controllingPlayer)) {
+            if (input.IsMenuUp(queryPlayer)) {
                 job = ((int)job + 1 < JobInfo.JobCount) ? job + 1 : 0;
             }
 
-            if (input.IsMenuDown(controllingPlayer)) {
+            if (input.IsMenuDown(queryPlayer)) {
                 job = (JobInfo.jobType)(  (job > 0) ? (int)job - 1 : JobInfo.JobCount-1);
             }
 
             PlayerIndex p;
 
-            if (input.IsNewButtonPress(Microsoft.Xna.Framework.Input.Buttons.Start, controllingPlayer, out p)) {
-                active = true;
+            if (queryPlayer == null) {
+                if (input.IsNewKeyPress(Microsoft.Xna.Framework.Input.Keys.Space, null, out p))
+                    active = true;
             }
+            else
+                if (input.IsNewButtonPress(Microsoft.Xna.Framework.Input.Buttons.Start, queryPlayer, out p)) {
+                    active = true;
+                }
 
-            if (input.IsMenuCancel(controllingPlayer, out p)) {
+            if (input.IsMenuCancel(queryPlayer, out p)) {
                 active = false;
             }
-
 
             /*
             float fadeSpeed = (float)gameTime.ElapsedGameTime.TotalSeconds * 4;
@@ -70,7 +79,7 @@ namespace Assignment1 {
 
             Vector2 origin = new Vector2(0, font.LineSpacing / 2);
 
-            spriteBatch.DrawString(font, "Player " + controllingPlayer, position, Color.White, 0,
+            spriteBatch.DrawString(font, "Player " + PlayerNumber, position, Color.White, 0,
                                     origin, 1f, SpriteEffects.None, 0);
             
             spriteBatch.Draw(JobInfo.portraitBG, new Rectangle(position.ToPoint() - new Point(68, 34), new Point(68, 68)), Color.White);
@@ -83,7 +92,7 @@ namespace Assignment1 {
         /// Queries how much space this menu entry requires.
         /// </summary>
         public virtual int GetHeight(PlayerSelectScreen screen) {
-            return screen.ScreenManager.Font.LineSpacing;
+            return screen.ScreenManager.Font.LineSpacing + 68;
         }
 
 
@@ -91,7 +100,7 @@ namespace Assignment1 {
         /// Queries how wide the entry is, used for centering on the screen.
         /// </summary>
         public virtual int GetWidth(PlayerSelectScreen screen) {
-            return (int)screen.ScreenManager.Font.MeasureString("Player " + controllingPlayer).X - 68 * 2;
+            return (int)screen.ScreenManager.Font.MeasureString("Player " + PlayerNumber).X - 68 * 2;
         }
 
     }

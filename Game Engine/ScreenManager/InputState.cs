@@ -22,16 +22,20 @@ namespace GameStateManagement
     /// query methods for high level input actions such as "move up through the menu"
     /// or "pause the game".
     /// </summary>
+    
+    /// Modifications by Jacob Hann
+    /// Changed KeyboardState to read only one player as index 5 
+    
     public class InputState
     {
         #region Fields
 
         public const int MaxInputs = 4;
 
-        public readonly KeyboardState[] CurrentKeyboardStates;
+        public KeyboardState CurrentKeyboardState { get; private set; }
         public readonly GamePadState[] CurrentGamePadStates;
 
-        public readonly KeyboardState[] LastKeyboardStates;
+        public KeyboardState LastKeyboardState { get; private set; }
         public readonly GamePadState[] LastGamePadStates;
 
         public readonly bool[] GamePadWasConnected;
@@ -50,10 +54,10 @@ namespace GameStateManagement
         /// </summary>
         public InputState()
         {
-            CurrentKeyboardStates = new KeyboardState[MaxInputs];
+            CurrentKeyboardState = new KeyboardState();
             CurrentGamePadStates = new GamePadState[MaxInputs];
 
-            LastKeyboardStates = new KeyboardState[MaxInputs];
+            LastKeyboardState = new KeyboardState();
             LastGamePadStates = new GamePadState[MaxInputs];
 
             GamePadWasConnected = new bool[MaxInputs];
@@ -70,12 +74,11 @@ namespace GameStateManagement
         /// </summary>
         public void Update()
         {
+            LastKeyboardState = CurrentKeyboardState;
+            CurrentKeyboardState = Keyboard.GetState();
             for (int i = 0; i < MaxInputs; i++)
             {
-                LastKeyboardStates[i] = CurrentKeyboardStates[i];
                 LastGamePadStates[i] = CurrentGamePadStates[i];
-
-                CurrentKeyboardStates[i] = Keyboard.GetState((PlayerIndex)i);
                 CurrentGamePadStates[i] = GamePad.GetState((PlayerIndex)i);
 
                 // Keep track of whether a gamepad has ever been
@@ -102,27 +105,11 @@ namespace GameStateManagement
         /// If this is null, it will accept input from any player. When a keypress
         /// is detected, the output playerIndex reports which player pressed it.
         /// </summary>
-        public bool IsNewKeyPress(Keys key, PlayerIndex? controllingPlayer,
-                                            out PlayerIndex playerIndex)
+        public bool IsNewKeyPress(Keys key, PlayerIndex? controllingPlayer, out PlayerIndex playerIndex)
         {
-            if (controllingPlayer.HasValue)
-            {
-                // Read input from the specified player.
-                playerIndex = controllingPlayer.Value;
+            playerIndex = (PlayerIndex)5;
 
-                int i = (int)playerIndex;
-
-                return (CurrentKeyboardStates[i].IsKeyDown(key) &&
-                        LastKeyboardStates[i].IsKeyUp(key));
-            }
-            else
-            {
-                // Accept input from any player.
-                return (IsNewKeyPress(key, PlayerIndex.One, out playerIndex) ||
-                        IsNewKeyPress(key, PlayerIndex.Two, out playerIndex) ||
-                        IsNewKeyPress(key, PlayerIndex.Three, out playerIndex) ||
-                        IsNewKeyPress(key, PlayerIndex.Four, out playerIndex));
-            }
+            return (CurrentKeyboardState.IsKeyDown(key) && LastKeyboardState.IsKeyUp(key));
         }
 
 
@@ -165,6 +152,7 @@ namespace GameStateManagement
         public bool IsMenuSelect(PlayerIndex? controllingPlayer,
                                  out PlayerIndex playerIndex)
         {
+            
             return IsNewKeyPress(Keys.Space, controllingPlayer, out playerIndex) ||
                    IsNewKeyPress(Keys.Enter, controllingPlayer, out playerIndex) ||
                    IsNewButtonPress(Buttons.A, controllingPlayer, out playerIndex) ||

@@ -19,7 +19,7 @@ namespace Assignment1
 
         public const int maxPlayers = 4;
 
-        public static int currentPlayers=0;
+        public static int currentPlayers { get => players.Count(); }
 
         public static void removePlayer(int playerNumber) {
             if (playerNumber <= currentPlayers && playerNumber > 1) {
@@ -38,6 +38,8 @@ namespace Assignment1
             if (currentPlayers >= maxPlayers) return null;
             PlayerObject p = new PlayerObject();
 
+            // This isn't the best way to store it but whatev
+            if ((int)control == 5) p.keyboard = true;
             p.controllingPlayer = control;
             p.playerJob = job;
             

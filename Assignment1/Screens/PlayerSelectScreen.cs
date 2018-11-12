@@ -41,7 +41,7 @@ namespace Assignment1 {
 
             if (input.IsMenuSelect(null, out PlayerNum)) {
                 // Check if the index is in our list of joined players
-                if (!playerEntries.ContainsKey(PlayerNum)) playerEntries.Add(PlayerNum, new PlayerEntry(PlayerNum));
+                if (!playerEntries.ContainsKey(PlayerNum)) playerEntries.Add(PlayerNum, new PlayerEntry(PlayerNum, playerEntries.Count() + 1));
             }
 
             if(input.IsMenuCancel(null, out PlayerNum)) {
@@ -61,8 +61,8 @@ namespace Assignment1 {
         private void SetupPlayers () {
             foreach (PlayerEntry p in PlayerEntries) {
                 PlayerObject.CreatePlayer(JobInfo.Jobs[(int)p.job], p.controllingPlayer);
-                PlayerObject.players.First().sprite.Position = new Vector2(1000, 1000);
             }
+            PlayerObject.players.Select(p => p.sprite.Position = new Vector2(1000, 1000));
         }
         
         protected virtual void UpdateMenuEntryLocations() {
