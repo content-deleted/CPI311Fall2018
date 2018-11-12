@@ -22,10 +22,14 @@ namespace Assignment1
 
         public GameObject2d hitbox;
 
+        public PlayerObject player { get => obj as PlayerObject;  }
+
         public override void Start ()
         {
             
         }
+
+        private Vector2 lastFireDir = new Vector2(0, 1);
 
         public override void Update ()
         {
@@ -33,36 +37,70 @@ namespace Assignment1
 
             checkPlayerMovement();
 
-            checkPlayerFire();
+            if (player.keyboard) {
+                MouseState state = Mouse.GetState();
+                if (state.LeftButton == ButtonState.Pressed) {
+                    Vector2 direction = new Vector2(state.Position.X - objSprite.CameraSpacePosition.X, state.Position.Y - objSprite.CameraSpacePosition.Y);
+                    PlayerFire(direction);
+                }
+            }
+            else {
+                GamePadState state = GamePad.GetState(player.controllingPlayer);
+                if (state.IsButtonDown(Buttons.LeftShoulder)) {
+                    Vector2 direction = new Vector2(state.ThumbSticks.Right.X, -state.ThumbSticks.Right.Y);
+                    PlayerFire( (direction == Vector2.Zero) ? lastFireDir : direction);
+                    if (direction != Vector2.Zero) lastFireDir = direction;
+                }
+            }
 
             hitbox.sprite.Update();
         }
 
-        public void checkPlayerMovement () {
+        const int walk = 2, run = 6;
+
+        public void checkPlayerMovement() {
             // Movement Controls
             Vector2 mov = Vector2.Zero;
 
-            // Check if shift and adjust speed
-            if (InputManager.IsKeyDown(Keys.LeftShift)) {
-                speed = 4;
-                (objSprite as AnimatedSprite).animationSpeed = 0.15F;
+            // G A M E P A D
+            if (!player.keyboard) {
+                GamePadState state = GamePad.GetState(player.controllingPlayer);
+                // Check if running
+                if (state.IsButtonDown(Buttons.RightShoulder)) {
+                    speed = walk;
+                    (objSprite as AnimatedSprite).animationSpeed = 0.15F;
+                }
+                else {
+                    speed = run;
+                    (objSprite as AnimatedSprite).animationSpeed = 0.2F;
+                }
+
+                mov = state.ThumbSticks.Left;
+                // invert y;
+                mov.Y = -mov.Y;
             }
             else {
-                speed = 6;
-                (objSprite as AnimatedSprite).animationSpeed = 0.2F;
+                // Check if shift and adjust speed
+                if (InputManager.IsKeyDown(Keys.LeftShift)) {
+                    speed = walk;
+                    (objSprite as AnimatedSprite).animationSpeed = 0.15F;
+                }
+                else {
+                    speed = run;
+                    (objSprite as AnimatedSprite).animationSpeed = 0.2F;
+                }
+
+                if (InputManager.IsKeyDown(Keys.A)) mov.X -= 1;
+
+                if (InputManager.IsKeyDown(Keys.D)) mov.X += 1;
+
+                if (InputManager.IsKeyDown(Keys.W)) mov.Y -= 1;
+
+                if (InputManager.IsKeyDown(Keys.S)) mov.Y += 1;
             }
 
-            if (InputManager.IsKeyDown(Keys.A))  mov.X -= 1;
-
-            if (InputManager.IsKeyDown(Keys.D)) mov.X += 1;
-
-            if (InputManager.IsKeyDown(Keys.W))  mov.Y -= 1;
-            
-            if (InputManager.IsKeyDown(Keys.S))  mov.Y += 1; 
-
-
-            if(mov.X != 0) {
-                if(mov.X < 0) (objSprite as AnimatedSprite).swapAnimation(16, 8);
+            if (mov.X != 0) {
+                if (mov.X < 0) (objSprite as AnimatedSprite).swapAnimation(16, 8);
                 else (objSprite as AnimatedSprite).swapAnimation(24, 8);
             }
             else if (mov.Y != 0) {
@@ -77,24 +115,20 @@ namespace Assignment1
             }
         }
 
-        public void checkPlayerFire () {
-            MouseState state = Mouse.GetState();
-            if(state.LeftButton == ButtonState.Pressed) {
-                // Get angle
-                Vector2 direction = new Vector2(state.Position.X - objSprite.CameraSpacePosition.X, state.Position.Y - objSprite.CameraSpacePosition.Y);
-                direction.Normalize();
+        public void PlayerFire(Vector2 direction) {
+            direction.Normalize();
 
-                // Spawn a new bullet
-                GameObject2d b = GameObject2d.Initialize();
+            // Spawn a new bullet
+            GameObject2d b = GameObject2d.Initialize();
                
-                PlayerBullet behav = new PlayerBullet();
-                b.addBehavior(behav);
-                behav.facing = true;
-                behav.Init(playerBullet, 20, direction, Vector2.One);
+            PlayerBullet behav = new PlayerBullet();
+            b.addBehavior(behav);
+            behav.facing = true;
+            behav.Init(playerBullet, 20, direction, Vector2.One);
 
-                // Set its position to this game objects ( or some offset )
-                b.sprite.Position = objSprite.Position + direction * 25;
-            }
+            // Set its position to this game objects ( or some offset )
+            b.sprite.Position = objSprite.Position + direction * 25;
+            
         }
 
         public void onHit()

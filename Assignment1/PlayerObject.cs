@@ -13,6 +13,8 @@ namespace Assignment1
 {
     public class PlayerObject : GameObject2d
     {
+
+        #region static properties
         public static List<PlayerObject> players = new List<PlayerObject>();
 
         public const int maxPlayers = 4;
@@ -25,9 +27,11 @@ namespace Assignment1
                 players.RemoveAt(playerNumber);
             }
         }
+        #endregion
 
         public Job playerJob;
         public PlayerIndex controllingPlayer;
+        public bool keyboard = false;
 
         public static PlayerObject CreatePlayer (Job job, PlayerIndex control, Vector2 position = new Vector2() )
         {
