@@ -96,7 +96,7 @@ namespace Assignment1
             Texture2D mosueSprite = Content.Load<Texture2D>("mouse");
 
 
-            PlayerObject.CreatePlayer();//new Vector2(300, 700), playerSpriteSheet, hitBoxSpriteSheet, bulletSprite2, mosueSprite);  // Oof
+            PlayerObject.CreatePlayer(JobInfo.Jobs[0], 0);//new Vector2(300, 700), playerSpriteSheet, hitBoxSpriteSheet, bulletSprite2, mosueSprite);  // Oof
             PlayerObject.players.First().sprite.Position = new Vector2(1000, 1000);
             
             GameObject2d spawner = GameObject2d.Initialize();

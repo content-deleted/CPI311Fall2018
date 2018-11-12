@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 using GameStateManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 
 namespace Assignment1 {
     public class PlayerSelectScreen : GameScreen {
+
+        public static ContentManager content;
 
         Dictionary<PlayerIndex, PlayerEntry> playerEntries = new Dictionary<PlayerIndex, PlayerEntry>();
         string menuTitle = "Players";
@@ -16,12 +19,21 @@ namespace Assignment1 {
 
 
         protected IList<PlayerEntry> PlayerEntries {
-            get => playerEntries.Select(x => x.Value).ToList(); 
+            get => playerEntries.Select(x => x.Value).ToList();
         }
- 
+
         public PlayerSelectScreen() {
             TransitionOnTime = TimeSpan.FromSeconds(0.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
+        }
+        
+        
+        public override void LoadContent() {
+            if (content == null) {
+                content = new ContentManager(ScreenManager.Game.Services, "Content");
+                // Call this once the first time we move to select screen
+                JobInfo.LoadContent(content);
+            }
         }
 
         public override void HandleInput(InputState input) {
@@ -39,9 +51,17 @@ namespace Assignment1 {
             foreach (PlayerEntry player in PlayerEntries) 
                 player.Update(this, input);
 
-            if (playerEntries.Any() && playerEntries.All(p => p.Value.active)) {
+            if (PlayerEntries.Any() && PlayerEntries.All(p => p.active)) {
+                SetupPlayers();
                 ScreenManager.AddScreen(new MainGameplayScreen(), null);
                 ScreenManager.RemoveScreen(this);
+            }
+        }
+
+        private void SetupPlayers () {
+            foreach (PlayerEntry p in PlayerEntries) {
+                PlayerObject.CreatePlayer(JobInfo.Jobs[(int)p.job], p.controllingPlayer);
+                PlayerObject.players.First().sprite.Position = new Vector2(1000, 1000);
             }
         }
         

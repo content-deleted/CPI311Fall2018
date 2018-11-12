@@ -24,12 +24,6 @@ namespace Assignment1 {
 
         SpriteBatch backgrounds;
 
-        // Should think of a better way to store content
-        Texture2D playerSpriteSheet;
-        Texture2D bulletSprite;
-        Texture2D bulletSprite2;
-        Texture2D hitBoxSpriteSheet;
-
         SpriteFont font;
         Effect zoom;
 
@@ -47,6 +41,7 @@ namespace Assignment1 {
         }
 
         public override void LoadContent() {
+
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
@@ -65,23 +60,15 @@ namespace Assignment1 {
             // Load extra
             font = content.Load<SpriteFont>("font");
             zoom = content.Load<Effect>("zoom");
-
-            // Load sprites n stuff
-            playerSpriteSheet = content.Load<Texture2D>("explorer");
-            hitBoxSpriteSheet = content.Load<Texture2D>("hitbox");
-            bulletSprite2 = content.Load<Texture2D>("bullet_2");
-            bulletSprite = content.Load<Texture2D>("bullet_1");
+            
+            // THIS SHOULD BE MOVED
             Texture2D mosueSprite = content.Load<Texture2D>("mouse");
-
-            PlayerObject.animationSheet = playerSpriteSheet;
-            PlayerObject.hitboxSpriteSheet = hitBoxSpriteSheet;
-            PlayerObject.bulletSprite = bulletSprite2;
-
-            PlayerObject.CreatePlayer();  // Oof
-
-            PlayerObject.players.First().sprite.Position = new Vector2(1000, 1000);
+            
 
             GameObject2d spawner = GameObject2d.Initialize();
+
+            //TEMP
+            Texture2D bulletSprite = content.Load<Texture2D>("bullet_1");
 
             spawner.sprite = new Sprite(bulletSprite);
             spawner.sprite.Scale *= 2;

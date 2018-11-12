@@ -14,15 +14,16 @@ namespace Assignment1 {
 
         public bool active = false;
 
-        PlayerIndex controllingPlayer;
+        public JobInfo.jobType job = JobInfo.jobType.Knight;
+
+        public PlayerIndex controllingPlayer;
 
         public Vector2 Position {
             get { return position; }
             set { position = value; }
         }
         public event EventHandler<PlayerIndexEventArgs> Selected;
-        
-        
+
         public PlayerEntry(PlayerIndex playerIndex) {
             controllingPlayer = playerIndex;
             position.X = 0;
@@ -33,13 +34,13 @@ namespace Assignment1 {
             // This is where the logic for player selecting class should go
 
             if (input.IsMenuUp(controllingPlayer)) {
-
+                job = ((int)job + 1 < JobInfo.JobCount) ? job + 1 : 0;
             }
 
             if (input.IsMenuDown(controllingPlayer)) {
-
+                job = (JobInfo.jobType)(  (job > 0) ? (int)job - 1 : JobInfo.JobCount-1);
             }
-            // Handle starting game
+
             PlayerIndex p;
 
             if (input.IsNewButtonPress(Microsoft.Xna.Framework.Input.Buttons.Start, controllingPlayer, out p)) {
@@ -60,8 +61,7 @@ namespace Assignment1 {
                 selectionFade = Math.Max(selectionFade - fadeSpeed, 0);
            */
         }
-
-
+        
         public virtual void Draw(PlayerSelectScreen screen, GameTime gameTime) {
             // Draw text, centered on the middle of each line.
             ScreenManager screenManager = screen.ScreenManager;
@@ -72,6 +72,10 @@ namespace Assignment1 {
 
             spriteBatch.DrawString(font, "Player " + controllingPlayer, position, Color.White, 0,
                                     origin, 1f, SpriteEffects.None, 0);
+            
+            spriteBatch.Draw(JobInfo.portraitBG, new Rectangle(position.ToPoint() - new Point(68, 34), new Point(68, 68)), Color.White);
+            spriteBatch.Draw(JobInfo.Jobs[(int)job].portrait, new Rectangle(position.ToPoint() + new Point(2, 2) - new Point(68, 34), new Point(64, 64)), Color.White);
+            
         }
 
 
@@ -87,7 +91,7 @@ namespace Assignment1 {
         /// Queries how wide the entry is, used for centering on the screen.
         /// </summary>
         public virtual int GetWidth(PlayerSelectScreen screen) {
-            return (int)screen.ScreenManager.Font.MeasureString("Player " + controllingPlayer).X;
+            return (int)screen.ScreenManager.Font.MeasureString("Player " + controllingPlayer).X - 68 * 2;
         }
 
     }

@@ -20,22 +20,24 @@ namespace Assignment1
         public static int currentPlayers=0;
 
         public static void removePlayer(int playerNumber) {
-            if(playerNumber<=currentPlayers && playerNumber >1) players[playerNumber]?.Destroy();
+            if (playerNumber <= currentPlayers && playerNumber > 1) {
+                players[playerNumber]?.Destroy();
+                players.RemoveAt(playerNumber);
+            }
         }
 
-        #region tempSpriteData
-        public static Texture2D animationSheet;
-        public static Texture2D hitboxSpriteSheet;
-        public static Texture2D bulletSprite;
+        public Job playerJob;
+        public PlayerIndex controllingPlayer;
 
-        #endregion
-
-        public static PlayerObject CreatePlayer ( Vector2 position = new Vector2() )
+        public static PlayerObject CreatePlayer (Job job, PlayerIndex control, Vector2 position = new Vector2() )
         {
             if (currentPlayers >= maxPlayers) return null;
             PlayerObject p = new PlayerObject();
+
+            p.controllingPlayer = control;
+            p.playerJob = job;
             
-            p.sprite = new AnimatedSprite(animationSheet, 8, 32, 32, true, 0);
+            p.sprite = new AnimatedSprite(p.playerJob.animationSheet, 8, 32, 32, true, 0);
             p.sprite.enableCam = true;
             p.sprite.Position = position;
 
@@ -45,7 +47,7 @@ namespace Assignment1
 
             // Init Hitbox
             GameObject2d h = GameObject2d.Initialize();
-            h.sprite = new AnimatedSprite(hitboxSpriteSheet, 3, 8, 8, true, 0);
+            h.sprite = new AnimatedSprite(p.playerJob.hitboxSpriteSheet, 3, 8, 8, true, 0);
             h.addBehavior(new AnchorPosBehavior(p.sprite));
 
             // Old Mouse
@@ -59,7 +61,7 @@ namespace Assignment1
             // Init playerBehavior
             PlayerBehavior b = new PlayerBehavior();
             b.hitbox = h;
-            b.playerBullet = bulletSprite;
+            b.playerBullet = p.playerJob.bulletSprite;
 
             p.addBehavior(b);
 

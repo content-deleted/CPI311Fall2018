@@ -4,9 +4,7 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/dev/CPI311Fall2018/Assignment1/Content/explorer.png</File>
     <File>C:/dev/CPI311Fall2018/Assignment1/Content/bullet_1.png</File>
-    <File>C:/dev/CPI311Fall2018/Assignment1/Content/bullet_2.png</File>
     <File>C:/dev/CPI311Fall2018/Assignment1/Content/hitbox.png</File>
     <File>C:/dev/CPI311Fall2018/Assignment1/Content/mouse.png</File>
     <File>C:/dev/CPI311Fall2018/Assignment1/Content/bar.png</File>
@@ -21,5 +19,9 @@
     <File>C:/dev/CPI311Fall2018/Assignment1/Content/zoom.fx</File>
     <File>C:/dev/CPI311Fall2018/Assignment1/Content/menufont.spritefont</File>
     <File>C:/dev/CPI311Fall2018/Assignment1/Content/blank.png</File>
+    <File>C:/dev/CPI311Fall2018/Assignment1/Content/PladBG.png</File>
+    <File>C:/dev/CPI311Fall2018/Assignment1/Content/KnightPortrait.png</File>
+    <File>C:/dev/CPI311Fall2018/Assignment1/Content/KnightSpriteSheet.png</File>
+    <File>C:/dev/CPI311Fall2018/Assignment1/Content/KnightBullet.png</File>
   </SourceFiles>
 </SourceFileCollection>

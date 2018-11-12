@@ -11,7 +11,7 @@ namespace Assignment1 {
     class MainMenu : MenuScreen {
         public MainMenu() : base("Main Menu") {
             MenuEntry startGame = new MenuEntry("Start");
-
+            
             startGame.Selected += StartGameSelected;
 
             MenuEntries.Add(startGame);
