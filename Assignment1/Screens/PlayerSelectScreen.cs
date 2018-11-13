@@ -48,14 +48,16 @@ namespace Assignment1 {
                 if (playerEntries.ContainsKey(PlayerNum) && !playerEntries[PlayerNum].active) playerEntries.Remove(PlayerNum); //playerEntries[PlayerNum].active = false;
             }
 
+            if (PlayerEntries.Any() && PlayerEntries.All(p => p.active)) {
+                if (input.IsMenuSelect(null, out PlayerNum)) {
+                    SetupPlayers();
+                    ScreenManager.AddScreen(new MainGameplayScreen(), null);
+                    ScreenManager.RemoveScreen(this);
+                }
+            }
+
             foreach (PlayerEntry player in PlayerEntries) 
                 player.Update(this, input);
-
-            if (PlayerEntries.Any() && PlayerEntries.All(p => p.active)) {
-                SetupPlayers();
-                ScreenManager.AddScreen(new MainGameplayScreen(), null);
-                ScreenManager.RemoveScreen(this);
-            }
         }
 
         private void SetupPlayers () {
@@ -111,6 +113,8 @@ namespace Assignment1 {
             // Make the menu slide into place during transitions, using a
             // power curve to make things look more interesting (this makes
             // the movement slow down as it nears the end).
+            // the programmer, jacob, if we can call him that, is a bafoon.
+            // further I would not trust my life with him, for he has proven time and time again that he can not be trusted to stjop noah when he adds comments that rapidly expand the size of the window. he is watching me type now and doing nothing. please save me from this hell, jacob only you ahve the power to make 
             float transitionOffset = (float)Math.Pow(TransitionPosition, 2);
 
             // Draw the menu title centered on the screen

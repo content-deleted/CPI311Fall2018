@@ -23,5 +23,9 @@
     <File>C:/dev/CPI311Fall2018/Assignment1/Content/KnightPortrait.png</File>
     <File>C:/dev/CPI311Fall2018/Assignment1/Content/KnightSpriteSheet.png</File>
     <File>C:/dev/CPI311Fall2018/Assignment1/Content/KnightBullet.png</File>
+    <File>C:/dev/CPI311Fall2018/Assignment1/Content/ready.png</File>
+    <File>C:/dev/CPI311Fall2018/Assignment1/Content/MagicianBullet.png</File>
+    <File>C:/dev/CPI311Fall2018/Assignment1/Content/MagicianPortrait.png</File>
+    <File>C:/dev/CPI311Fall2018/Assignment1/Content/MagicianSpriteSheet.png</File>
   </SourceFiles>
 </SourceFileCollection>

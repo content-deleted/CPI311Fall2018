@@ -60,6 +60,9 @@ namespace Lab10 {
 
             terrain.NormalMap = Content.Load<Texture2D>("Normalmap");
 
+
+            float height = terrain.GetHeight(new Vector2(0.5f, 0.5f));
+
             terrain.ourObject = TerrainObject;
 
             TerrainObject.material = terrain;
@@ -105,7 +108,7 @@ namespace Lab10 {
 
             camera.Transform.LocalPosition = new Vector3(camera.Transform.LocalPosition.X,
                                                              terrain.GetAltitude(camera.Transform.LocalPosition),
-                                                                camera.Transform.LocalPosition.Z) + Vector3.Up;
+                                                                camera.Transform.LocalPosition.Z) + Vector3.Up*2;
 
             GameObject3d.UpdateObjects();
             base.Update(gameTime);
@@ -119,6 +122,8 @@ namespace Lab10 {
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            GraphicsDevice.DepthStencilState = new DepthStencilState();
 
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects.ToList())
                 gameObject.Render(Tuple.Create(camera, GraphicsDevice));

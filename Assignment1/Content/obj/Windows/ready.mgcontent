@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/dev/CPI311Fall2018/Assignment1/Content/KnightBullet.png</SourceFile>
-  <SourceTime>2018-09-24T19:49:07.5123335-07:00</SourceTime>
-  <DestFile>C:/dev/CPI311Fall2018/Assignment1/Content/bin/Windows/KnightBullet.xnb</DestFile>
-  <DestTime>2018-11-13T14:56:31.71968-07:00</DestTime>
+  <SourceFile>C:/dev/CPI311Fall2018/Assignment1/Content/ready.png</SourceFile>
+  <SourceTime>2018-11-13T15:18:38.7317638-07:00</SourceTime>
+  <DestFile>C:/dev/CPI311Fall2018/Assignment1/Content/bin/Windows/ready.xnb</DestFile>
+  <DestTime>2018-11-13T15:18:54.8254587-07:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T08:05:36-07:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

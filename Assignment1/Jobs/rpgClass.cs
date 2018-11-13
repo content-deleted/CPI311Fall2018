@@ -27,11 +27,11 @@ namespace Assignment1 {
      */
 
     public static class JobInfo {
-        public static int JobCount = 1;
+        public static int JobCount = 2;
 
         public enum jobType {
             Knight,
-            //Magician,
+            Magician,
             //Thief,
             //Untitled
         }
@@ -40,12 +40,13 @@ namespace Assignment1 {
         public static Job [] Jobs = new Job[]
         {
             new Job{ name = "Knight", description = "Defense"},
-            //new charecterMenuData{ name = "Magician", description = "Range"},
+            new Job{ name = "Magician", description = "Range"},
             //new charecterMenuData{ name = "Thief", description = "Offense"},
             //new charecterMenuData{ name = "Untitled", description = "Placeholder"} 
         };
 
         public static Texture2D portraitBG;
+        public static Texture2D ready;
 
         public static void LoadContent(ContentManager content) {
             foreach(Job j in Jobs) {
@@ -56,6 +57,7 @@ namespace Assignment1 {
             }
             
             portraitBG = content.Load<Texture2D>("PladBG");
+            ready = content.Load<Texture2D>("ready");
         }
         #endregion
 

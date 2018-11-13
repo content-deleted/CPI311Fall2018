@@ -22,9 +22,9 @@ namespace CPI311.GameEngine {
 
         public Vector3 lightPosition = Vector3.Zero;
         public float shininess = 20f;
-        public Vector3 ambientColor = new Vector3(0.2f, 0.2f, 0.2f);
-        public Vector3 diffuseColor = new Vector3(0.5f, 0, 0);
-        public Vector3 specularColor = new Vector3(0, 0, 0.5f);
+        public Vector3 ambientColor = new Vector3(0.1f, 0.5f, 0.1f);
+        public Vector3 diffuseColor = new Vector3(0.6f, 0.3f, 0.5f);
+        public Vector3 specularColor = new Vector3(0, 0, 0.3f);
 
         public Texture2D texture;
 
@@ -38,7 +38,7 @@ namespace CPI311.GameEngine {
             effect.Parameters["World"].SetValue(t.World);
             effect.Parameters["View"].SetValue(view);
             effect.Parameters["Projection"].SetValue(projection);
-            effect.Parameters["LightPosition"].SetValue(lightPosition);
+            effect.Parameters["LightPosition"].SetValue(c.Transform.Position + Vector3.Up * 10);
             effect.Parameters["CameraPosition"].SetValue(c.Transform.Position);
             effect.Parameters["Shininess"].SetValue(shininess);
             effect.Parameters["AmbientColor"].SetValue(ambientColor);
@@ -72,13 +72,13 @@ namespace CPI311.GameEngine {
         private VertexPositionTexture[] Vertices { get; set; }
 
         private int[] Indices { get; set; }
-        private float[] Heights { get; set; }
-
+        private float[] heights { get; set; }
         public TerrainRenderer(Texture2D texture, Vector2 size, Vector2 res) {
+
             HeightMap = texture;
             this.size = size;
 
-            createHeight(); //  Heights data is crated 
+            CreateHeights(); //  Heights data is crated 
 
             // We should also save the value of size somewhere
             int rows = (int)res.Y + 1;
@@ -91,8 +91,8 @@ namespace CPI311.GameEngine {
             for (int r = 0; r < rows; r++)
                 for (int c = 0; c < cols; c++)
                     Vertices[r * cols + c] = new VertexPositionTexture(
-                        offset + new Vector3(c * stepX, GetHeight( new Vector2 ( c/res.X, c/res.Y)), r * stepZ),
-                        new Vector2(c / res.X, r / res.Y) );
+                        offset + new Vector3(c * stepX, GetHeight(new Vector2(c / res.X, r / res.Y)), r * stepZ),
+                        new Vector2(c / res.X, r / res.Y));
 
             Indices = new int[(rows - 1) * (cols - 1) * 6];
             int index = 0;
@@ -107,30 +107,30 @@ namespace CPI311.GameEngine {
                     Indices[index++] = (r + 1) * cols + c + 1;
                 }
         }
-
-        private void createHeight() {
-            Color[] data = new Color[HeightMap.Width * HeightMap.Height];
-            HeightMap.GetData(data);
-            Heights = new float[HeightMap.Width * HeightMap.Height];
-            for (int i = 0; i < Heights.Length; i++)
-                Heights[i] = data[i].G / 255f;
-        }
-
         public float GetHeight(Vector2 tex) {
             // First, scale it to dimensions of the image
             tex = Vector2.Clamp(tex, Vector2.Zero, Vector2.One) * new Vector2(HeightMap.Width - 1, HeightMap.Height - 1);
             int x = (int)tex.X; float u = tex.X - x;
             int y = (int)tex.Y; float v = tex.Y - y;
-            return Heights[y * HeightMap.Width + x] * (1 - u) * (1 - v) +
-                 Heights[y * HeightMap.Width + MathHelper.Min(x + 1, HeightMap.Width - 1)] * u * (1 - v) +
-                 Heights[MathHelper.Min(y + 1, HeightMap.Height - 1) * HeightMap.Width + x ] * (1 - u ) * v +
-                 Heights[MathHelper.Min(y + 1, HeightMap.Height - 1) * HeightMap.Width + MathHelper.Min(x + 1, HeightMap.Width - 1)] * u * v;
+            return heights[y * HeightMap.Width + x] * (1 - u) * (1 - v) +
+                 heights[y * HeightMap.Width + Math.Min(x + 1, HeightMap.Width - 1)] * u * (1 - v) +
+                 heights[Math.Min(y + 1, HeightMap.Height - 1) * HeightMap.Width + x] * (1 - u) * v +
+                 heights[Math.Min(y + 1, HeightMap.Height - 1) * HeightMap.Width + Math.Min(x + 1, HeightMap.Width - 1)] * u * v;
+        }
+        private void CreateHeights() {
+            Color[] data = new Color[HeightMap.Width * HeightMap.Height];
+            HeightMap.GetData<Color>(data);
+            heights = new float[HeightMap.Width * HeightMap.Height];
+            for (int i = 0; i < heights.Length; i++)
+                heights[i] = data[i].G / 255f;
         }
 
         public float GetAltitude(Vector3 position) {
             position = Vector3.Transform(position, Matrix.Invert(ourObject.transform.World));
-            if (position.X > -size.X / 2 && position.X < size.X / 2 && position.Z > -size.Y / 2 && position.Z < size.Y / 2)
-                return GetHeight(new Vector2 ( (position.X + size.X / 2) / size.X, (position.Z + size.Y / 2)/ size.Y )) * ourObject.transform.LocalScale.Y;
+            if (position.X > -size.X / 2 && position.X < size.X / 2 &&
+                              position.Z > -size.Y / 2 && position.Z < size.Y / 2)
+                return GetHeight(new Vector2((position.X + size.X / 2) / size.X,
+                    (position.Z + size.Y / 2) / size.Y)) * ourObject.transform.LocalScale.Y;
             return -1;
         }
 
@@ -160,10 +160,8 @@ namespace CPI311.GameEngine {
 
             foreach (EffectPass pass in effect.CurrentTechnique.Passes) {
                 pass.Apply();
-                g.DrawUserIndexedPrimitives
-                    <VertexPositionTexture>(PrimitiveType.TriangleList,
-                    Vertices, 0, Vertices.Length,
-                    Indices, 0, Indices.Length / 3);
+                g.DrawUserIndexedPrimitives<VertexPositionTexture>
+                (PrimitiveType.TriangleList, Vertices, 0, Vertices.Length, Indices, 0, Indices.Length / 3);
             }
         }
 
@@ -189,7 +187,7 @@ namespace CPI311.GameEngine {
             effect.Parameters["World"].SetValue(t.World);
             effect.Parameters["View"].SetValue(view);
             effect.Parameters["Projection"].SetValue(projection);
-            effect.Parameters["LightPosition"].SetValue(Vector3.Backward * 10 + Vector3.Right * 5);
+            effect.Parameters["LightPosition"].SetValue(Vector3.Up * 5);
             effect.Parameters["CameraPosition"].SetValue(c.Transform.Position);
             effect.Parameters["Shininess"].SetValue(shininess);
             effect.Parameters["AmbientColor"].SetValue(ambientColor);

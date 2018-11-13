@@ -14,6 +14,8 @@ namespace Assignment1 {
 
         public bool active = false;
 
+        private bool buffer = false;
+
         public JobInfo.jobType job = JobInfo.jobType.Knight;
 
         public PlayerIndex controllingPlayer;
@@ -32,33 +34,46 @@ namespace Assignment1 {
         }
 
         public virtual void Update(PlayerSelectScreen screen, InputState input) {
+            if(!buffer) { buffer = true; return; }
             // Dumb Handling for keyboard I'm dumb
             PlayerIndex? queryPlayer = null;
             if (controllingPlayer != (PlayerIndex)5) queryPlayer = controllingPlayer;
 
 
-            // This is where the logic for player selecting class should go
-            if (input.IsMenuUp(queryPlayer)) {
-                job = ((int)job + 1 < JobInfo.JobCount) ? job + 1 : 0;
-            }
-
-            if (input.IsMenuDown(queryPlayer)) {
-                job = (JobInfo.jobType)(  (job > 0) ? (int)job - 1 : JobInfo.JobCount-1);
-            }
+            
 
             PlayerIndex p;
-
+            // Special handle for keyboard player
             if (queryPlayer == null) {
                 if (input.IsNewKeyPress(Microsoft.Xna.Framework.Input.Keys.Space, null, out p))
                     active = true;
-            }
-            else
-                if (input.IsNewButtonPress(Microsoft.Xna.Framework.Input.Buttons.Start, queryPlayer, out p)) {
-                    active = true;
-                }
+                if (input.IsNewKeyPress(Microsoft.Xna.Framework.Input.Keys.Escape, null, out p))
+                    active = false;
 
-            if (input.IsMenuCancel(queryPlayer, out p)) {
-                active = false;
+                // Only let you change class if you haven't selected
+                if (!active) {
+                    if (input.IsNewKeyPress(Microsoft.Xna.Framework.Input.Keys.Right, null, out p))
+                        job = ((int)job + 1 < JobInfo.JobCount) ? job + 1 : 0;
+
+                    if (input.IsNewKeyPress(Microsoft.Xna.Framework.Input.Keys.Left, null, out p))
+                        job = (JobInfo.jobType)((job > 0) ? (int)job - 1 : JobInfo.JobCount - 1);
+                }
+            }
+            else {
+                if (input.IsNewButtonPress(Microsoft.Xna.Framework.Input.Buttons.Start, queryPlayer, out p)) 
+                    active = true;
+
+                if (input.IsMenuCancel(queryPlayer, out p)) 
+                    active = false;
+
+                // Only let you change class if you haven't selected
+                if (!active) {
+                    if (input.IsMenuUp(queryPlayer)) 
+                        job = ((int)job + 1 < JobInfo.JobCount) ? job + 1 : 0;
+                    
+                    if (input.IsMenuDown(queryPlayer)) 
+                        job = (JobInfo.jobType)((job > 0) ? (int)job - 1 : JobInfo.JobCount - 1);
+                }
             }
 
             /*
@@ -81,10 +96,14 @@ namespace Assignment1 {
 
             spriteBatch.DrawString(font, "Player " + PlayerNumber, position, Color.White, 0,
                                     origin, 1f, SpriteEffects.None, 0);
-            
-            spriteBatch.Draw(JobInfo.portraitBG, new Rectangle(position.ToPoint() - new Point(68, 34), new Point(68, 68)), Color.White);
-            spriteBatch.Draw(JobInfo.Jobs[(int)job].portrait, new Rectangle(position.ToPoint() + new Point(2, 2) - new Point(68, 34), new Point(64, 64)), Color.White);
-            
+
+            Point offset = new Point(68, 34);
+            spriteBatch.Draw(JobInfo.portraitBG, new Rectangle(position.ToPoint() - offset, new Point(68, 68)), Color.White);
+            offset -=  new Point(2, 2);
+            spriteBatch.Draw(JobInfo.Jobs[(int)job].portrait, new Rectangle(position.ToPoint() - offset, new Point(64, 64)), Color.White);
+
+            if(active) spriteBatch.Draw(JobInfo.ready, new Rectangle(position.ToPoint() - offset, new Point(22, 22)), Color.White);
+
         }
 
 
