@@ -20,9 +20,12 @@ namespace Assignment5 {
         }
 
         public AsteroidObject() {
-            addBehavior(new SphereCollider());
+            SphereCollider s = new SphereCollider();
+            s.Radius = 3;
+            addBehavior(s);
             addBehavior(new Astroid());
             mesh = AstroidModel;
+            transform.LocalScale = Vector3.One * 3;
         }
 
         new public static AsteroidObject Initialize() {
@@ -30,12 +33,15 @@ namespace Assignment5 {
             if (pool.Count > 0) {
                 g = pool.FirstOrDefault();
                 pool.Remove(g);
+                SphereCollider s = new SphereCollider();
+                s.Radius = 3;
+                g.addBehavior(s);
+                
             }
             else {
                 g = new AsteroidObject();
-                g.Start();
             }
-
+            g.Start();
             activeGameObjects.Add(g);
 
             return g;
@@ -53,6 +59,9 @@ namespace Assignment5 {
             // Add back to pool and then remove from active list
             pool.Add(this);
             activeGameObjects.Remove(this);
+
+
+            releaseBehavior(GetBehavior<SphereCollider>());
         }
     }
     class Astroid : Behavior3d {
@@ -76,7 +85,7 @@ namespace Assignment5 {
             particle.Init();
 
             c.collidedThisFrame = false;
-
+            c = null;
 
             base.OnDestory();
         }

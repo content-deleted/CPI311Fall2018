@@ -20,7 +20,7 @@ namespace Assignment5
 
         public void Init (Model bulletModel, float spd, Vector3 dir, Vector3 scale, Color c, bool poolable = true)
         {
-            //sisPoolable = poolable;
+            isPoolable = poolable;
             (obj as GameObject3d).mesh = bulletModel;
             transform.LocalScale = scale;
             //objSprite.Color = c;
@@ -38,8 +38,9 @@ namespace Assignment5
             Vector2 position = new Vector2 (transform.LocalPosition.X, transform.LocalPosition.Y) ;
             if (position.X > PlayfieldSizeX || position.X < -PlayfieldSizeX ||
                 position.Y > PlayfieldSizeY || position.Y < -PlayfieldSizeY)
-                if (isPoolable) (obj as BulletPoolObject3d).Destroy();
-                else obj.Destroy();
+                (obj as BulletPoolObject3d).Destroy();
+
+            GameObject3d.activeGameObjects.Where(g => g.HasBehavior<Astroid>()).Where(g=> Vector3.Distance(g.transform.Position, transform.Position) < 4).ToList().ForEach(x => x.Destroy());
 
         }
     }

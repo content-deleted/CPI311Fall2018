@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Assignment5 {
     public static class GameConstants {
-        public static float PlayfieldSizeX = 1000;
-        public static float PlayfieldSizeY = 1000;
+        public static float PlayfieldSizeX = 100;
+        public static float PlayfieldSizeY = 100;
         public static int NumAsteroids = 10;
 
         // dumbshit

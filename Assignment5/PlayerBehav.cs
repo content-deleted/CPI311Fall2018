@@ -61,17 +61,12 @@ namespace Assignment5 {
 
         public void checkFire() {
             if (InputManager.IsMouseDown()) {
-                GameObject3d g = GameObject3d.Initialize();
-                Bullet3d b = new Bullet3d();
+                BulletPoolObject3d g = BulletPoolObject3d.Initialize();
                 
                 g.transform.LocalPosition = transform.LocalPosition;
 
-                g.addBehavior(b);
-                g.addBehavior(new SphereCollider());
-
-                b.Init(bulletMesh, bulletSpeed, transform.Right, Vector3.One, Color.White, false);
-
-                g.Start();
+                (g.GetBehavior<Bullet3d>() as Bullet3d).Init(bulletMesh, bulletSpeed, transform.Right, Vector3.One, Color.White, false);
+                
 
                 GameConstants.score -= GameConstants.ShotPenalty;
                 // sound

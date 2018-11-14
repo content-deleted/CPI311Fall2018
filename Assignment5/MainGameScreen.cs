@@ -110,7 +110,7 @@ namespace Assignment5 {
             InputManager.Update();
             Time.Update(gameTime);
             Collider.Update(gameTime);
-            
+            particleManager.Update();
 
             GameObject3d.UpdateObjects();
 
@@ -144,6 +144,19 @@ namespace Assignment5 {
 
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects.ToList())
                 gameObject.Render(Tuple.Create(camera, GraphicsDevice));
+
+            //particle draw
+            GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead;
+            particleEffect.CurrentTechnique = particleEffect.Techniques["particle"];
+            particleEffect.CurrentTechnique.Passes[0].Apply();
+            particleEffect.Parameters["ViewProj"].SetValue(camera.View * camera.Projection);
+            particleEffect.Parameters["World"].SetValue(Matrix.Identity);
+            particleEffect.Parameters["CamIRot"].SetValue(
+                    Matrix.Invert(Matrix.CreateFromQuaternion(camera.Transform.Rotation)));
+            particleEffect.Parameters["Texture"].SetValue(particleTex);
+            particleManager.Draw(GraphicsDevice); 
+
+            GraphicsDevice.RasterizerState = RasterizerState.CullNone;
 
             base.Draw(gameTime);
         }

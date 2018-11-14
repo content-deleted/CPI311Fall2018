@@ -42,10 +42,10 @@ namespace CPI311.GameEngine
             foreach (Behavior3d behavior in behaviors) behavior.Start();
         }
         override public void Update() {
-            foreach (Behavior3d behavior in behaviors) behavior.Update();
+            foreach (Behavior3d behavior in behaviors.ToList()) behavior.Update();
         }
         override public void LateUpdate() {
-            foreach (Behavior3d behavior in behaviors) behavior.LateUpdate();
+            foreach (Behavior3d behavior in behaviors.ToList()) behavior.LateUpdate();
         }
 
         override public void Render(dynamic Renderer) {

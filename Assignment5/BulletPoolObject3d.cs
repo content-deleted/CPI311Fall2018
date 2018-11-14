@@ -21,7 +21,7 @@ namespace Assignment5
 
         public BulletPoolObject3d() {
             addBehavior(new Bullet3d());
-            //addBehavior(new grazeEnemy());
+            Start();
         }
 
         new public static BulletPoolObject3d Initialize()

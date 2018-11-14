@@ -23,8 +23,10 @@ namespace CPI311.GameEngine
 
         public Behavior GetBehavior<T>() => behaviors. Where(x => x is T).FirstOrDefault();
 
+        public bool HasBehavior<T>() => behaviors.Where(x => x is T).Any();
+
         //public  static  GameObject Initialize();
- 
+
         public virtual void Start() {
             foreach (Behavior behavior in behaviors) behavior.Start();
         }
