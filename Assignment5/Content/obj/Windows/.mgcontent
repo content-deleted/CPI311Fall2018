@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>Windows</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/dev/CPI311Fall2018/Assignment5/Content/ParticleShader.fx</File>
+    <File>C:/dev/CPI311Fall2018/Assignment5/Content/PlayerModel.fbx</File>
+    <File>C:/dev/CPI311Fall2018/Assignment5/Content/Sphere.FBX</File>
+    <File>C:/dev/CPI311Fall2018/Assignment5/Content/font.spritefont</File>
+    <File>C:/dev/CPI311Fall2018/Assignment5/Content/Gun.wav</File>
+    <File>C:/dev/CPI311Fall2018/Assignment5/Content/DOGGIE.png</File>
+    <File>C:/dev/CPI311Fall2018/Assignment5/Content/offset.fx</File>
+  </SourceFiles>
+</SourceFileCollection>

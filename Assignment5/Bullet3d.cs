@@ -13,30 +13,33 @@ namespace Assignment5
     class Bullet3d : Behavior3d
     {
         float speed;
-        Vector2 direction;
+        Vector3 direction;
+
+        bool isPoolable = true;
         //bool facing = false;
 
-        public void Init (Model bulletModel, float spd, Vector2 dir, Vector3 scale, Color c)
+        public void Init (Model bulletModel, float spd, Vector3 dir, Vector3 scale, Color c, bool poolable = true)
         {
+            //sisPoolable = poolable;
             (obj as GameObject3d).mesh = bulletModel;
             transform.LocalScale = scale;
             //objSprite.Color = c;
             speed = spd;
-            direction = dir;
+            direction = Vector3.Normalize( dir );
             //if (facing) objSprite.Rotation = (float)Math.Atan2(direction.Y, direction.X);
         }
-        float PlayfieldSizeX = 50;
-        float PlayfieldSizeY = 50;
+        float PlayfieldSizeX = GameConstants.PlayfieldSizeX;
+        float PlayfieldSizeY = GameConstants.PlayfieldSizeY;
 
         override public void Update ()
         {
-            Vector2 mov = direction * speed;
-            transform.LocalPosition += new Vector3(mov.X, mov.Y, 0);
+            transform.LocalPosition += direction * speed;
             //if (facing) objSprite.Rotation = (float) Math.Atan2(direction.Y, direction.X);
             Vector2 position = new Vector2 (transform.LocalPosition.X, transform.LocalPosition.Y) ;
             if (position.X > PlayfieldSizeX || position.X < -PlayfieldSizeX ||
                 position.Y > PlayfieldSizeY || position.Y < -PlayfieldSizeY)
-                    (obj as BulletPoolObject3d).Destroy();
+                if (isPoolable) (obj as BulletPoolObject3d).Destroy();
+                else obj.Destroy();
 
         }
     }

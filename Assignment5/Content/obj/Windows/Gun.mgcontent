@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/dev/CPI311Fall2018/Assignment5/Content/Gun.wav</SourceFile>
+  <SourceTime>2018-10-29T09:32:07.111141-07:00</SourceTime>
+  <DestFile>C:/dev/CPI311Fall2018/Assignment5/Content/bin/Windows/Gun.xnb</DestFile>
+  <DestTime>2018-11-13T17:34:23.6144144-07:00</DestTime>
+  <Importer>WavImporter</Importer>
+  <ImporterTime>2017-03-01T08:05:36-07:00</ImporterTime>
+  <Processor>SoundEffectProcessor</Processor>
+  <ProcessorTime>2017-03-01T08:05:36-07:00</ProcessorTime>
+  <Parameters>
+    <Key>Quality</Key>
+    <Value>Best</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

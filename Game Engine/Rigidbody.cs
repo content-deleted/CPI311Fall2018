@@ -8,10 +8,10 @@ using Microsoft.Xna.Framework;
 
 namespace CPI311.GameEngine {
     public class Rigidbody : Behavior3d {
-        public Vector3 Velocity { get; set; }
-        public float Mass { get; set; }
-        public Vector3 Acceleration { get; set; }
-        public Vector3 Impulse { get; set; }
+        public Vector3 Velocity = Vector3.Zero;
+        public float Mass = 1;
+        public Vector3 Acceleration = Vector3.Zero;
+        public Vector3 Impulse = Vector3.Zero;
 
         public override void Update() {
             Velocity += Acceleration * Time.ElapsedGameTime + Impulse / Mass;

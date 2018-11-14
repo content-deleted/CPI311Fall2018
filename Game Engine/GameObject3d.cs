@@ -26,8 +26,6 @@ namespace CPI311.GameEngine
         {
             GameObject3d g = new GameObject3d();
 
-            g.transform = new Transform();
-
             activeGameObjects.Add(g);
             return g;
         }

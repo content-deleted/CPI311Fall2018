@@ -40,7 +40,7 @@ namespace Assignment1
 
         }
 
-        public void Destroy()
+        public override void Destroy()
         {
             foreach (Behavior2d behavior in behaviors) behavior.OnDestory();
             // Add back to pool and then remove from active list

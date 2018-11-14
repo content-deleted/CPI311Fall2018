@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace CPI311.GameEngine {
     public class SphereCollider : Collider {
-        public float Radius { get; set; }
+        public float Radius = 1f;
 
         public override bool Collides(Collider other, out Vector3 normal) {
             if (other is SphereCollider) {

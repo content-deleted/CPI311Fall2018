@@ -57,7 +57,7 @@ float4 pxlSh(
 
 technique particle {
 	pass P0 {
-		VertexShader = compile vs_2_0 vtxSh();
-		PixelShader = compile ps_2_0 pxlSh();
+		VertexShader = compile vs_4_0 vtxSh();
+		PixelShader = compile ps_4_0 pxlSh();
 	}
 }

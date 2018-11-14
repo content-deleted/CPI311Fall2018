@@ -1,73 +1,149 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using CPI311.GameEngine;
+using System;
+using System.Linq;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Assignment5 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Game {
+    public class MainGameScreen : Game {
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        public static Random random;
 
-        public Game1() {
+        Camera camera = new Camera();
+        //Light light;
+        //Audio components
+        public static SoundEffect gunSound;
+        public static SoundEffectInstance soundInstance;
+
+        //Score & background
+        int score;
+        Texture2D stars;
+        SpriteFont lucidaConsole;
+        Vector2 scorePosition = new Vector2(100, 50);
+
+        // Particles
+        public static ParticleManager particleManager;
+        Texture2D particleTex;
+        Effect particleEffect;
+
+        // J A C O B
+        static GameObject3d Player;
+        public Texture2D background;
+        SpriteBatch backgrounds;
+        Effect offset;
+
+        public MainGameScreen() {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-        }
+            graphics.GraphicsProfile = GraphicsProfile.HiDef;
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
+            Time.Initialize();
+            InputManager.Initialize();
+            ScreenManager.Initialize(graphics);
+        } 
+
         protected override void Initialize() {
             // TODO: Add your initialization logic here
-
             base.Initialize();
+            random = new Random();
+
+            camera.Transform.LocalPosition = Vector3.Backward * 100;
+            camera.FarPlane = 5000;
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
         protected override void LoadContent() {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            // Fucking around
+            backgrounds = new SpriteBatch(GraphicsDevice);
+            background = Content.Load<Texture2D>("DOGGIE");
+            offset = Content.Load<Effect>("offset");
+
+
+            // *** Lab 8 Item ***********************
+            ScreenManager.Setup(false, 1080, 720);
+            //***************************************
+
+            particleManager = new ParticleManager(GraphicsDevice, 100);
+            particleEffect = Content.Load<Effect>("ParticleShader");
+            PlayerBehav.bulletMesh = Content.Load<Model>("Sphere");
+            AsteroidObject.AstroidModel = Content.Load<Model>("Sphere");
+            //particleTex = Content.Load<Texture2D>("Textures/fire");
+
+            Player = GameObject3d.Initialize();
+            Player.transform.LocalScale *= 0.01f;
+            Player.transform.Rotate(Vector3.Left, -(float)Math.PI / 2);
+            PlayerBehav.bulletMesh = Content.Load<Model>("Sphere");
+            Player.addBehavior(new PlayerBehav());
+            Rigidbody r = new Rigidbody();
+            Player.addBehavior(r);
+            SphereCollider s = new SphereCollider();
+            Player.addBehavior(s);
+            Player.mesh = Content.Load<Model>("PlayerModel");
+
+            // Sound shit
+            gunSound = Content.Load<SoundEffect>("Gun");
+            soundInstance = gunSound.CreateInstance();
+            AudioListener listener = new AudioListener();
+            listener.Position = camera.Transform.Position;
+            listener.Forward = camera.Transform.Forward;
+            AudioEmitter emitter = new AudioEmitter();
+            emitter.Position = Vector3.Zero;
+            soundInstance.Apply3D(listener, emitter);
+
+            foreach (GameObject3d gameObject in GameObject3d.activeGameObjects) gameObject.Start();
+            GameObject.gameStarted = true;
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// game-specific content.
-        /// </summary>
         protected override void UnloadContent() {
             // TODO: Unload any non ContentManager content here
         }
-
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        
         protected override void Update(GameTime gameTime) {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            InputManager.Update();
+            Time.Update(gameTime);
+            Collider.Update(gameTime);
+            
+
+            GameObject3d.UpdateObjects();
+
+            if (InputManager.IsKeyPressed(Keys.R)) ResetAsteroids();
 
             base.Update(gameTime);
         }
+        
 
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        private void ResetAsteroids() {
+            AsteroidObject.initMany(30);
+        }
+
+
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            backgrounds.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+            offset.Parameters["height"].SetValue((float)ScreenManager.Height);
+            offset.Parameters["offset"].SetValue((float)Time.TotalGameTimeMilli / 1500);
+            offset.CurrentTechnique.Passes[0].Apply();
+            backgrounds.GraphicsDevice.Viewport = camera.Viewport;
+            backgrounds.Draw(background, new Rectangle(0, 0,
+                                                        (int)(camera.Size.X * ScreenManager.Width),
+                                                        (int)(camera.Size.Y * ScreenManager.Height)), Color.White);
+            backgrounds.End();
+
+
+
+            GraphicsDevice.DepthStencilState = new DepthStencilState();
+
+            foreach (GameObject3d gameObject in GameObject3d.activeGameObjects.ToList())
+                gameObject.Render(Tuple.Create(camera, GraphicsDevice));
 
             base.Draw(gameTime);
         }

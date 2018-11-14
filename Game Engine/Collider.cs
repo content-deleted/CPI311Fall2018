@@ -14,6 +14,7 @@ namespace CPI311.GameEngine {
         
         public bool collidedThisFrame = false;
 
+
         public override void  Start() {
             colliders.Add(this);
             rigidbody = obj.GetBehavior<Rigidbody>() as Rigidbody;
