@@ -14,6 +14,9 @@ namespace Assignment5 {
         GraphicsDeviceManager graphics;
         public static Random random;
 
+        SpriteBatch spriteBatch;
+        SpriteFont font;
+
         Camera camera = new Camera();
         //Light light;
         //Audio components
@@ -54,9 +57,13 @@ namespace Assignment5 {
 
             camera.Transform.LocalPosition = Vector3.Backward * 100;
             camera.FarPlane = 5000;
+
+
+            ResetAsteroids();
         }
 
         protected override void LoadContent() {
+            spriteBatch = new SpriteBatch(ScreenManager.GraphicsDevice);
 
             // Fucking around
             backgrounds = new SpriteBatch(GraphicsDevice);
@@ -72,7 +79,10 @@ namespace Assignment5 {
             particleEffect = Content.Load<Effect>("ParticleShader");
             PlayerBehav.bulletMesh = Content.Load<Model>("Sphere");
             AsteroidObject.AstroidModel = Content.Load<Model>("Sphere");
-            //particleTex = Content.Load<Texture2D>("Textures/fire");
+            AsteroidObject.tex = Content.Load<Texture2D>("lunaTexture");
+            StandardLightingMaterial.effect = Content.Load<Effect>("StandardShading");
+            particleTex = Content.Load<Texture2D>("fire");
+            font = Content.Load<SpriteFont>("font");
 
             Player = GameObject3d.Initialize();
             Player.transform.LocalScale *= 0.01f;
@@ -97,10 +107,12 @@ namespace Assignment5 {
 
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects) gameObject.Start();
             GameObject.gameStarted = true;
+            
         }
 
         protected override void UnloadContent() {
             // TODO: Unload any non ContentManager content here
+
         }
         
         protected override void Update(GameTime gameTime) {
@@ -154,9 +166,15 @@ namespace Assignment5 {
             particleEffect.Parameters["CamIRot"].SetValue(
                     Matrix.Invert(Matrix.CreateFromQuaternion(camera.Transform.Rotation)));
             particleEffect.Parameters["Texture"].SetValue(particleTex);
+            
             particleManager.Draw(GraphicsDevice); 
 
             GraphicsDevice.RasterizerState = RasterizerState.CullNone;
+
+
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+            spriteBatch.DrawString(font, "Score: " + GameConstants.score, new Vector2(0, 650), Color.White);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

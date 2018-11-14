@@ -33,3 +33,6 @@ C:\dev\CPI311Fall2018\Assignment5\bin\Windows\x86\Debug\Content\font.xnb
 C:\dev\CPI311Fall2018\Assignment5\bin\Windows\x86\Debug\Content\Gun.xnb
 C:\dev\CPI311Fall2018\Assignment5\bin\Windows\x86\Debug\Content\DOGGIE.xnb
 C:\dev\CPI311Fall2018\Assignment5\bin\Windows\x86\Debug\Content\offset.xnb
+C:\dev\CPI311Fall2018\Assignment5\bin\Windows\x86\Debug\Content\fire.xnb
+C:\dev\CPI311Fall2018\Assignment5\bin\Windows\x86\Debug\Content\lunaTexture.xnb
+C:\dev\CPI311Fall2018\Assignment5\bin\Windows\x86\Debug\Content\StandardShading.xnb
