@@ -25,9 +25,12 @@ namespace CPI311.GameEngine
 
         public Transform Transform { get; set; }
 
+        public bool orthographic = false;
+
         public Matrix Projection
         {
-            get => Matrix.CreatePerspectiveFieldOfView(FieldOfView, AspectRatio, NearPlane, FarPlane);
+            get => (orthographic) ? Matrix.CreateOrthographic(Size.X, Size.Y, NearPlane, FarPlane)
+                                  : Matrix.CreatePerspectiveFieldOfView(FieldOfView, AspectRatio, NearPlane, FarPlane);
         }
 
         public Matrix View
@@ -42,7 +45,11 @@ namespace CPI311.GameEngine
 
         public Viewport Viewport {
             get {
-                return new Viewport((int)(ScreenManager.Width * Position.X),
+                return (orthographic) ? new Viewport((int)(ScreenManager.Width * Position.X),
+                                        (int)(ScreenManager.Height * Position.Y),
+                                        (int)( Size.X ),
+                                        (int)( Size.Y))
+                       : new Viewport((int)(ScreenManager.Width * Position.X),
                             (int)(ScreenManager.Height * Position.Y),
                             (int)(ScreenManager.Width * Size.X),
                             (int)(ScreenManager.Height * Size.Y));
