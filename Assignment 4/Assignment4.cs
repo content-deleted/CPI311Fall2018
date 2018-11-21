@@ -154,7 +154,7 @@ namespace Assignment_4 {
 
             text.Begin();
             text.DrawString(font, "Failures: " + failureCount, new Vector2(0, 0), Color.White);
-            text.DrawString(font, "Catches: " + failureCount, new Vector2(0, 30), Color.White);
+            text.DrawString(font, "Catches: " + catchCount, new Vector2(0, 30), Color.White);
             text.DrawString(font, "Time Spent: " + Time.TotalGameTime.ToString(), new Vector2(0, 60), Color.White);
             text.End();
 

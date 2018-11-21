@@ -22,17 +22,28 @@ namespace Assignment_4 {
         public static GameObject3d createEnemy(GameObject3d player) {
 
             GameObject3d g = GameObject3d.Initialize();
-
-            g.addBehavior(new Enemy(player));
+            Enemy e = new Enemy(player);
+            g.addBehavior(e);
             g.mesh = enemyModel;
             g.material = new StandardLightingMaterial();
             (g.material as StandardLightingMaterial).diffuseColor = Vector3.Up;
-            g.GetBehavior<Enemy>().reposition();
+
+            //SETUPSEARCH
+            int size = 100;
+            e.search = new AStarSearch(size, size); // size of grid 
+
+            // use heightmap
+            foreach (AStarNode node in e.search.Nodes) {
+                node.Passable = (terrain.GetAltitude(node.Position) < 0.5);
+            }
+            //******
+
+
+            e.reposition();
             g.transform.LocalPosition += Vector3.Up * 2;
             g.transform.LocalScale = Vector3.One * 2;
 
-            int size = 50;
-
+            
 
             return g;
         }
@@ -52,6 +63,7 @@ namespace Assignment_4 {
         public override void Update() {
             if (Vector3.Distance(playerObject.transform.Position, transform.Position) < catchDistance){
                 reposition();
+                Assignment4.catchCount++;
             }
 
             timer--; 
@@ -65,24 +77,17 @@ namespace Assignment_4 {
                 // THIS IS WHERE WE PUT THE LOGIC FOR REACHING THE CENTER
                 else {
                     reposition();
-
+                    Assignment4.failureCount++;
                 }
             }
         }
 
         List<Vector3> path = new List<Vector3>();
 
-        AStarSearch search;
+        public AStarSearch search;
         int size = 100;
         public void reposition() {
-
-            search = new AStarSearch(size, size); // size of grid 
-
-            // use heightmap
-            foreach(AStarNode node in search.Nodes) {
-                node.Passable = (terrain.GetAltitude(node.Position) < 0.5);
-            }
-            
+            timer = 10;
             search.Start = search.Nodes[ran.Next(0, size), ran.Next(0, size)]; // random current position
             search.End = search.Nodes[50, 50]; // middle
 
