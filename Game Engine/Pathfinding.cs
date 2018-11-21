@@ -42,7 +42,7 @@ namespace CPI311.GameEngine {
             Nodes = new AStarNode[Rows, Cols];
             for (int r = 0; r < Rows; r++)
                 for (int c = 0; c < Cols; c++)
-                    Nodes[r, c] = new AStarNode(c,r, new Vector3(r * 3 - 25, c * 3 - 35, 1));
+                    Nodes[r, c] = new AStarNode(c,r, new Vector3(r - 50, 0, c - 50));
         }
 
         public void Search() {

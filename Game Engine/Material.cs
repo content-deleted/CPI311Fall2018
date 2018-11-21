@@ -134,12 +134,12 @@ namespace CPI311.GameEngine {
             return -1;
         }
 
-        Vector3 lightPosition = new Vector3(1, 5, 9);
-        float shininess = 0.1f;
+        public Vector3 lightPosition;
+        float shininess = 0.3f;
 
-        Vector3 ambientColor = new Vector3(0.1f, 0.1f, 0.1f);
-        Vector3 diffuseColor = new Vector3(0.1f, 0.1f, 0.1f);
-        Vector3 specularColor = new Vector3(0.1f, 0.1f, 0.1f);
+        public Vector3 ambientColor = new Vector3(0.3f, 0.2f, 0.2f);
+        public Vector3 diffuseColor = new Vector3(0.1f, 0.1f, 0.1f);
+        public Vector3 specularColor = new Vector3(0.2f, 0.2f, 0.2f);
 
         public override void Render(Camera c, Transform t, Model m, GraphicsDevice g) {
             Matrix view = c.View;
@@ -147,7 +147,7 @@ namespace CPI311.GameEngine {
 
             // Setup custom shader etc.
             effect.CurrentTechnique = effect.Techniques[0];
-            effect.Parameters["World"].SetValue(t.World);
+            effect.Parameters["World"].SetValue(ourObject.transform.World);
             effect.Parameters["View"].SetValue(view);
             effect.Parameters["Projection"].SetValue(projection);
             effect.Parameters["LightPosition"].SetValue(lightPosition);

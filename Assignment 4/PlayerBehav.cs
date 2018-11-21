@@ -23,6 +23,7 @@ namespace Assignment_4 {
 
         public override void Update() {
             checkPlayerMovement();
+            terrain.lightPosition = transform.LocalPosition + Vector3.Up * 5;
         }
 
         public PlayerBehav(TerrainRenderer r) => terrain = r;

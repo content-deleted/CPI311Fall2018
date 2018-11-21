@@ -33,3 +33,4 @@ C:\dev\CPI311Fall2018\Assignment 4\bin\Windows\x86\Debug\Content\Standard.xnb
 C:\dev\CPI311Fall2018\Assignment 4\bin\Windows\x86\Debug\Content\Sphere.xnb
 C:\dev\CPI311Fall2018\Assignment 4\bin\Windows\x86\Debug\Content\DOGGIE.xnb
 C:\dev\CPI311Fall2018\Assignment 4\bin\Windows\x86\Debug\Content\offset.xnb
+C:\dev\CPI311Fall2018\Assignment 4\bin\Windows\x86\Debug\Content\font.xnb

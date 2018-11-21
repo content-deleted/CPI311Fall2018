@@ -16,7 +16,8 @@ namespace Assignment_4 {
         GameObject3d terrainObject;
         TerrainRenderer terrain;
         Effect effect;
-
+        SpriteBatch text;
+        SpriteFont font;
 
         public Texture2D background;
         SpriteBatch backgrounds;
@@ -25,6 +26,10 @@ namespace Assignment_4 {
         Camera camera = new Camera();
         Camera mapCam = new Camera();
 
+        GameObject3d playerObject;
+
+        public static int failureCount = 0;
+        public static int catchCount = 0;
 
         public Assignment4() {
             graphics = new GraphicsDeviceManager(this);
@@ -56,11 +61,12 @@ namespace Assignment_4 {
         protected override void LoadContent() {
 
             StandardLightingMaterial.effect = Content.Load<Effect>("Standard");
-
+            text = new SpriteBatch(GraphicsDevice);
             // *** ScreenManager ***********************
             ScreenManager.Setup(false, 1080, 720);
-            camera.Transform.LocalPosition = Vector3.Up * 100;
+            camera.Transform.LocalPosition = Vector3.Up * 20;
             camera.Transform.Rotate(camera.Transform.Left, (float)Math.PI/2);
+            camera.FieldOfView = 2.6f;
 
             mapCam.orthographic = true;
             mapCam.Transform.LocalPosition = Vector3.Up * 100;
@@ -75,6 +81,8 @@ namespace Assignment_4 {
             background = Content.Load<Texture2D>("DOGGIE");
             offset = Content.Load<Effect>("offset");
 
+            Enemy.enemyModel = Content.Load<Model>("sphere");
+
             terrain = new TerrainRenderer(
                Content.Load<Texture2D>("HeightMap"),
                Vector2.One * 100, Vector2.One * 200);
@@ -88,12 +96,16 @@ namespace Assignment_4 {
             terrainObject.material = terrain;
             terrainObject.transform.LocalScale *= new Vector3(1, 5, 1);
 
+            font = Content.Load<SpriteFont>("font");
+
             TerrainRenderer.effect = Content.Load<Effect>("TerrainShader");
 
+            Enemy.terrain = terrain;
+
             // Create Player 
-            GameObject3d player = GameObject3d.Initialize();
-            player.addBehavior( new PlayerBehav(terrain) );
-            player.mesh = Content.Load<Model>("sphere");
+            playerObject = GameObject3d.Initialize();
+            playerObject.addBehavior( new PlayerBehav(terrain) );
+            playerObject.mesh = Content.Load<Model>("sphere");
 
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects) gameObject.Start();
             GameObject.gameStarted = true;
@@ -110,7 +122,9 @@ namespace Assignment_4 {
             InputManager.Update();
             Time.Update(gameTime);
 
-            GameObject3d.UpdateObjects();
+            if (InputManager.IsKeyPressed(Keys.R)) Enemy.createEnemy(playerObject);
+
+                GameObject3d.UpdateObjects();
             base.Update(gameTime);
         }
 
@@ -133,14 +147,21 @@ namespace Assignment_4 {
 
             GraphicsDevice.DepthStencilState = new DepthStencilState();
 
+
+
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects.ToList())
                 gameObject.Render(Tuple.Create(camera, GraphicsDevice));
+
+            text.Begin();
+            text.DrawString(font, "Failures: " + failureCount, new Vector2(0, 0), Color.White);
+            text.DrawString(font, "Catches: " + failureCount, new Vector2(0, 30), Color.White);
+            text.DrawString(font, "Time Spent: " + Time.TotalGameTime.ToString(), new Vector2(0, 60), Color.White);
+            text.End();
 
 
             // MiniMap
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects.ToList())
                 gameObject.Render(Tuple.Create(mapCam, GraphicsDevice));
-            
             base.Draw(gameTime);
         }
     }

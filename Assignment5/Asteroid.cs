@@ -104,8 +104,8 @@ namespace Assignment5 {
             GameConstants.score += GameConstants.KillBonus;
 
             for (int i = 0; i < 20; i++) {
-            MainGameScreen.soundInstance = MainGameScreen.gunSound.CreateInstance();
-            MainGameScreen.soundInstance.Play();
+                MainGameScreen.soundInstance = MainGameScreen.gunSound.CreateInstance();
+                MainGameScreen.soundInstance.Play();
             }
 
             c.collidedThisFrame = false;

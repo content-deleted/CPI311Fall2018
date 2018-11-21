@@ -86,3 +86,10 @@
 /processorParam:DebugMode=Auto
 /build:offset.fx
 
+#begin font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:font.spritefont
+
