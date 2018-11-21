@@ -14,13 +14,14 @@ namespace Lab11 {
         SpriteBatch spriteBatch;
         Dictionary<string, Scene> scenes;
         Scene currentScene;
-        List<GUIElement> guiElements;
+        List<GUIElement> guiElements = new List<GUIElement>();
         SpriteFont font;
 
         public Lab11() {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             scenes = new Dictionary<string, Scene>();
+            IsMouseVisible = true;
         }
 
         /// <summary>
@@ -34,6 +35,8 @@ namespace Lab11 {
             Time.Initialize();
             ScreenManager.Initialize(graphics);
 
+            
+
             base.Initialize();
         }
 
@@ -41,23 +44,42 @@ namespace Lab11 {
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
         /// </summary>
+         Checkbox toggle;
         protected override void LoadContent() {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            font = Content.Load<SpriteFont>("font");
+
             Button exitButton = new Button();
-            exitButton.Text = "exit";
-            exitButton.Texture = Content.Load<Texture2D>("exit");
-            exitButton.Bounds = new Rectangle(50, 50, 300, 20);
+            exitButton.Text = "Exit";
+            exitButton.Texture = Content.Load<Texture2D>("bar");
+            exitButton.Bounds = new Rectangle(50, 50, 300, 50);
+           // exitButton.Action += ExitGame;
+            exitButton.Action += playScreen;
+            
+
+            toggle = new Checkbox();
+            toggle.Text = "FullScreen";
+            toggle.Texture = Content.Load<Texture2D>("bar");
+            toggle.Bounds = new Rectangle(50, 120, 300, 50);
+            toggle.Action += fullscreen;
+
+            Checkbox.Box = Content.Load<Texture2D>("box");
+
+            guiElements.Add(exitButton);
+            guiElements.Add(toggle);
             // TODO: use this.Content to load your game content here
             scenes.Add("Menu", new Scene(MainMenuUpdate, MainMenuDraw));
             scenes.Add("Play", new Scene(PlayUpdate, PlayDraw));
             currentScene = scenes["Menu"];
 
         }
-        void ExitGame(GUIElement element) =>
-            background = (background == Color.White ? Color.Blue : Color.White);
+        //void ExitGame(GUIElement element) => background = (background == Color.White ? Color.Blue : Color.White);
 
+        void fullscreen(GUIElement element) => graphics.ToggleFullScreen();
+
+        void playScreen( GUIElement element) => currentScene = scenes["Play"];
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
@@ -73,10 +95,14 @@ namespace Lab11 {
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime) {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            
             currentScene.Update();
 
+            InputManager.Update();
+            Time.Update(gameTime);
+
+            //currentScene = (toggle.state) ? scenes["Play"] : scenes["Menu"];
+            background = (currentScene == scenes["Play"] ? Color.Blue : Color.White);
             base.Update(gameTime);
         }
         void MainMenuUpdate() {
@@ -93,6 +119,7 @@ namespace Lab11 {
             if (InputManager.IsKeyDown(Keys.Escape))
                 currentScene = scenes["Menu"];
         }
+
         void PlayDraw() {
             spriteBatch.Begin();
             spriteBatch.DrawString(font, "Play Mode! Press \"Esc\" to go back", Vector2.Zero, Color.Black);
@@ -103,7 +130,7 @@ namespace Lab11 {
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        Color background = Color.CornflowerBlue;
+        Color background = Color.Blue;
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(background);
 

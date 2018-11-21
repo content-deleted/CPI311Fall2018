@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>Windows</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/dev/CPI311Fall2018/Lab11/Content/DOGGIE.png</File>
+    <File>C:/dev/CPI311Fall2018/Lab11/Content/font.spritefont</File>
+    <File>C:/dev/CPI311Fall2018/Lab11/Content/bar.png</File>
+    <File>C:/dev/CPI311Fall2018/Lab11/Content/box.png</File>
+  </SourceFiles>
+</SourceFileCollection>

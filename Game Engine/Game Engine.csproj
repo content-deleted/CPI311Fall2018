@@ -53,6 +53,7 @@
     <Compile Include="GameObject2d.cs" />
     <Compile Include="GameObject3d.cs" />
     <Compile Include="GUI\Button.cs" />
+    <Compile Include="GUI\Checkbox.cs" />
     <Compile Include="GUI\GUIElement.cs" />
     <Compile Include="GUI\Scene.cs" />
     <Compile Include="Managers\InputManager.cs" />

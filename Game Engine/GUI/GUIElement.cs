@@ -21,10 +21,14 @@ namespace CPI311.GameEngine.GUI {
         public String Text { get; set; }
         public bool Selected { get; set; }
 
+        int offset = 10;
+
         public virtual void Update() { }
         public virtual void Draw(SpriteBatch spriteBatch, SpriteFont font) {
+            Rectangle r = Bounds;
+            r.X -= offset; r.Y -= offset;
             if (Texture != null)
-                spriteBatch.Draw(Texture, Bounds, Selected ? Color.Yellow : Color.White);
+                spriteBatch.Draw(Texture, r, Selected ? Color.Yellow : Color.White);
         }
     }
 }

@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 namespace CPI311.GameEngine.GUI {
     public class Button : GUIElement {
         public override void Update() {
-            if (!InputManager.IsMouseDown() &&
-                    Bounds.Contains(InputManager.GetMousePosition()))
+            if (InputManager.IsMouseReleased() && Bounds.Contains(InputManager.GetMousePosition()))
                 OnAction();
         }
 
