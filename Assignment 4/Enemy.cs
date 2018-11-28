@@ -38,15 +38,27 @@ namespace Assignment_4 {
             }
             //******
 
+            GameObject3d child = GameObject3d.Initialize();
 
-            e.reposition();
-            g.transform.LocalPosition += Vector3.Up * 2;
+            child.transform.LocalPosition = g.transform.LocalPosition;
+            child.transform.LocalPosition += Vector3.Forward;
+            child.transform.LocalScale *= 0.5f;
+            child.transform.Parent = g.transform;
+
+            e.heldObject = child;
+
+            child.mesh = enemyModel;
+            StandardLightingMaterial s = new StandardLightingMaterial();
+            s.ambientColor = Vector3.Down;
+            child.material = s;
+
             g.transform.LocalScale = Vector3.One * 2;
-
+            e.reposition();
             
-
             return g;
         }
+
+        public GameObject3d heldObject;
 
         public GameObject3d playerObject;
 
@@ -65,7 +77,7 @@ namespace Assignment_4 {
                 reposition();
                 Assignment4.catchCount++;
             }
-
+            
             timer--; 
             if(timer <= 0) {
                 timer = 10;
@@ -76,21 +88,33 @@ namespace Assignment_4 {
 
                 // THIS IS WHERE WE PUT THE LOGIC FOR REACHING THE CENTER
                 else {
-                    reposition();
                     Assignment4.failureCount++;
+                    reposition();
                 }
+            }
+        }
+
+        public override void LateUpdate() {
+            base.LateUpdate();
+            if (transform.LocalPosition == Vector3.Zero) {
+                transform.LocalPosition = search.Start.Position;
             }
         }
 
         List<Vector3> path = new List<Vector3>();
 
         public AStarSearch search;
-        int size = 100;
+        int size = 80;
         public void reposition() {
             timer = 10;
-            search.Start = search.Nodes[ran.Next(0, size), ran.Next(0, size)]; // random current position
-            search.End = search.Nodes[50, 50]; // middle
+            int x, y;
+            do {
+                x = ran.Next(0, size); y = ran.Next(0, size);
 
+            } while (!(search.Nodes[x, y].Passable && (x > 55 || x < 45) && (y > 55 || y < 45)));
+
+            search.Start = search.Nodes[x,y]; // random current position
+            search.End = search.Nodes[50, 50]; // middle
             //--Main Search Process *************/
             search.Search(); // A search is made here.
 

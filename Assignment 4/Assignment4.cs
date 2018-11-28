@@ -107,6 +107,10 @@ namespace Assignment_4 {
             playerObject.addBehavior( new PlayerBehav(terrain) );
             playerObject.mesh = Content.Load<Model>("sphere");
 
+            Enemy.createEnemy(playerObject);
+            Enemy.createEnemy(playerObject);
+            Enemy.createEnemy(playerObject);
+
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects) gameObject.Start();
             GameObject.gameStarted = true;
         }
