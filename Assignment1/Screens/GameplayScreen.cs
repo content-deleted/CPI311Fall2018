@@ -48,6 +48,10 @@ namespace Assignment1 {
             // The testing for tilemaps
             map = Map.Load(Path.Combine(content.RootDirectory, "TESTMAP.tmx"), content);
 
+            // Parse out and create our events
+            ObjectGroup Events = map.ObjectGroups["EVENTS"];
+            MapEvents.parseEvents(Events, content);
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(ScreenManager.GraphicsDevice);
             backgrounds = new SpriteBatch(ScreenManager.GraphicsDevice);
@@ -63,57 +67,6 @@ namespace Assignment1 {
             
             // THIS SHOULD BE MOVED
             Texture2D mosueSprite = content.Load<Texture2D>("mouse");
-            
-
-            GameObject2d spawner = GameObject2d.Initialize();
-
-            //TEMP
-            Texture2D bulletSprite = content.Load<Texture2D>("bullet_1");
-
-            spawner.sprite = new Sprite(bulletSprite);
-            spawner.sprite.Scale *= 2;
-            spawner.sprite.LayerDepth = 0.4f;
-            spawner.addBehavior(new grazeEnemy());
-            BulletSpawner b = new BulletSpawner();
-            spawner.sprite.Position = new Vector2(300, 200);
-
-            b.bulletSpeed = 2;
-            b.bulletAmount = 3;
-
-            b.bulletfrequency = 0.05f; // ms 
-
-            b.spin = 0.3f;
-            b.Wave = 0.2f;
-
-            b.bulletSprite = bulletSprite;
-            b.scale = Vector2.One * 0.4f;
-            spawner.addBehavior(b);
-
-
-            // Bar
-            Vector2 barscale = Vector2.One * 0.29f;
-            Vector2 barPos = new Vector2(300, 45);
-
-            ProgressBar bar = ProgressBar.Initialize() as ProgressBar;
-            bar.sprite = new Sprite(content.Load<Texture2D>("bar"));
-            bar.sprite.Position = barPos;
-            bar.sprite.Scale = barscale;
-            bar.sprite.LayerDepth = 0.01f;
-            bar.sprite.enableCam = false;
-
-            bar.innerSprite = new Sprite(content.Load<Texture2D>("inner"));
-            bar.innerSprite.Position = barPos;
-            bar.innerSprite.Color = Color.DarkRed;
-            bar.innerSprite.Scale = barscale;
-            bar.innerSprite.enableCam = false;
-            bar.value = 100;
-
-            // more boss stuff?
-            BossController boss = new BossController();
-            boss.healthbar = bar;
-
-            spawner.addBehavior(boss);
-            spawner.addBehavior(new enemyHealth());
 
             //init
             foreach (GameObject2d gameObject in GameObject2d.activeGameObjects) gameObject.Start();

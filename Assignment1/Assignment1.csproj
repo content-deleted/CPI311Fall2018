@@ -52,6 +52,7 @@
     <Compile Include="Jobs\Ability.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="MainGame.cs" />
+    <Compile Include="MapEvents.cs" />
     <Compile Include="PlayerBullet.cs" />
     <Compile Include="PlayerObject.cs" />
     <Compile Include="PlayerBehavior.cs" />
