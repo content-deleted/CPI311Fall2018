@@ -111,7 +111,7 @@ namespace Assignment1
             if (mov != Vector2.Zero) {
                 objSprite.Update();
                 mov.Normalize();
-                objSprite.Position += mov * speed;
+                objSprite.move( mov * speed );
             }
         }
 

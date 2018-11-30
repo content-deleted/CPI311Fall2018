@@ -29,6 +29,8 @@ namespace Assignment1 {
 
         // First event for enemy spawns this is probably most of what will be here
         static void SpawnEnemy (Squared.Tiled.Object obj) {
+            obj.X -= 640;
+            obj.Y -= 360;
             switch (obj.Name) {
                 case "Sun":
                     spawnSun(obj);

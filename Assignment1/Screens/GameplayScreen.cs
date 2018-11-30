@@ -47,6 +47,8 @@ namespace Assignment1 {
 
             // The testing for tilemaps
             map = Map.Load(Path.Combine(content.RootDirectory, "TESTMAP.tmx"), content);
+            // Set on sprites
+            Sprite.currentMap = map;
 
             // Parse out and create our events
             ObjectGroup Events = map.ObjectGroups["EVENTS"];
@@ -89,8 +91,8 @@ namespace Assignment1 {
         Vector2 PlayerLoc = Vector2.Zero;
         Vector2 drawLoc = Vector2.Zero;
 
-        public int PreferredBackBufferWidth = 1280;
-        public int PreferredBackBufferHeight = 720;
+        public static int PreferredBackBufferWidth = 1280;
+        public static int PreferredBackBufferHeight = 720;
 
         public override void Draw(GameTime gameTime) {
             // Set the context to our render target

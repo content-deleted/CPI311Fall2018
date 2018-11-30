@@ -474,7 +474,7 @@ namespace Squared.Tiled
         public int GetTile(int x, int y)
         {
             if ((x < 0) || (y < 0) || (x >= Width) || (y >= Height))
-                throw new InvalidOperationException();
+                return -1;
 
             int index = (y * Width) + x;
             return Tiles[index];
@@ -622,7 +622,7 @@ namespace Squared.Tiled
             
         }
 
-        public void Draw(SpriteBatch batch, IList<Tileset> tilesets, Rectangle rectangle, Vector2 viewportPosition, int tileWidth, int tileHeight)
+        public void Draw(SpriteBatch batch, int layerNum, IList<Tileset> tilesets, Rectangle rectangle, Vector2 viewportPosition, int tileWidth, int tileHeight)
         {
             int i = 0;
             Vector2 destPos = new Vector2(rectangle.Left, rectangle.Top);
@@ -719,7 +719,7 @@ namespace Squared.Tiled
                         info = _TileInfoCache[index];
                         batch.Draw(info.Texture, destPos - viewPos, info.Rectangle,
                                    Color.White * this.Opacity, rotation, new Vector2(tileWidth / 2f, tileHeight / 2f),
-                                   1f, flipEffect, 0);
+                                   1f, flipEffect, 0.01f * layerNum);
                     }
 
                     destPos.X += tileWidth;
@@ -1170,17 +1170,17 @@ namespace Squared.Tiled
             //cycle through each item in combined list
             //if the value is true its a layer, false its an object group
             //the key should be the name of the layer or object group
-            foreach (var layer in Combined)
+            foreach (var layer in Combined.Select((value, i) => new { i, value }))
             {
-                if (layer.Value == true)
+                if (layer.value.Value == true)
                 {
                     if (this.Orientation == "isometric")
-                        Layers[layer.Key].DrawIso(batch, Tilesets.Values, rectangle, viewportPosition, TileWidth, TileHeight);
+                        Layers[layer.value.Key].DrawIso(batch, Tilesets.Values, rectangle, viewportPosition, TileWidth, TileHeight);
                     else
-                        Layers[layer.Key].Draw(batch, Tilesets.Values, rectangle, viewportPosition, TileWidth, TileHeight);
+                        Layers[layer.value.Key].Draw(batch, layer.i, Tilesets.Values, rectangle, viewportPosition, TileWidth, TileHeight);
                 }
                 else
-                    ObjectGroups[layer.Key].Draw(this, batch, rectangle, viewportPosition, TileWidth, TileHeight);
+                    ObjectGroups[layer.value.Key].Draw(this, batch, rectangle, viewportPosition, TileWidth, TileHeight);
             }
         }
     }

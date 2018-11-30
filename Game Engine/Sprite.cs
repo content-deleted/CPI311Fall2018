@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Squared.Tiled;
+using GameStateManagement;
 
 //
 // Summary:
@@ -43,10 +45,44 @@ using Microsoft.Xna.Framework.Graphics;
 namespace CPI311.GameEngine
 {
     public class Sprite {
+        // this is a bad design choice
+        public static Map currentMap;
         public static Vector2 cameraPosition;
         public bool enableCam = true;
         public Texture2D Texture { get; set; }
-        public Vector2 Position { get; set; }
+        public bool solid = true; // THIS CONTROLS TILE COLLISION NOT ENTITY 
+        private Vector2 position;
+        public Vector2 Position {
+            get => position;
+            set => position = value;
+        }
+
+        public void move(Vector2 dir) {
+            // check collides with tile
+            Vector2 mov = dir;
+
+            if (currentMap != null && solid) {
+                Layer col = currentMap.Layers["COLLISION"];
+                int w = currentMap.TileWidth;
+                int h = currentMap.TileHeight;
+                int tilePosX = (int)((position.X + 640) / w);
+                int tilePosY = (int)((position.Y + 360) / h);
+                int nexttilePosX = (int)((position.X + dir.X + 640) / w); 
+                int nexttilePosY = (int)((position.Y + dir.Y + 360) / h); 
+                if (tilePosX <= currentMap.Width && tilePosX >= 0 && tilePosY <= currentMap.Height && tilePosY >= 0) {
+                    // x
+                    if (col.GetTile(nexttilePosX, tilePosY) != 0) {
+                        mov.X = 0;
+                    }
+                    // y
+                    if (col.GetTile(tilePosX, nexttilePosY) != 0) {
+                        mov.Y = 0;
+                    }
+                }
+            }
+            position += mov;
+        }
+
         public Vector2 CameraSpacePosition { get => (enableCam) ? Position - cameraPosition : Position; }
         public Rectangle SourceRectangle { get; set; }
         public virtual float Height { get => SourceRectangle.Height; }
