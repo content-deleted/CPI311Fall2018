@@ -172,7 +172,7 @@ namespace CPI311.GameEngine {
         public static Effect effect;
 
         
-        private VertexPositionTexture[] Vertices { get; set; }
+        private VertexPositionNormalTexture[] Vertices { get; set; }
 
         private int[] Indices { get; set; }
         private float[] heights { get; set; }
@@ -189,12 +189,13 @@ namespace CPI311.GameEngine {
             heights = new float[rows * cols];
             //CreateHeights(); 
 
-            Vertices = new VertexPositionTexture[rows * cols];
+            Vertices = new VertexPositionNormalTexture[rows * cols];
 
             for (int r = 0; r < rows; r++)
                 for (int c = 0; c < cols; c++)
-                    Vertices[r * cols + c] = new VertexPositionTexture(
-                        new Vector3(c, GetHeight( (10f*c/(float)rows) , (10f*r/(float)cols) ), r),
+                    Vertices[r * cols + c] = new VertexPositionNormalTexture (
+                        new Vector3(c, GetHeight( (10f*c/(float)rows) ,(10f*r/(float)cols) ), r),
+                         Vector3.Up,
                         new Vector2(c / res.X, r / res.Y));
 
             Indices = new int[(rows - 1) * (cols - 1) * 6];
@@ -205,10 +206,23 @@ namespace CPI311.GameEngine {
                     Indices[index++] = r * cols + c + 1;
                     Indices[index++] = (r + 1) * cols + c;
 
+
+
                     Indices[index++] = (r + 1) * cols + c;
                     Indices[index++] = r * cols + c + 1;
                     Indices[index++] = (r + 1) * cols + c + 1;
+
+                    Vertices[r * cols + c].Normal = generateNormal(Vertices[Indices[index - 1]].Position, Vertices[Indices[index - 2]].Position, Vertices[Indices[index - 3]].Position);
                 }
+        }
+
+        // We take 3 points of a triangle and find its normal
+        public Vector3 generateNormal(Vector3 a, Vector3 b, Vector3 c) {
+            Vector3 ab = a - b;
+            Vector3 cb = c - b;
+            ab.Normalize();
+            cb.Normalize();
+            return Vector3.Cross(ab, cb);
         }
         public float GetHeight(double x, double y) {
             return (float)noise.OctavePerlin(x, y, 0.5f, 2, 10) *10;
@@ -233,6 +247,12 @@ namespace CPI311.GameEngine {
         public Vector3 specularColor = new Vector3(0.2f, 0.2f, 0.2f);
 
         public override void Render(Camera c, Transform t, Model m, GraphicsDevice g) {
+
+            g.RasterizerState = new RasterizerState() {
+                FillMode = FillMode.WireFrame,
+                CullMode = CullMode.None
+            };
+
             Matrix view = c.View;
             Matrix projection = c.Projection;
 
@@ -241,18 +261,35 @@ namespace CPI311.GameEngine {
             effect.Parameters["World"].SetValue(t.World);
             effect.Parameters["View"].SetValue(view);
             effect.Parameters["Projection"].SetValue(projection);
-            //effect.Parameters["LightPosition"].SetValue(lightPosition);
             effect.Parameters["CameraPosition"].SetValue(c.Transform.Position);
-            /*effect.Parameters["Shininess"].SetValue(shininess);
-            effect.Parameters["AmbientColor"].SetValue(ambientColor);
-            effect.Parameters["DiffuseColor"].SetValue(diffuseColor);
-            effect.Parameters["SpecularColor"].SetValue(specularColor);*/
+            effect.Parameters["Offset"].SetValue(13f);
+            effect.Parameters["Color"].SetValue(new Vector3(1,0,0));
+            effect.Parameters["AlphaMax"].SetValue(1f);
+            effect.Parameters["HeightOffset"].SetValue(0.5f);
 
             foreach (EffectPass pass in effect.CurrentTechnique.Passes) {
                 pass.Apply();
-                g.DrawUserIndexedPrimitives<VertexPositionTexture>
+                g.DrawUserIndexedPrimitives<VertexPositionNormalTexture>
                 (PrimitiveType.TriangleList, Vertices, 0, Vertices.Length, Indices, 0, Indices.Length / 3);
             }
+
+            g.RasterizerState = new RasterizerState() {
+                FillMode = FillMode.Solid,
+                CullMode = CullMode.CullCounterClockwiseFace
+            };
+
+
+            effect.Parameters["Offset"].SetValue(20f);
+            effect.Parameters["Color"].SetValue(new Vector3(0, 0, 1));
+            effect.Parameters["AlphaMax"].SetValue(0.66f);
+            effect.Parameters["HeightOffset"].SetValue(0f);
+
+            foreach (EffectPass pass in effect.CurrentTechnique.Passes) {
+                pass.Apply();
+                g.DrawUserIndexedPrimitives<VertexPositionNormalTexture>
+                (PrimitiveType.TriangleList, Vertices, 0, Vertices.Length, Indices, 0, Indices.Length / 3);
+            }
+
         }
 
     }
@@ -272,7 +309,7 @@ namespace CPI311.GameEngine {
         public override void Render(Camera c, Transform t, Model m, GraphicsDevice g) {
             Matrix view = c.View;
             Matrix projection = c.Projection;
-
+            /*
             effect.CurrentTechnique = effect.Techniques[0];
             effect.Parameters["World"].SetValue(t.World);
             effect.Parameters["View"].SetValue(view);
@@ -286,6 +323,13 @@ namespace CPI311.GameEngine {
             // effect.Parameters["DiffuseTexture"].SetValue(texture);
             effect.Parameters["timeSinceCol"].SetValue(timeSinceCol);
             effect.Parameters["DisperseTexture"].SetValue(disperseSample);
+            */
+            effect.CurrentTechnique = effect.Techniques[0];
+            effect.Parameters["World"].SetValue(t.World);
+            effect.Parameters["View"].SetValue(view);
+            effect.Parameters["Projection"].SetValue(projection);
+            //effect.Parameters["LightPosition"].SetValue(lightPosition);
+            effect.Parameters["CameraPosition"].SetValue(c.Transform.Position);
 
             foreach (EffectPass pass in effect.CurrentTechnique.Passes) {
                 pass.Apply();

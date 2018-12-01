@@ -94,19 +94,6 @@ namespace Final {
 
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
 
-            GraphicsDevice.RasterizerState = new RasterizerState() {
-                FillMode = FillMode.WireFrame,
-                CullMode = CullMode.None
-            };
-
-            foreach (GameObject3d gameObject in GameObject3d.activeGameObjects.ToList())
-                gameObject.Render(Tuple.Create(camera, GraphicsDevice));
-
-            GraphicsDevice.RasterizerState = new RasterizerState() {
-                FillMode = FillMode.Solid,
-                CullMode = CullMode.None
-            };
-
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects.ToList())
                 gameObject.Render(Tuple.Create(camera, GraphicsDevice));
 

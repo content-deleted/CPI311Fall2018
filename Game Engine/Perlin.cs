@@ -5,6 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CPI311.GameEngine {
+    /* 
+     * Shamelessly taken from http://flafla2.github.io/2014/08/09/perlinnoise.html
+     * Hopefully I have more time over break to dive into the mechanics 
+     * but the next week is too busy :P
+     */
+
+
     public class Perlin {
 
         public int repeat;
@@ -46,6 +53,7 @@ namespace CPI311.GameEngine {
         }
 
         public double OctavePerlin(double x, double y, double z, int octaves, double persistence) {
+            // Numbers adjusted to my preferences 
             double total = 0;
             double frequency = 3;
             double amplitude = 6;

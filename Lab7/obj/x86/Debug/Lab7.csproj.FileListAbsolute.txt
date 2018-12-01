@@ -31,3 +31,4 @@ C:\dev\CPI311Fall2018\Lab7\bin\Windows\x86\Debug\Content\noiseTexture.xnb
 C:\dev\CPI311Fall2018\Lab7\bin\Windows\x86\Debug\Content\SpeedEffectShader.xnb
 C:\dev\CPI311Fall2018\Lab7\bin\Windows\x86\Debug\Content\DOGGIE.xnb
 C:\dev\CPI311Fall2018\Lab7\bin\Windows\x86\Debug\Content\offset.xnb
+C:\dev\CPI311Fall2018\Lab7\bin\Windows\x86\Debug\Content\virtualTerrain.xnb

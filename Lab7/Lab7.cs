@@ -54,7 +54,7 @@ namespace Lab7 {
             backgrounds = new SpriteBatch(GraphicsDevice);
 
             // Load shaders 
-            SpeedAndCollideEffect.effect = Content.Load<Effect>("SpeedEffectShader");
+            SpeedAndCollideEffect.effect = Content.Load<Effect>("virtualTerrain");
             SpeedAndCollideEffect.disperseSample = Content.Load<Texture2D>("noiseTexture");
             offset = Content.Load<Effect>("offset");
             background = Content.Load<Texture2D>("DOGGIE"); 
