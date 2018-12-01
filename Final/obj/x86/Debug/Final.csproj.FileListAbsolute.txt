@@ -1,0 +1,29 @@
+C:\dev\CPI311Fall2018\Final\obj\x86\Debug\Final.csprojAssemblyReference.cache
+C:\dev\CPI311Fall2018\Final\obj\x86\Debug\Final.csproj.CoreCompileInputs.cache
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Content\virtualTerrain.xnb
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Final.exe.config
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Final.exe
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Final.pdb
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Game Engine.dll
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\MonoGame.Framework.dll
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\SharpDX.MediaFoundation.dll
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\SharpDX.dll
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\SharpDX.XAudio2.dll
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\SharpDX.DXGI.dll
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\SharpDX.Direct3D11.dll
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\SharpDX.Direct2D1.dll
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\SharpDX.XInput.dll
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\SharpDX.Direct3D9.dll
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Game Engine.pdb
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\MonoGame.Framework.xml
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\SharpDX.MediaFoundation.xml
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\SharpDX.xml
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\SharpDX.XAudio2.xml
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\SharpDX.DXGI.xml
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\SharpDX.Direct3D11.xml
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\SharpDX.Direct2D1.xml
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\SharpDX.XInput.xml
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
+C:\dev\CPI311Fall2018\Final\obj\x86\Debug\Final.csproj.CopyComplete
+C:\dev\CPI311Fall2018\Final\obj\x86\Debug\Final.exe
+C:\dev\CPI311Fall2018\Final\obj\x86\Debug\Final.pdb
