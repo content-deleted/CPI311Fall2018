@@ -45,14 +45,14 @@ namespace CPI311.GameEngine
 
         public Viewport Viewport {
             get {
-                return (orthographic) ? new Viewport((int)(ScreenManager.Width * Position.X),
-                                        (int)(ScreenManager.Height * Position.Y),
+                return (orthographic) ? new Viewport((int)(GameScreenManager.Width * Position.X),
+                                        (int)(GameScreenManager.Height * Position.Y),
                                         (int)( Size.X ),
                                         (int)( Size.Y))
-                       : new Viewport((int)(ScreenManager.Width * Position.X),
-                            (int)(ScreenManager.Height * Position.Y),
-                            (int)(ScreenManager.Width * Size.X),
-                            (int)(ScreenManager.Height * Size.Y));
+                       : new Viewport((int)(GameScreenManager.Width * Position.X),
+                            (int)(GameScreenManager.Height * Position.Y),
+                            (int)(GameScreenManager.Width * Size.X),
+                            (int)(GameScreenManager.Height * Size.Y));
             }
         }
 

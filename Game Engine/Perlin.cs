@@ -55,19 +55,21 @@ namespace CPI311.GameEngine {
         public double OctavePerlin(double x, double y, double z, int octaves, double persistence) {
             // Numbers adjusted to my preferences 
             double total = 0;
-            double frequency = 3;
-            double amplitude = 6;
-            double maxValue = 0;  // Used for normalizing result to 0.0 - 1.0
+            double frequency = 5;
+            double amplitude = 0.01f;
+            double maxValue = persistence/10;
+            double thresh = 0.03f;
             for (int i = 0; i < octaves; i++) {
-                total += perlin(x * frequency, y * frequency, z * frequency) * amplitude;
+                double temp = perlin(x * frequency, y * frequency, z * frequency) * amplitude;
 
-                maxValue += amplitude;
-
-                amplitude *= persistence;
-                frequency *= 2;
+                //amplitude *= persistence;
+                temp = temp / (maxValue / 5);
+                total += 4 * Math.Max(temp, thresh);
+                thresh += 0.5;
+                amplitude *= 10;
             }
 
-            return total / maxValue;
+            return total;
         }
 
         public double perlin(double x, double y, double z) {

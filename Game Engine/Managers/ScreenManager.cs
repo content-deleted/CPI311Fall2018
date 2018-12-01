@@ -7,8 +7,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace CPI311.GameEngine {
-    public static class ScreenManager {
-        private static GraphicsDeviceManager graphics;
+    public static class GameScreenManager {
+        public static GraphicsDeviceManager graphics;
 
         private static bool IsFullScreen {
             get => graphics.IsFullScreen;
@@ -36,7 +36,7 @@ namespace CPI311.GameEngine {
         }
 
         public static void Initialize(GraphicsDeviceManager g) {
-            ScreenManager.graphics = g;
+            GameScreenManager.graphics = g;
         }
         public static Viewport DefaultViewport {
             get { return new Viewport(0, 0, Width, Height);  }

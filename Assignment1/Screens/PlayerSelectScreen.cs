@@ -24,7 +24,7 @@ namespace Assignment1 {
 
         public PlayerSelectScreen() {
             TransitionOnTime = TimeSpan.FromSeconds(0.5);
-            TransitionOffTime = TimeSpan.FromSeconds(0.5);
+            TransitionOffTime = TimeSpan.FromSeconds(4);
         }
         
         
@@ -52,7 +52,7 @@ namespace Assignment1 {
                 if (input.IsMenuSelect(null, out PlayerNum)) {
                     SetupPlayers();
                     ScreenManager.AddScreen(new MainGameplayScreen(), null);
-                    ScreenManager.RemoveScreen(this);
+                    this.ExitScreen();
                 }
             }
 

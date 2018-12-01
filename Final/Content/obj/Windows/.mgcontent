@@ -5,5 +5,8 @@
   <Config />
   <SourceFiles>
     <File>C:/dev/CPI311Fall2018/Final/Content/virtualTerrain.fx</File>
+    <File>C:/dev/CPI311Fall2018/Final/Content/wire.png</File>
+    <File>C:/dev/CPI311Fall2018/Final/Content/blank.png</File>
+    <File>C:/dev/CPI311Fall2018/Final/Content/menufont.spritefont</File>
   </SourceFiles>
 </SourceFileCollection>

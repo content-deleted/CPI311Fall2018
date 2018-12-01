@@ -181,6 +181,8 @@ namespace CPI311.GameEngine {
 
         private Perlin noise = new Perlin();
 
+        public GameObject3d obj;
+
         public CustomTerrainRenderer(Vector2 res) {
 
             rows = (int)res.Y + 1;
@@ -194,10 +196,11 @@ namespace CPI311.GameEngine {
             for (int r = 0; r < rows; r++)
                 for (int c = 0; c < cols; c++)
                     Vertices[r * cols + c] = new VertexPositionNormalTexture (
-                        new Vector3(c, GetHeight( (10f*c/(float)rows) ,(10f*r/(float)cols) ), r),
+                        new Vector3(c, GetHeight( c , r), r),
                          Vector3.Up,
-                        new Vector2(c / res.X, r / res.Y));
-
+                        new Vector2(c, r));
+            //c / res.X, r / res.Y <-uv covers whole mesh
+            // 
             Indices = new int[(rows - 1) * (cols - 1) * 6];
             int index = 0;
             for (int r = 0; r < rows - 1; r++)
@@ -206,53 +209,50 @@ namespace CPI311.GameEngine {
                     Indices[index++] = r * cols + c + 1;
                     Indices[index++] = (r + 1) * cols + c;
 
-
+                    Vector3 n = generateNormal(Vertices[Indices[index - 1]].Position, Vertices[Indices[index - 2]].Position, Vertices[Indices[index - 3]].Position); 
 
                     Indices[index++] = (r + 1) * cols + c;
                     Indices[index++] = r * cols + c + 1;
                     Indices[index++] = (r + 1) * cols + c + 1;
 
-                    Vertices[r * cols + c].Normal = generateNormal(Vertices[Indices[index - 1]].Position, Vertices[Indices[index - 2]].Position, Vertices[Indices[index - 3]].Position);
+                    Vector3 n2 = generateNormal(Vertices[Indices[index - 1]].Position, Vertices[Indices[index - 2]].Position, Vertices[Indices[index - 3]].Position);
+
+                    Vertices[r * cols + c].Normal = Vector3.Normalize(n + n2);
                 }
         }
 
         // We take 3 points of a triangle and find its normal
         public Vector3 generateNormal(Vector3 a, Vector3 b, Vector3 c) {
-            Vector3 ab = a - b;
-            Vector3 cb = c - b;
-            ab.Normalize();
-            cb.Normalize();
-            return Vector3.Cross(ab, cb);
+            Vector3 ab = Vector3.Normalize(a - b);
+            Vector3 bc = Vector3.Normalize( b - c);
+            Vector3 ca = Vector3.Normalize(c - a);
+
+            return Vector3.Normalize(Vector3.Cross(ab, bc) + Vector3.Cross(bc, ca) + Vector3.Cross(ca, ab));
         }
         public float GetHeight(double x, double y) {
-            return (float)noise.OctavePerlin(x, y, 0.5f, 2, 10) *10;
+            return (float)noise.OctavePerlin(10f * x / (float)rows, 10f * y / (float)cols, 0.5f, 2, 6) *10;
         }
         
        
 
         public float GetAltitude(Vector3 position) {
-            /*position = Vector3.Transform(position, Matrix.Invert(ourObject.transform.World));
-            if (position.X > -size.X / 2 && position.X < size.X / 2 &&
-                              position.Z > -size.Y / 2 && position.Z < size.Y / 2)
-                return GetHeight(new Vector2((position.X + size.X / 2) / size.X,
-                    (position.Z + size.Y / 2) / size.Y)) * ourObject.transform.LocalScale.Y;*/
-            return -1;
+           position = Vector3.Transform(position, Matrix.Invert(obj.transform.World));
+            if (position.X > 0 && position.X < rows  && position.Z > 0 && position.Z < cols )
+                return GetHeight(position.X, position.Z);
+            return 0;
         }
 
         public Vector3 lightPosition;
         float shininess = 0.3f;
+
+        public static Texture2D wire;
 
         public Vector3 ambientColor = new Vector3(0.3f, 0.2f, 0.2f);
         public Vector3 diffuseColor = new Vector3(0.1f, 0.1f, 0.1f);
         public Vector3 specularColor = new Vector3(0.2f, 0.2f, 0.2f);
 
         public override void Render(Camera c, Transform t, Model m, GraphicsDevice g) {
-
-            g.RasterizerState = new RasterizerState() {
-                FillMode = FillMode.WireFrame,
-                CullMode = CullMode.None
-            };
-
+            
             Matrix view = c.View;
             Matrix projection = c.Projection;
 
@@ -262,10 +262,20 @@ namespace CPI311.GameEngine {
             effect.Parameters["View"].SetValue(view);
             effect.Parameters["Projection"].SetValue(projection);
             effect.Parameters["CameraPosition"].SetValue(c.Transform.Position);
-            effect.Parameters["Offset"].SetValue(13f);
-            effect.Parameters["Color"].SetValue(new Vector3(1,0,0));
-            effect.Parameters["AlphaMax"].SetValue(1f);
-            effect.Parameters["HeightOffset"].SetValue(0.5f);
+            
+            GameScreenManager.graphics.GraphicsDevice.BlendState = BlendState.AlphaBlend;
+            GameScreenManager.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+
+            g.RasterizerState = new RasterizerState() {
+                FillMode = FillMode.Solid,
+                CullMode = CullMode.None//CullMode.CullCounterClockwiseFace
+            };
+
+            effect.Parameters["Offset"].SetValue(20f);
+            effect.Parameters["Color"].SetValue(new Vector3(0, 0, 0.73f));
+            effect.Parameters["AlphaMax"].SetValue(0.9f);
+            effect.Parameters["HeightOffset"].SetValue(0f);
+            //effect.Parameters["wire"].SetValue(wire);
 
             foreach (EffectPass pass in effect.CurrentTechnique.Passes) {
                 pass.Apply();
@@ -273,16 +283,16 @@ namespace CPI311.GameEngine {
                 (PrimitiveType.TriangleList, Vertices, 0, Vertices.Length, Indices, 0, Indices.Length / 3);
             }
 
+            // Specific Params
+            effect.Parameters["Offset"].SetValue(13f);
+            effect.Parameters["Color"].SetValue(new Vector3(1,0,0));
+            effect.Parameters["AlphaMax"].SetValue(1f);
+            effect.Parameters["HeightOffset"].SetValue(0.5f);
+            
             g.RasterizerState = new RasterizerState() {
-                FillMode = FillMode.Solid,
-                CullMode = CullMode.CullCounterClockwiseFace
+                FillMode = FillMode.WireFrame,
+                CullMode = CullMode.None
             };
-
-
-            effect.Parameters["Offset"].SetValue(20f);
-            effect.Parameters["Color"].SetValue(new Vector3(0, 0, 1));
-            effect.Parameters["AlphaMax"].SetValue(0.66f);
-            effect.Parameters["HeightOffset"].SetValue(0f);
 
             foreach (EffectPass pass in effect.CurrentTechnique.Passes) {
                 pass.Apply();

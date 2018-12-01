@@ -243,8 +243,8 @@ namespace GameStateManagement
             screen.IsExiting = false;
 
             // If we have a graphics device, tell the screen to load content.
-            if (isInitialized)
-            {
+            if (isInitialized) {
+                LoadContent();
                 screen.LoadContent();
             }
 
