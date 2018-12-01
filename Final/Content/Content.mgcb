@@ -50,3 +50,9 @@
 /processorParam:TextureFormat=Compressed
 /build:menufont.spritefont
 
+#begin hoop.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:hoop.fx
+

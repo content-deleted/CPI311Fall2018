@@ -300,59 +300,178 @@ namespace CPI311.GameEngine {
                 (PrimitiveType.TriangleList, Vertices, 0, Vertices.Length, Indices, 0, Indices.Length / 3);
             }
 
+            g.RasterizerState = new RasterizerState() {
+                FillMode = FillMode.Solid,
+                CullMode = CullMode.None
+            };
+
         }
 
     }
 
-    public class SpeedAndCollideEffect : Material {
+    public class Hoop : Material {
         public static Effect effect;
+        
+        private VertexPositionNormalTexture[] Vertices { get; set; }
 
-        public float shininess = 20f;
-        public Vector3 ambientColor = new Vector3(0.5f, 0.5f, 0.5f);
-        public Vector3 diffuseColor = new Vector3(0, 0, 0);
-        public Vector3 specularColor = new Vector3(0, 0, 0.5f);
+        private int[] Indices { get; set; }
 
-        //public Texture2D texture;
-        public static Texture2D disperseSample;
-        public float timeSinceCol = 0;
+        public GameObject3d obj;
+
+        public Hoop(float innerRadius, float outerRadius, float width, int triangles) {
+
+            Vertices = new VertexPositionNormalTexture[triangles * 5];
+
+            //2 * Math.PI / triangles
+            float currentInnerA = 0;
+            float currentOuterA = -(float)Math.PI / (triangles * 2);
+
+            int index = 0;
+            for (int i = 0; i < triangles; i++) {
+
+                // inner point
+                Vector3 inner = pointOnCircle(innerRadius, currentInnerA, 0);
+                Vertices[index++] = new VertexPositionNormalTexture(
+                    inner,
+                    inner,
+                    new Vector2(0.5f, 1f));
+
+                //outer 1
+                Vector3 temp = pointOnCircle(outerRadius, currentOuterA, width);
+                Vertices[index++] = new VertexPositionNormalTexture(
+                    temp,
+                    inner,
+                    new Vector2(0f, 0f));
+
+                //backside
+                temp = pointOnCircle(outerRadius, currentOuterA, -width);
+                Vertices[index++] = new VertexPositionNormalTexture(
+                    temp,
+                    inner,
+                    new Vector2(0f, 1f));
+
+                currentOuterA += (float)Math.PI / (triangles);
+
+                //outer 2
+                temp = pointOnCircle(outerRadius, currentOuterA, width);
+                Vertices[index++] = new VertexPositionNormalTexture(
+                    temp,
+                    inner,
+                    new Vector2(1f, 0f));
+
+                //backside
+                temp = pointOnCircle(outerRadius, currentOuterA, -width);
+                Vertices[index++] = new VertexPositionNormalTexture(
+                    temp,
+                    inner,
+                    new Vector2(1f, 0f));
+
+                currentOuterA += (float)Math.PI / (triangles);
+                currentInnerA += 2*(float)Math.PI / triangles;
+            }
+            //c / res.X, r / res.Y <-uv covers whole mesh
+            // 
+            Indices = new int[triangles * 18];
+            index = 0;
+            for (int i = 0; i < triangles; i++) {
+                int offset = (i * 5);
+                Indices[index++] = offset + 1;
+                Indices[index++] = offset + 3;
+                Indices[index++] = offset + 0;
+
+                Indices[index++] = offset + 3;
+                Indices[index++] = offset + 4;
+                Indices[index++] = offset + 0;
+
+                Indices[index++] = offset + 4;
+                Indices[index++] = offset + 2;
+                Indices[index++] = offset + 0;
+
+                Indices[index++] = offset + 2;
+                Indices[index++] = offset + 1;
+                Indices[index++] = offset + 0;
+
+                Indices[index++] = offset + 2;
+                Indices[index++] = offset + 4;
+                Indices[index++] = offset + 3;
+
+                Indices[index++] = offset + 3;
+                Indices[index++] = offset + 1;
+                Indices[index++] = offset + 2;
+            }
+        }
+
+        Vector3 pointOnCircle(float radius, float angle, float z) => new Vector3((float)(radius * Math.Cos(angle)), (float)(radius * Math.Sin(angle)), z);
 
         public override void Render(Camera c, Transform t, Model m, GraphicsDevice g) {
+
             Matrix view = c.View;
             Matrix projection = c.Projection;
-            /*
+
+            // Setup custom shader etc.
             effect.CurrentTechnique = effect.Techniques[0];
             effect.Parameters["World"].SetValue(t.World);
             effect.Parameters["View"].SetValue(view);
             effect.Parameters["Projection"].SetValue(projection);
-            effect.Parameters["LightPosition"].SetValue(Vector3.Up * 5);
-            effect.Parameters["CameraPosition"].SetValue(c.Transform.Position);
-            effect.Parameters["Shininess"].SetValue(shininess);
-            effect.Parameters["AmbientColor"].SetValue(ambientColor);
-            effect.Parameters["DiffuseColor"].SetValue(diffuseColor);
-            effect.Parameters["SpecularColor"].SetValue(specularColor);
-            // effect.Parameters["DiffuseTexture"].SetValue(texture);
-            effect.Parameters["timeSinceCol"].SetValue(timeSinceCol);
-            effect.Parameters["DisperseTexture"].SetValue(disperseSample);
-            */
-            effect.CurrentTechnique = effect.Techniques[0];
-            effect.Parameters["World"].SetValue(t.World);
-            effect.Parameters["View"].SetValue(view);
-            effect.Parameters["Projection"].SetValue(projection);
-            //effect.Parameters["LightPosition"].SetValue(lightPosition);
             effect.Parameters["CameraPosition"].SetValue(c.Transform.Position);
 
             foreach (EffectPass pass in effect.CurrentTechnique.Passes) {
                 pass.Apply();
-                foreach (ModelMesh mesh in m.Meshes)
-                    foreach (ModelMeshPart part in mesh.MeshParts) {
-                        g.SetVertexBuffer(part.VertexBuffer);
-                        g.Indices = part.IndexBuffer;
-                        g.DrawIndexedPrimitives(
-                            PrimitiveType.TriangleList, part.VertexOffset, 0,
-                            part.NumVertices, part.StartIndex, part.PrimitiveCount);
-                    }
+                g.DrawUserIndexedPrimitives<VertexPositionNormalTexture>
+                (PrimitiveType.TriangleList, Vertices, 0, Vertices.Length, Indices, 0, Indices.Length / 3);
             }
         }
     }
 
+
+    public class SpeedAndCollideEffect : Material {
+    public static Effect effect;
+
+    public float shininess = 20f;
+    public Vector3 ambientColor = new Vector3(0.5f, 0.5f, 0.5f);
+    public Vector3 diffuseColor = new Vector3(0, 0, 0);
+    public Vector3 specularColor = new Vector3(0, 0, 0.5f);
+
+    //public Texture2D texture;
+    public static Texture2D disperseSample;
+    public float timeSinceCol = 0;
+
+    public override void Render(Camera c, Transform t, Model m, GraphicsDevice g) {
+        Matrix view = c.View;
+        Matrix projection = c.Projection;
+        /*
+        effect.CurrentTechnique = effect.Techniques[0];
+        effect.Parameters["World"].SetValue(t.World);
+        effect.Parameters["View"].SetValue(view);
+        effect.Parameters["Projection"].SetValue(projection);
+        effect.Parameters["LightPosition"].SetValue(Vector3.Up * 5);
+        effect.Parameters["CameraPosition"].SetValue(c.Transform.Position);
+        effect.Parameters["Shininess"].SetValue(shininess);
+        effect.Parameters["AmbientColor"].SetValue(ambientColor);
+        effect.Parameters["DiffuseColor"].SetValue(diffuseColor);
+        effect.Parameters["SpecularColor"].SetValue(specularColor);
+        // effect.Parameters["DiffuseTexture"].SetValue(texture);
+        effect.Parameters["timeSinceCol"].SetValue(timeSinceCol);
+        effect.Parameters["DisperseTexture"].SetValue(disperseSample);
+        */
+        effect.CurrentTechnique = effect.Techniques[0];
+        effect.Parameters["World"].SetValue(t.World);
+        effect.Parameters["View"].SetValue(view);
+        effect.Parameters["Projection"].SetValue(projection);
+        //effect.Parameters["LightPosition"].SetValue(lightPosition);
+        effect.Parameters["CameraPosition"].SetValue(c.Transform.Position);
+
+        foreach (EffectPass pass in effect.CurrentTechnique.Passes) {
+            pass.Apply();
+            foreach (ModelMesh mesh in m.Meshes)
+                foreach (ModelMeshPart part in mesh.MeshParts) {
+                    g.SetVertexBuffer(part.VertexBuffer);
+                    g.Indices = part.IndexBuffer;
+                    g.DrawIndexedPrimitives(
+                        PrimitiveType.TriangleList, part.VertexOffset, 0,
+                        part.NumVertices, part.StartIndex, part.PrimitiveCount);
+                }
+            }
+        }
+    }
 }

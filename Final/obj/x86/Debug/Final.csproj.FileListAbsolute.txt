@@ -30,3 +30,4 @@ C:\dev\CPI311Fall2018\Final\obj\x86\Debug\Final.pdb
 C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Content\wire.xnb
 C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Content\blank.xnb
 C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Content\menufont.xnb
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Content\hoop.xnb
