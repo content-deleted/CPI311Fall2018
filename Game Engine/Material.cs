@@ -235,6 +235,8 @@ namespace CPI311.GameEngine {
                 }
         }
 
+
+
         // We take 3 points of a triangle and find its normal
         public Vector3 generateNormal(Vector3 a, Vector3 b, Vector3 c) {
             Vector3 ab = Vector3.Normalize(a - b);

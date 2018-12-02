@@ -145,6 +145,9 @@ namespace GameStateManagement
         /// Allows the screen the chance to position the menu entries. By default
         /// all menu entries are lined up in a vertical list, centered on the screen.
         /// </summary>
+        /// 
+        protected bool scrollEnable = false;
+        protected float scroll = 0;
         protected virtual void UpdateMenuEntryLocations()
         {
             // Make the menu slide into place during transitions, using a
@@ -153,7 +156,7 @@ namespace GameStateManagement
             float transitionOffset = (float)Math.Pow(TransitionPosition, 2);
 
             // start at Y = 175; each X value is generated per entry
-            Vector2 position = new Vector2(0f, 175f);
+            Vector2 position = new Vector2(0f, 175f + scroll);
 
             // update each menu entry's location in turn
             for (int i = 0; i < menuEntries.Count; i++)
@@ -171,11 +174,16 @@ namespace GameStateManagement
                 // set the entry's position
                 menuEntry.Position = position;
 
+                if (i == selectedEntry) {
+                    if (position.Y > 2 * ScreenManager.GraphicsDevice.Viewport.Height / 3) scroll -= 3;
+                    else if ( position.Y < 80 + menuEntry.GetHeight(this)) scroll += 3;
+                }
+
                 // move down for the next entry the size of this entry
                 position.Y += menuEntry.GetHeight(this);
             }
         }
-
+        
 
         /// <summary>
         /// Updates the menu.

@@ -11,6 +11,7 @@ using CPI311.GameEngine;
 using System.Linq;
 using System;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Media;
 
 namespace Final {
 
@@ -37,6 +38,7 @@ namespace Final {
 
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
+            
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GameScreenManager.GraphicsDevice);
