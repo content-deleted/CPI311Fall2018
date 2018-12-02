@@ -26,12 +26,21 @@ namespace Final {
 
         ContentManager content;
 
-        public Gameplay() {
+        Song song;
+
+        public Gameplay(SongSelect.songInfo s) {
+
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
             
             camera.Transform.LocalPosition += new Vector3(100, 0, 10);
             camera.Transform.Rotate(Vector3.Up, (float)Math.PI);
+
+            // Load song
+            System.Uri uri = new System.Uri(s.songPath, System.UriKind.Relative);
+            song = Song.FromUri(s.songName,uri);
+
+            MediaPlayer.Play(song);
         }
         
         public override void LoadContent() {

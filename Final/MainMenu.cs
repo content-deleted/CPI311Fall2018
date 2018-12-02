@@ -27,7 +27,7 @@ namespace Final {
             //ScreenManager.AddScreen(new Gameplay(), null);
             ScreenManager.AddScreen(new SongSelect(), null);
             //ScreenManager.GetScreens().First().ExitScreen();
-            this.ExitScreen();
+            //this.ExitScreen();
         }
 
         public void initDemo () {

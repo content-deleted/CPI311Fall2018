@@ -8,12 +8,20 @@ using System.Threading.Tasks;
 
 namespace Final {
     public class SongSelect : MenuScreen {
-        struct songInfo {
+        public struct songInfo {
             public string songPath;
             public string songName;
         }
 
-        songInfo[] songs;
+        class SongEntry : MenuEntry {
+            public songInfo songInfo;
+            public SongEntry(songInfo s) : base(s.songName) {
+                songInfo = s;
+            }
+        }
+
+
+            songInfo[] songs;
 
         public SongSelect() : base("Song Select") {
             songs = Directory.GetFiles(Directory.GetCurrentDirectory() + "\\Songs").Where(f => f.Substring(f.LastIndexOf('.')).Equals(".mp3")).Select(fullPath => {
@@ -26,15 +34,18 @@ namespace Final {
                 }).ToArray();
             
             foreach (songInfo song in songs) {
-                MenuEntry temp = new MenuEntry(song.songName);
-                // attach an event here
+                SongEntry temp = new SongEntry(song);
+                temp.Selected += SelectedSong;// attach an event here
                 MenuEntries.Add(temp);
             }
 
         }
 
+        void SelectedSong(object sender, PlayerIndexEventArgs e) {
+            songInfo song = (sender as SongEntry).songInfo;
+            ScreenManager.AddScreen(new Gameplay(song), null);
+        }
+
+    
     }
 }
-
-//System.Uri uri = new System.Uri("content/background.mp3", System.UriKind.Relative);
-//Song s = Song.FromUri()
