@@ -68,9 +68,9 @@ namespace Final {
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects) gameObject.Start();
             GameObject.gameStarted = true;
         }
-        
+
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
-            float speed = 20;
+            float speed = 50;
             float rot = 10;
 
             if (InputManager.IsKeyDown(Keys.W)) camera.Transform.LocalPosition += speed * camera.Transform.Forward * Time.ElapsedGameTime;
@@ -81,17 +81,23 @@ namespace Final {
 
             if (InputManager.IsKeyDown(Keys.Left)) camera.Transform.Rotate(camera.Transform.Up, rot * Time.ElapsedGameTime);
             if (InputManager.IsKeyDown(Keys.Right)) camera.Transform.Rotate(camera.Transform.Down, rot * Time.ElapsedGameTime);
-            if (InputManager.IsKeyDown(Keys.Up)) camera.Transform.Rotate(Vector3.Left, rot * Time.ElapsedGameTime/3);
-            if (InputManager.IsKeyDown(Keys.Down)) camera.Transform.Rotate(Vector3.Right, rot * Time.ElapsedGameTime/3);
+            if (InputManager.IsKeyDown(Keys.Up)) camera.Transform.Rotate(Vector3.Left, rot * Time.ElapsedGameTime / 3);
+            if (InputManager.IsKeyDown(Keys.Down)) camera.Transform.Rotate(Vector3.Right, rot * Time.ElapsedGameTime / 3);
 
             Vector3 pos = camera.Transform.Position;
-            pos.Y = 2+terrainRenderer.GetAltitude(camera.Transform.Position);
+            pos.Y = 2 + terrainRenderer.GetAltitude(camera.Transform.Position);
             camera.Transform.LocalPosition = pos;
 
             InputManager.Update();
             Time.Update(gameTime);
-            
+
             GameObject3d.UpdateObjects();
+
+            while (terrainRenderer.lastRowDepth < camera.Transform.Position.Z - 5) {
+                terrainRenderer.updateNormals(Math.Abs(terrainRenderer.lastRowDepth - 5), Vector3.Up);
+                terrainRenderer.updateDepth(terrainRenderer.lastRowDepth);
+                terrainRenderer.updateNormals(terrainRenderer.lastRowDepth + 1, Vector3.Down);
+            }
         }
         
         public override void Draw(GameTime gameTime) {

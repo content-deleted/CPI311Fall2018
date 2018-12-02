@@ -31,6 +31,7 @@ struct VertexShaderOutput
 	//float4 Color : COLOR0;
     float4 WorldPosition : TEXCOORD1;
     float3 WorldNormal : TEXCOORD2;
+    float normalClipCheck : TEXCOORD3;
 };
 
 VertexShaderOutput MainVS(in VertexShaderInput input)
@@ -44,6 +45,7 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 	// Send normal in world space
     output.WorldNormal = mul(input.Normal, World);
 	
+    output.normalClipCheck = input.Normal.y;
 
 	return output;
 }
@@ -55,6 +57,9 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float dist = abs(1 / (distance(CameraPosition, input.WorldPosition.xyz) / Offset));
     //edge = clamp(edge, 0.01, 1);
     clip(dist - 0.05);
+    clip(input.normalClipCheck);
+    clip(input.WorldPosition.z - (CameraPosition.z - 1) );
+
     return float4(Color, min(dist, AlphaMax)); //input.Color;
 
 }

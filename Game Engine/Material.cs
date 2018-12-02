@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
 namespace CPI311.GameEngine {
-    public abstract class Material  {
+    public abstract class Material {
         public abstract void Render(Camera c, Transform t, Model m, GraphicsDevice g);
     }
 
@@ -35,7 +35,7 @@ namespace CPI311.GameEngine {
             Matrix view = c.View;
             Matrix projection = c.Projection;
 
-            effect.CurrentTechnique = effect.Techniques[0]; 
+            effect.CurrentTechnique = effect.Techniques[0];
             effect.Parameters["World"].SetValue(t.World);
             effect.Parameters["View"].SetValue(view);
             effect.Parameters["Projection"].SetValue(projection);
@@ -171,7 +171,7 @@ namespace CPI311.GameEngine {
     public class CustomTerrainRenderer : Material {
         public static Effect effect;
 
-        
+
         private VertexPositionNormalTexture[] Vertices { get; set; }
 
         private int[] Indices { get; set; }
@@ -182,6 +182,20 @@ namespace CPI311.GameEngine {
         private Perlin noise = new Perlin();
 
         public GameObject3d obj;
+        public int lastRowDepth;
+
+        public void updateDepth (int depth) {
+            for (int c = 0; c < cols; c++)
+                Vertices[(depth % cols) * cols + c] = new VertexPositionNormalTexture(
+                    new Vector3(c, GetHeight(c, depth+cols), depth + cols),
+                     Vector3.Down,
+                    new Vector2(c, depth + cols));
+            lastRowDepth++;
+        }
+        public void updateNormals (int depth, Vector3 normal) {
+            for (int c = 0; c < cols; c++) Vertices[( depth % cols) * cols + c].Normal = normal;
+        }
+
 
         public CustomTerrainRenderer(Vector2 res) {
 
@@ -209,15 +223,15 @@ namespace CPI311.GameEngine {
                     Indices[index++] = r * cols + c + 1;
                     Indices[index++] = (r + 1) * cols + c;
 
-                    Vector3 n = generateNormal(Vertices[Indices[index - 1]].Position, Vertices[Indices[index - 2]].Position, Vertices[Indices[index - 3]].Position); 
+                    //Vector3 n = generateNormal(Vertices[Indices[index - 1]].Position, Vertices[Indices[index - 2]].Position, Vertices[Indices[index - 3]].Position); 
 
                     Indices[index++] = (r + 1) * cols + c;
                     Indices[index++] = r * cols + c + 1;
                     Indices[index++] = (r + 1) * cols + c + 1;
 
-                    Vector3 n2 = generateNormal(Vertices[Indices[index - 1]].Position, Vertices[Indices[index - 2]].Position, Vertices[Indices[index - 3]].Position);
+                    //Vector3 n2 = generateNormal(Vertices[Indices[index - 1]].Position, Vertices[Indices[index - 2]].Position, Vertices[Indices[index - 3]].Position);
 
-                    Vertices[r * cols + c].Normal = Vector3.Normalize(n + n2);
+                    //Vertices[r * cols + c].Normal = Vector3.Normalize(n + n2);
                 }
         }
 
@@ -237,9 +251,9 @@ namespace CPI311.GameEngine {
 
         public float GetAltitude(Vector3 position) {
            position = Vector3.Transform(position, Matrix.Invert(obj.transform.World));
-            if (position.X > 0 && position.X < rows  && position.Z > 0 && position.Z < cols )
+            //if (position.X > 0 && position.X < rows  && position.Z > 0 && position.Z < cols )
                 return GetHeight(position.X, position.Z);
-            return 0;
+            //return 0;
         }
 
         public Vector3 lightPosition;
