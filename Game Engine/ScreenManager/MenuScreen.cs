@@ -148,6 +148,9 @@ namespace GameStateManagement
         /// 
         protected bool scrollEnable = false;
         protected float scroll = 0;
+
+        public float entryOffset = 175f;
+
         protected virtual void UpdateMenuEntryLocations()
         {
             // Make the menu slide into place during transitions, using a
@@ -156,7 +159,7 @@ namespace GameStateManagement
             float transitionOffset = (float)Math.Pow(TransitionPosition, 2);
 
             // start at Y = 175; each X value is generated per entry
-            Vector2 position = new Vector2(0f, 175f + scroll);
+            Vector2 position = new Vector2(0f, entryOffset + scroll);
 
             // update each menu entry's location in turn
             for (int i = 0; i < menuEntries.Count; i++)

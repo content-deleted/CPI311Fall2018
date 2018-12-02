@@ -15,7 +15,7 @@ namespace Final {
         Camera camera = new Camera();
         ContentManager content;
 
-        public MainMenu() : base("Main Menu") {
+        public MainMenu() : base("") {
             MenuEntry startGame = new MenuEntry("Start");
 
             startGame.Selected += StartGameSelected;
@@ -43,6 +43,8 @@ namespace Final {
             Hoop.effect = content.Load<Effect>("hoop");
 
             for (int i = 0; i <= 10; i++) spawnHoop(20 * i);
+
+            entryOffset = ScreenManager.GraphicsDevice.Viewport.Height / 2;
         }
 
         public void spawnHoop(int place) {
@@ -55,6 +57,7 @@ namespace Final {
         }
 
         public override void Draw(GameTime gameTime) {
+            if(IsExiting) ScreenManager.Game.Exit();
             camera.Transform.LocalPosition += camera.Transform.Forward;
             foreach (GameObject3d h in hoop) {
                 h.transform.Rotate(Vector3.Forward, 0.1f);

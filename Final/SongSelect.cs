@@ -24,6 +24,7 @@ namespace Final {
             songInfo[] songs;
 
         public SongSelect() : base("Song Select") {
+            
             songs = Directory.GetFiles(Directory.GetCurrentDirectory() + "\\Songs").Where(f => f.Substring(f.LastIndexOf('.')).Equals(".mp3")).Select(fullPath => {
                 var temp = fullPath.LastIndexOf("\\Songs") + 7;
                 var length = fullPath.LastIndexOf(".") - temp;
