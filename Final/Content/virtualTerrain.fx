@@ -1,12 +1,12 @@
-﻿#if OPENGL
+﻿/*#if OPENGL
 	#define SV_POSITION POSITION
 	#define VS_SHADERMODEL vs_3_0
 	#define PS_SHADERMODEL ps_3_0
 #else
-	#define VS_SHADERMODEL vs_4_0_level_9_1
-	#define PS_SHADERMODEL ps_4_0_level_9_1
+	#define VS_SHADERMODEL vs_4_0_level_9_3 
+	#define PS_SHADERMODEL ps_4_0_level_9_3 
 #endif
-
+*/
 float3 CameraPosition; // in world space
 float4x4 World; // World Matrix
 float4x4 View; // View Matrix
@@ -15,10 +15,19 @@ float Offset;
 float AlphaMax;
 float3 Color;
 float HeightOffset;
+Texture2D songData;
+float songPos;
+//<float>
+sampler songSampler = sampler_state
+{
+    Texture = <songData>;
+    AddressU = CLAMP;
+    AddressV = CLAMP;
+};
 
 struct VertexShaderInput
 {
-    float4 Position : SV_Position0;
+    float4 Position : SV_POSITION0;
     float3 Normal : NORMAL0;
     float2 UV : TEXCOORD0;
     //float4 Color : COLOR0;
@@ -37,7 +46,10 @@ struct VertexShaderOutput
 VertexShaderOutput MainVS(in VertexShaderInput input)
 {
 	VertexShaderOutput output = (VertexShaderOutput)0;
-    output.WorldPosition = mul(input.Position + float4(0, HeightOffset, 0,0), World);
+    //dot(tex2D(songSampler, float2(input.Position.x, currentFrame)), float4(1, 1, 1, 1));
+    float samp = songData.SampleLevel(songSampler, float2(input.Position.y / 1000, songPos/10), 1);
+    float h = HeightOffset + samp * samp;
+    output.WorldPosition = mul(input.Position + float4(0, h, 0,0), World);
     float4 viewPosition = mul(output.WorldPosition, View);
     output.Position = mul(viewPosition, Projection);
 
@@ -68,9 +80,9 @@ technique BasicColorDrawing
 {
 	pass P0
 	{
-		VertexShader = compile VS_SHADERMODEL MainVS();
-		PixelShader = compile PS_SHADERMODEL MainPS();
-	}
+        VertexShader = compile vs_4_0 MainVS();
+        PixelShader = compile ps_4_0 MainPS();
+    }
 };
 
 /*

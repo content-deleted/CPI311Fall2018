@@ -1,4 +1,4 @@
-﻿#if OPENGL
+﻿/*#if OPENGL
 	#define SV_POSITION POSITION
 	#define VS_SHADERMODEL vs_3_0
 	#define PS_SHADERMODEL ps_3_0
@@ -6,7 +6,7 @@
 	#define VS_SHADERMODEL vs_4_0_level_9_1
 	#define PS_SHADERMODEL ps_4_0_level_9_1
 #endif
-
+*/
 float3 CameraPosition; // in world space
 float4x4 World; // World Matrix
 float4x4 View; // View Matrix
@@ -29,7 +29,7 @@ struct VertexShaderOutput
     float2 UV : TEXCOORD0;
 };
 
-VertexShaderOutput MainVS(in VertexShaderInput input)
+VertexShaderOutput MainVS(VertexShaderInput input)
 {
 	VertexShaderOutput output = (VertexShaderOutput)0;
     output.WorldPosition = mul(input.Position + float4(sin(rotation) * input.Normal, 0), World);
@@ -58,13 +58,13 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     return float4(1 / input.dist, 0, 1 / input.dist, 1); //float4(Color, min(dist, AlphaMax)); //input.Color;
 }
 
-technique BasicColorDrawing
+technique hoopDrawing
 {
 	pass P0
 	{
-		VertexShader = compile VS_SHADERMODEL MainVS();
-		PixelShader = compile PS_SHADERMODEL MainPS();
-	}
+        VertexShader = compile vs_4_0 MainVS();
+        PixelShader = compile ps_4_0 MainPS();
+    }
 };
 
 /*

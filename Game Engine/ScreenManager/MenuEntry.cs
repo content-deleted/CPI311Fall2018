@@ -135,6 +135,10 @@ namespace GameStateManagement
         /// <summary>
         /// Draws the menu entry. This can be overridden to customize the appearance.
         /// </summary>
+
+        public Color drawColor = Color.White;
+        public Color selectedColor = Color.Yellow;
+
         public virtual void Draw(MenuScreen screen, bool isSelected, GameTime gameTime)
         {
             // there is no such thing as a selected item on Windows Phone, so we always
@@ -143,8 +147,8 @@ namespace GameStateManagement
             isSelected = false;
 #endif
 
-            // Draw the selected entry in yellow, otherwise white.
-            Color color = isSelected ? Color.Yellow : Color.White;
+            // Flip which color we use
+            Color color = isSelected ? selectedColor : drawColor;
 
             // Pulsate the size of the selected menu entry.
             double time = gameTime.TotalGameTime.TotalSeconds;

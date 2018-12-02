@@ -15,12 +15,15 @@ namespace Final {
         public Main() {
             Content.RootDirectory = "Content";
 
+            
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreparingDeviceSettings += new EventHandler<PreparingDeviceSettingsEventArgs>(graphics_PreparingDeviceSettings);
             CPI311.GameEngine.GameScreenManager.Initialize(graphics);
             CPI311.GameEngine.GameScreenManager.Setup(false, 1080, 720);
             graphics.GraphicsProfile = GraphicsProfile.HiDef;
             //graphics.PreferredBackBufferWidth = 1280;
             //graphics.PreferredBackBufferHeight = 720;
+            
 
             CPI311.GameEngine.Time.Initialize();
             CPI311.GameEngine.InputManager.Initialize();
@@ -41,6 +44,9 @@ namespace Final {
 
             // The real drawing happens inside the screen manager component.
             base.Draw(gameTime);
+        }
+        void graphics_PreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs e) {
+            e.GraphicsDeviceInformation.GraphicsProfile = GraphicsProfile.HiDef;
         }
     }
 }

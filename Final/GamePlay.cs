@@ -11,7 +11,13 @@ using CPI311.GameEngine;
 using System.Linq;
 using System;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Media;
+//using Microsoft.Xna.Framework.Media;
+using NAudio;
+using NAudio.Wave;
+using NAudio.Utils;
+using NAudio.Wave.SampleProviders;
+using NAudio.Dsp;
+using System.Collections.Generic;
 
 namespace Final {
 
@@ -25,8 +31,12 @@ namespace Final {
         GameObject3d terrainObject;
 
         ContentManager content;
-
-        Song song;
+        
+        
+        Mp3FileReader reader;
+        WaveOut waveOut;
+        List<Mp3Frame> mp3Frames = new List<Mp3Frame>();
+        Texture2D test;
 
         public Gameplay(SongSelect.songInfo s) {
 
@@ -37,12 +47,49 @@ namespace Final {
             camera.Transform.Rotate(Vector3.Up, (float)Math.PI);
 
             // Load song
-            System.Uri uri = new System.Uri(s.songPath, System.UriKind.Relative);
-            song = Song.FromUri(s.songName,uri);
+            //System.Uri uri = new System.Uri(s.songPath, System.UriKind.Relative);
+            //song = Song.FromUri(s.songName,uri);
+            //audioFileReader = new NAudio.Wave.AudioFileReader(s.songPath);
 
-            MediaPlayer.Play(song);
+            reader = new Mp3FileReader(s.songPath);
+
+            waveOut = new WaveOut(); // or WaveOutEvent()
+            //byte[] buffer = new byte[2000];
+
+            //reader.Read(buffer, 0, 2000);
+            var totalLength = reader.Length;
+            Mp3Frame b = reader.ReadNextFrame();
+            
+            while (b != null) {
+                mp3Frames.Add(b);
+                b = reader.ReadNextFrame();
+            }
+
+            var MaxFrameLength = mp3Frames.Max(f => f.FrameLength);
+
+            test = new Texture2D(GameScreenManager.GraphicsDevice, MaxFrameLength, mp3Frames.Count());
+
+            int index = 0;
+
+            uint [] totalData = new uint[MaxFrameLength * mp3Frames.Count()];
+            foreach (Mp3Frame frame in mp3Frames) {
+                Array.Copy(frame.RawData, 0, totalData, index, frame.RawData.Length);
+                //totalData[index] 
+                //test.SetData(frame.RawData, index, frame.RawData.Length);
+                index += MaxFrameLength;
+            }
+            test.SetData(totalData);
+
+            CustomTerrainRenderer.song = test;
+
+            reader.Seek(0, System.IO.SeekOrigin.Begin);
+
+            waveOut.Init(reader);
+            waveOut.Play();
+
+            //FastFourierTransform.
         }
-        
+
         public override void LoadContent() {
 
             if (content == null)
@@ -57,7 +104,7 @@ namespace Final {
             CustomTerrainRenderer.effect = virtualTerrain;
 
             terrainRenderer = new CustomTerrainRenderer( Vector2.One * 200 );
-            
+
             terrainObject = GameObject3d.Initialize();
             terrainRenderer.obj = terrainObject;
 
@@ -109,6 +156,9 @@ namespace Final {
                 terrainRenderer.updateDepth(terrainRenderer.lastRowDepth);
                 terrainRenderer.updateNormals(terrainRenderer.lastRowDepth + 1, Vector3.Down);
             }
+
+            terrainRenderer.songPos = (float)waveOut.GetPosition() / (float)reader.Length;
+            //terrainRenderer.totalFrames = mp3Frames.Count();
         }
         
         public override void Draw(GameTime gameTime) {

@@ -267,6 +267,9 @@ namespace CPI311.GameEngine {
         public Vector3 diffuseColor = new Vector3(0.1f, 0.1f, 0.1f);
         public Vector3 specularColor = new Vector3(0.2f, 0.2f, 0.2f);
 
+        public static Texture2D song;
+        public float songPos;
+
         public override void Render(Camera c, Transform t, Model m, GraphicsDevice g) {
             
             Matrix view = c.View;
@@ -279,6 +282,10 @@ namespace CPI311.GameEngine {
             effect.Parameters["Projection"].SetValue(projection);
             effect.Parameters["CameraPosition"].SetValue(c.Transform.Position);
             
+            //wierd shit
+            effect.Parameters["songData"].SetValue(song);
+            effect.Parameters["songPos"].SetValue(songPos);
+
             GameScreenManager.graphics.GraphicsDevice.BlendState = BlendState.AlphaBlend;
             GameScreenManager.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
@@ -291,7 +298,6 @@ namespace CPI311.GameEngine {
             effect.Parameters["Color"].SetValue(new Vector3(0, 0, 0.73f));
             effect.Parameters["AlphaMax"].SetValue(0.9f);
             effect.Parameters["HeightOffset"].SetValue(0f);
-            //effect.Parameters["wire"].SetValue(wire);
 
             foreach (EffectPass pass in effect.CurrentTechnique.Passes) {
                 pass.Apply();

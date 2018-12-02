@@ -18,6 +18,8 @@ namespace Final {
         public MainMenu() : base("") {
             MenuEntry startGame = new MenuEntry("Start");
 
+            startGame.selectedColor = Color.WhiteSmoke;
+
             startGame.Selected += StartGameSelected;
 
             MenuEntries.Add(startGame);
