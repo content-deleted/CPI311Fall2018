@@ -12,6 +12,8 @@ float4x4 World; // World Matrix
 float4x4 View; // View Matrix
 float4x4 Projection; // Projection Matrix
 
+float rotation;
+
 struct VertexShaderInput
 {
     float4 Position : SV_Position0;
@@ -30,7 +32,7 @@ struct VertexShaderOutput
 VertexShaderOutput MainVS(in VertexShaderInput input)
 {
 	VertexShaderOutput output = (VertexShaderOutput)0;
-    output.WorldPosition = mul(input.Position, World);
+    output.WorldPosition = mul(input.Position + float4(sin(rotation) * input.Normal, 0), World);
     float4 viewPosition = mul(output.WorldPosition, View);
     output.Position = mul(viewPosition, Projection);
 

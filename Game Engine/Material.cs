@@ -322,7 +322,6 @@ namespace CPI311.GameEngine {
 
             Vertices = new VertexPositionNormalTexture[triangles * 5];
 
-            //2 * Math.PI / triangles
             float currentInnerA = 0;
             float currentOuterA = -(float)Math.PI / (triangles * 2);
 
@@ -403,6 +402,8 @@ namespace CPI311.GameEngine {
 
         Vector3 pointOnCircle(float radius, float angle, float z) => new Vector3((float)(radius * Math.Cos(angle)), (float)(radius * Math.Sin(angle)), z);
 
+        public float rotation;
+
         public override void Render(Camera c, Transform t, Model m, GraphicsDevice g) {
 
             Matrix view = c.View;
@@ -414,6 +415,8 @@ namespace CPI311.GameEngine {
             effect.Parameters["View"].SetValue(view);
             effect.Parameters["Projection"].SetValue(projection);
             effect.Parameters["CameraPosition"].SetValue(c.Transform.Position);
+
+            effect.Parameters["rotation"].SetValue(rotation);
 
             foreach (EffectPass pass in effect.CurrentTechnique.Passes) {
                 pass.Apply();

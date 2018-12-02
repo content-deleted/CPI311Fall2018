@@ -66,6 +66,8 @@ namespace Final {
             GameObject3d hoop = GameObject3d.Initialize();
             hoop.transform.LocalPosition = camera.Transform.LocalPosition - camera.Transform.Forward * 20;
             hoop.material = new Hoop(5f, 7f, 1f, 10);
+            hoop.addBehavior(new hoopControl());
+
 
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects) gameObject.Start();
             GameObject.gameStarted = true;
