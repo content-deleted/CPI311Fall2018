@@ -31,10 +31,6 @@ namespace Final {
             
             camera.Transform.LocalPosition += new Vector3(100, 0, 10);
             camera.Transform.Rotate(Vector3.Up, (float)Math.PI);
-
-            Time.Initialize();
-            InputManager.Initialize();
-            
         }
         
         public override void LoadContent() {

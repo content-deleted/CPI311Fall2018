@@ -22,14 +22,18 @@ namespace Final {
             //graphics.PreferredBackBufferWidth = 1280;
             //graphics.PreferredBackBufferHeight = 720;
 
+            CPI311.GameEngine.Time.Initialize();
+            CPI311.GameEngine.InputManager.Initialize();
+
             // Create the screen manager component.
             screenManager = new ScreenManager(this);
-
             screenManager.Initialize();
-
             Components.Add(screenManager);
             
+            //screenManager.AddScreen(new demoScreen(), null);
             screenManager.AddScreen(new MainMenu(), null);
+
+            (screenManager.GetScreens().First() as MainMenu).initDemo();
         }
 
         protected override void Draw(GameTime gameTime) {
