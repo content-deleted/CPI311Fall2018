@@ -37,6 +37,7 @@ namespace Final {
         WaveOut waveOut;
         List<Mp3Frame> mp3Frames = new List<Mp3Frame>();
         Texture2D test;
+        Texture2D background;
 
         byte[] avgE;
 
@@ -112,6 +113,7 @@ namespace Final {
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GameScreenManager.GraphicsDevice);
+            background = content.Load<Texture2D>("back");
 
             virtualTerrain = content.Load<Effect>("virtualTerrain");
             CustomTerrainRenderer.wire = content.Load<Texture2D>("wire");
@@ -142,23 +144,22 @@ namespace Final {
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
-            float speed = 50;
-            float rot = 10;
+            /*
+            float speed = 20;
+            float rot = 4;
 
             if (InputManager.IsKeyDown(Keys.W)) camera.Transform.LocalPosition += speed * camera.Transform.Forward * Time.ElapsedGameTime;
             if (InputManager.IsKeyDown(Keys.S)) camera.Transform.LocalPosition += speed * camera.Transform.Backward * Time.ElapsedGameTime;
 
             if (InputManager.IsKeyDown(Keys.A)) camera.Transform.LocalPosition += speed * camera.Transform.Left * Time.ElapsedGameTime;
             if (InputManager.IsKeyDown(Keys.D)) camera.Transform.LocalPosition += speed * camera.Transform.Right * Time.ElapsedGameTime;
-
+            
             if (InputManager.IsKeyDown(Keys.Left)) camera.Transform.Rotate(camera.Transform.Up, rot * Time.ElapsedGameTime);
             if (InputManager.IsKeyDown(Keys.Right)) camera.Transform.Rotate(camera.Transform.Down, rot * Time.ElapsedGameTime);
             if (InputManager.IsKeyDown(Keys.Up)) camera.Transform.Rotate(Vector3.Left, rot * Time.ElapsedGameTime / 3);
             if (InputManager.IsKeyDown(Keys.Down)) camera.Transform.Rotate(Vector3.Right, rot * Time.ElapsedGameTime / 3);
+            */
 
-            Vector3 pos = camera.Transform.Position;
-            pos.Y = 2 + terrainRenderer.GetAltitude(camera.Transform.Position);
-            camera.Transform.LocalPosition = pos;
 
             InputManager.Update();
             Time.Update(gameTime);
@@ -172,12 +173,56 @@ namespace Final {
             }
 
             terrainRenderer.songPos = (float)waveOut.GetPosition() / (float)reader.Length;
-            if (terrainRenderer.songPos < 1) terrainRenderer.avgE = (int)avgE[(int)(avgE.Length*terrainRenderer.songPos)];
+            if (terrainRenderer.songPos < 1) terrainRenderer.avgE = 1 / (float)(avgE[(int)(avgE.Length*terrainRenderer.songPos)] - 100);
+
+            updateCam();
+            //pos.Y += terrainRenderer.avgE;
             //terrainRenderer.totalFrames = mp3Frames.Count();
+        }
+
+        // Camera update function because Im lazy
+        public Vector3 cameraCurrectVelocity;
+        public float camForwardSpeed = 15;
+        public float leftRightSpeed = 0.075f;
+        public float upDownSpeed = 0.04f;
+
+        public float curUpDown = 0;
+        public float curLeftRight = 0;
+        
+        public void updateCam() {
+            if (2 + terrainRenderer.GetAltitude(camera.Transform.Position) > camera.Transform.Position.Y) {
+                // camera crashes
+                int i = 0;
+            }
+
+
+            if (InputManager.IsKeyDown(Keys.A)) curLeftRight += Time.ElapsedGameTime * leftRightSpeed;
+            if (InputManager.IsKeyDown(Keys.D)) curLeftRight -= Time.ElapsedGameTime * leftRightSpeed;
+
+            if (InputManager.IsKeyDown(Keys.W)) curUpDown -= Time.ElapsedGameTime * upDownSpeed;
+            if (InputManager.IsKeyDown(Keys.S)) curUpDown += Time.ElapsedGameTime * upDownSpeed;
+
+            cameraCurrectVelocity.X += curLeftRight;
+            cameraCurrectVelocity.Y += curUpDown;
+
+            cameraCurrectVelocity.Y = MathHelper.Clamp( cameraCurrectVelocity.Y, -0.1f, 0.1f);
+            cameraCurrectVelocity.X = MathHelper.Clamp(cameraCurrectVelocity.X, -0.15f, 0.15f);
+            cameraCurrectVelocity.Z = (camForwardSpeed) * Time.ElapsedGameTime + cameraCurrectVelocity.Y / 5;
+            
+            camera.Transform.lookAt(camera.Transform.LocalPosition + cameraCurrectVelocity);
+            camera.Transform.LocalPosition += cameraCurrectVelocity;
+            camera.Transform.Rotate(camera.Transform.Forward, 1 * cameraCurrectVelocity.X);
+
+            curLeftRight /= 1.5f;
+            curUpDown /= 1.2f;
         }
 
         public override void Draw(GameTime gameTime) {
             ScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            spriteBatch.Begin();
+            spriteBatch.Draw(background, new Rectangle(0, 0, ScreenManager.GraphicsDevice.Viewport.Width, ScreenManager.GraphicsDevice.Viewport.Height), Color.White);
+            spriteBatch.End();
 
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects.ToList())
                 gameObject.Render(Tuple.Create(camera, GameScreenManager.GraphicsDevice));

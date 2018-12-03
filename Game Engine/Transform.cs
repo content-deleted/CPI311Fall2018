@@ -104,5 +104,31 @@ namespace CPI311.GameEngine
         public Vector3 Left { get => World.Left; }
 
         public Vector3 Right { get => World.Right; }
+
+        public void lookAt(Vector3 to) {
+            Vector3 tmp = Vector3.Up;
+            Vector3 forward = Vector3.Normalize(Position - to);
+            Vector3 right = Vector3.Cross(Vector3.Normalize(tmp), forward);
+            Vector3 up = Vector3.Cross(forward, right);
+
+            Matrix camToWorld = new Matrix();
+
+            camToWorld.M11 = right.X;
+            camToWorld.M12 = right.Y;
+            camToWorld.M13 = right.Z;
+            camToWorld.M21 = up.X;
+            camToWorld.M22 = up.Y;
+            camToWorld.M23 = up.Z;
+            camToWorld.M31 = forward.X;
+            camToWorld.M32 = forward.Y;
+            camToWorld.M33 = forward.Z;
+
+            camToWorld.M41 = Position.X;
+            camToWorld.M42 = Position.Y;
+            camToWorld.M43 = Position.Z;
+
+            world = camToWorld;
+            localRotation = world.Rotation;
+        }
     }
 }

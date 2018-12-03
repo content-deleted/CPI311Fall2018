@@ -62,6 +62,5 @@ namespace CPI311.GameEngine
             return new Ray(start, end - start);
         }
 
-
     }
 }

@@ -269,7 +269,7 @@ namespace CPI311.GameEngine {
 
         public static Texture2D song;
         public float songPos;
-        public int avgE;
+        public float avgE;
 
         public override void Render(Camera c, Transform t, Model m, GraphicsDevice g) {
             
@@ -297,7 +297,7 @@ namespace CPI311.GameEngine {
             };
 
             effect.Parameters["Offset"].SetValue(30f);
-            effect.Parameters["Color"].SetValue(new Vector3(0, 0, 0.73f));
+            effect.Parameters["Color"].SetValue(new Vector3(.1f, 0, 0.5f));
             effect.Parameters["AlphaMax"].SetValue(0.9f);
             effect.Parameters["HeightOffset"].SetValue(0f);
 
