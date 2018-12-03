@@ -207,12 +207,15 @@ namespace CPI311.GameEngine {
 
             Vertices = new VertexPositionNormalTexture[rows * cols];
 
-            for (int r = 0; r < rows; r++)
+            for (int r = 0; r < rows; r++) {
+                //THIS IS TO BUFFER WITH SOME FLAT GROUND AT THE START
+                if (r > 120) heightAlter = 1;
                 for (int c = 0; c < cols; c++)
-                    Vertices[r * cols + c] = new VertexPositionNormalTexture (
-                        new Vector3(c, GetHeight( c , r), r),
+                    Vertices[r * cols + c] = new VertexPositionNormalTexture(
+                        new Vector3(c, GetHeight(c, r), r),
                          Vector3.Up,
                         new Vector2(c, r));
+            }
             //c / res.X, r / res.Y <-uv covers whole mesh
             // 
             Indices = new int[(rows - 1) * (cols - 1) * 6];
@@ -246,10 +249,10 @@ namespace CPI311.GameEngine {
             return Vector3.Normalize(Vector3.Cross(ab, bc) + Vector3.Cross(bc, ca) + Vector3.Cross(ca, ab));
         }
         public float GetHeight(double x, double y) {
-            return (float)noise.OctavePerlin(10f * x / (float)rows, 10f * y / (float)cols, 0.5f, 2, 6) *10;
+            return (heightAlter < 1) ? 22 : 0 + heightAlter * (float)noise.OctavePerlin(10f * x / (float)rows, 10f * y / (float)cols, 0.5f, 2, 6) *10;
         }
-        
-       
+
+        public float heightAlter = 0;
 
         public float GetAltitude(Vector3 position) {
            position = Vector3.Transform(position, Matrix.Invert(obj.transform.World));

@@ -100,10 +100,29 @@ namespace Final {
             reader.Seek(0, System.IO.SeekOrigin.Begin);
 
             waveOut.Init(reader);
-            waveOut.Play();
+            
+            //Time.timers.Add(new EventTimer(incCountDown, 2));
 
             //FastFourierTransform.
         }
+        /*
+        public int countdown = 100;
+        public void incCountDown() {
+            countdown--;
+            terrainRenderer.heightAlter = (1) / (countdown+1);
+            if (countdown <= 0) {
+                vert = terrainRenderer.lastRowDepth;
+                Time.timers.Add(new EventTimer(PlayEvent, 0.5f));
+            }
+            else Time.timers.Add(new EventTimer(incCountDown, 0.001f));
+        }
+        public int vert;
+
+        public void PlayEvent() {
+            if(vert == terrainRenderer.lastRowDepth % 200) waveOut.Play();
+            else Time.timers.Add(new EventTimer(PlayEvent, 0.0001f));
+        }*/
+
 
         public override void LoadContent() {
 
@@ -143,6 +162,8 @@ namespace Final {
             GameObject.gameStarted = true;
         }
 
+        public bool songStarted = false;
+
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
             /*
             float speed = 20;
@@ -175,6 +196,11 @@ namespace Final {
             terrainRenderer.songPos = (float)waveOut.GetPosition() / (float)reader.Length;
             if (terrainRenderer.songPos < 1) terrainRenderer.avgE = 1 / (float)(avgE[(int)(avgE.Length*terrainRenderer.songPos)] - 100);
 
+            if (!songStarted && terrainRenderer.lastRowDepth > 100) {
+                songStarted = true;
+                waveOut.Play();
+            }
+
             updateCam();
             //pos.Y += terrainRenderer.avgE;
             //terrainRenderer.totalFrames = mp3Frames.Count();
@@ -194,8 +220,7 @@ namespace Final {
                 // camera crashes
                 int i = 0;
             }
-
-
+            
             if (InputManager.IsKeyDown(Keys.A)) curLeftRight += Time.ElapsedGameTime * leftRightSpeed;
             if (InputManager.IsKeyDown(Keys.D)) curLeftRight -= Time.ElapsedGameTime * leftRightSpeed;
 
