@@ -45,6 +45,7 @@
     <Compile Include="demoScreen.cs" />
     <Compile Include="GamePlay.cs" />
     <Compile Include="hoopControl.cs" />
+    <Compile Include="hoopObject.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="Program.cs" />

@@ -62,7 +62,6 @@ namespace Final {
             if(IsExiting) ScreenManager.Game.Exit();
             camera.Transform.LocalPosition += camera.Transform.Forward;
             foreach (GameObject3d h in hoop) {
-                h.transform.Rotate(Vector3.Forward, 0.1f);
                 if (camera.Transform.LocalPosition.Z < h.transform.LocalPosition.Z) h.transform.LocalPosition = new Vector3(0, 0, camera.Transform.LocalPosition.Z-200);
                 h.Update();
                 h.Render(Tuple.Create(camera, GameScreenManager.GraphicsDevice));

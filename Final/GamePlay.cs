@@ -49,17 +49,12 @@ namespace Final {
             camera.Transform.LocalPosition += new Vector3(100, 0, 10);
             camera.Transform.Rotate(Vector3.Up, (float)Math.PI);
 
-            // Load song
-            //System.Uri uri = new System.Uri(s.songPath, System.UriKind.Relative);
-            //song = Song.FromUri(s.songName,uri);
-            //audioFileReader = new NAudio.Wave.AudioFileReader(s.songPath);
 
-            reader = new Mp3FileReader(s.songPath);
+            //SONG LOADING AFTER THIS
+            reader = new Mp3FileReader(s.songPath); //reader = new AudioFileReader(s.songPath);
 
             waveOut = new WaveOut();
-            //byte[] buffer = new byte[2000];
 
-            //reader.Read(buffer, 0, 2000);
             var totalLength = reader.Length;
             Mp3Frame b = reader.ReadNextFrame();
 
@@ -83,7 +78,7 @@ namespace Final {
                 //FastFourierTransform.HammingWindow(0, )
                 //FastFourierTransform.FFT(true, 2, )
                 long sum = frame.RawData.Sum(x=> (uint) x);
-
+                
                 byte a = (byte)( ((sum / frame.RawData.Length) + lastInput) / 2);
                 avgE[i++] = a;
                 lastInput = a;
@@ -123,6 +118,10 @@ namespace Final {
             else Time.timers.Add(new EventTimer(PlayEvent, 0.0001f));
         }*/
 
+        public void newHoop() {
+            hoopObject.Initialize();
+            Time.timers.Add(new EventTimer(newHoop, 5f));
+        }
 
         public override void LoadContent() {
 
@@ -149,14 +148,10 @@ namespace Final {
             Vector3 pos = camera.Transform.Position;
             pos.Y = 2 + terrainRenderer.GetAltitude(camera.Transform.Position);
             camera.Transform.LocalPosition = pos;
-
-            Hoop.effect = content.Load<Effect>("hoop");
-
-            GameObject3d hoop = GameObject3d.Initialize();
-            hoop.transform.LocalPosition = camera.Transform.LocalPosition - camera.Transform.Forward * 20;
-            hoop.material = new Hoop(5f, 7f, 1f, 10);
-            hoop.addBehavior(new hoopControl());
-
+            //SET HOOP
+            hoopLogic.player = camera;
+            hoopObject.lastPos = camera.Transform.LocalPosition + new Vector3(0, 2, 100);
+            hoopObject.Initialize();
 
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects) gameObject.Start();
             GameObject.gameStarted = true;
@@ -198,6 +193,7 @@ namespace Final {
 
             if (!songStarted && terrainRenderer.lastRowDepth > 100) {
                 songStarted = true;
+                newHoop();
                 waveOut.Play();
             }
 
@@ -216,7 +212,7 @@ namespace Final {
         public float curLeftRight = 0;
         
         public void updateCam() {
-            if (2 + terrainRenderer.GetAltitude(camera.Transform.Position) > camera.Transform.Position.Y) {
+            if (songStarted && 2 + terrainRenderer.GetAltitude(camera.Transform.Position) > camera.Transform.Position.Y) {
                 // camera crashes
                 int i = 0;
             }
