@@ -31,18 +31,20 @@ namespace Final {
         GameObject3d terrainObject;
 
         ContentManager content;
-        
-        
+
+
         Mp3FileReader reader;
         WaveOut waveOut;
         List<Mp3Frame> mp3Frames = new List<Mp3Frame>();
         Texture2D test;
 
+        byte[] avgE;
+
         public Gameplay(SongSelect.songInfo s) {
 
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
-            
+
             camera.Transform.LocalPosition += new Vector3(100, 0, 10);
             camera.Transform.Rotate(Vector3.Up, (float)Math.PI);
 
@@ -53,13 +55,13 @@ namespace Final {
 
             reader = new Mp3FileReader(s.songPath);
 
-            waveOut = new WaveOut(); // or WaveOutEvent()
+            waveOut = new WaveOut();
             //byte[] buffer = new byte[2000];
 
             //reader.Read(buffer, 0, 2000);
             var totalLength = reader.Length;
             Mp3Frame b = reader.ReadNextFrame();
-            
+
             while (b != null) {
                 mp3Frames.Add(b);
                 b = reader.ReadNextFrame();
@@ -71,8 +73,20 @@ namespace Final {
 
             int index = 0;
 
-            uint [] totalData = new uint[MaxFrameLength * mp3Frames.Count()];
+            uint[] totalData = new uint[MaxFrameLength * mp3Frames.Count()];
+
+            avgE = new byte[mp3Frames.Count()];
+            int i=0;
+            byte lastInput = 0;
             foreach (Mp3Frame frame in mp3Frames) {
+                //FastFourierTransform.HammingWindow(0, )
+                //FastFourierTransform.FFT(true, 2, )
+                long sum = frame.RawData.Sum(x=> (uint) x);
+
+                byte a = (byte)( ((sum / frame.RawData.Length) + lastInput) / 2);
+                avgE[i++] = a;
+                lastInput = a;
+
                 Array.Copy(frame.RawData, 0, totalData, index, frame.RawData.Length);
                 //totalData[index] 
                 //test.SetData(frame.RawData, index, frame.RawData.Length);
@@ -94,7 +108,7 @@ namespace Final {
 
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
-            
+
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GameScreenManager.GraphicsDevice);
@@ -103,7 +117,7 @@ namespace Final {
             CustomTerrainRenderer.wire = content.Load<Texture2D>("wire");
             CustomTerrainRenderer.effect = virtualTerrain;
 
-            terrainRenderer = new CustomTerrainRenderer( Vector2.One * 200 );
+            terrainRenderer = new CustomTerrainRenderer(Vector2.One * 200);
 
             terrainObject = GameObject3d.Initialize();
             terrainRenderer.obj = terrainObject;
@@ -158,14 +172,23 @@ namespace Final {
             }
 
             terrainRenderer.songPos = (float)waveOut.GetPosition() / (float)reader.Length;
+            if (terrainRenderer.songPos < 1) terrainRenderer.avgE = (int)avgE[(int)(avgE.Length*terrainRenderer.songPos)];
             //terrainRenderer.totalFrames = mp3Frames.Count();
         }
-        
+
         public override void Draw(GameTime gameTime) {
             ScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
-            
+
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects.ToList())
                 gameObject.Render(Tuple.Create(camera, GameScreenManager.GraphicsDevice));
+        
+            /*
+            ScreenManager.GraphicsDevice.Clear(Color.Black);
+            spriteBatch.Begin();
+            spriteBatch.Draw(test, new Rectangle(0, 0, ScreenManager.GraphicsDevice.Viewport.Width, ScreenManager.GraphicsDevice.Viewport.Height), Color.White);
+            spriteBatch.End();
+            */
+            //test, new Rectangle(500, 500, 250, 1000),null, Color.White, 3.141f,Vector2.One*500,SpriteEffects.None,0.5f);
         }
     }
 }

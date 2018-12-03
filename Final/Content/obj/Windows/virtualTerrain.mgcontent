@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/dev/CPI311Fall2018/Final/Content/virtualTerrain.fx</SourceFile>
-  <SourceTime>2018-12-02T12:21:15.2754965-07:00</SourceTime>
+  <SourceTime>2018-12-02T16:46:53.8589181-07:00</SourceTime>
   <DestFile>C:/dev/CPI311Fall2018/Final/Content/bin/Windows/virtualTerrain.xnb</DestFile>
-  <DestTime>2018-12-02T12:21:17.6677363-07:00</DestTime>
+  <DestTime>2018-12-02T16:46:57.3093074-07:00</DestTime>
   <Importer>EffectImporter</Importer>
   <ImporterTime>2017-03-01T08:05:36-07:00</ImporterTime>
   <Processor>EffectProcessor</Processor>

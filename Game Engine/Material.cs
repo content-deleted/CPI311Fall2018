@@ -269,6 +269,7 @@ namespace CPI311.GameEngine {
 
         public static Texture2D song;
         public float songPos;
+        public int avgE;
 
         public override void Render(Camera c, Transform t, Model m, GraphicsDevice g) {
             
@@ -285,6 +286,7 @@ namespace CPI311.GameEngine {
             //wierd shit
             effect.Parameters["songData"].SetValue(song);
             effect.Parameters["songPos"].SetValue(songPos);
+            effect.Parameters["avgE"].SetValue(avgE);
 
             GameScreenManager.graphics.GraphicsDevice.BlendState = BlendState.AlphaBlend;
             GameScreenManager.graphics.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
@@ -294,7 +296,7 @@ namespace CPI311.GameEngine {
                 CullMode = CullMode.None//CullMode.CullCounterClockwiseFace
             };
 
-            effect.Parameters["Offset"].SetValue(20f);
+            effect.Parameters["Offset"].SetValue(30f);
             effect.Parameters["Color"].SetValue(new Vector3(0, 0, 0.73f));
             effect.Parameters["AlphaMax"].SetValue(0.9f);
             effect.Parameters["HeightOffset"].SetValue(0f);
@@ -306,7 +308,7 @@ namespace CPI311.GameEngine {
             }
 
             // Specific Params
-            effect.Parameters["Offset"].SetValue(13f);
+            effect.Parameters["Offset"].SetValue(25f);
             effect.Parameters["Color"].SetValue(new Vector3(1,0,0));
             effect.Parameters["AlphaMax"].SetValue(1f);
             effect.Parameters["HeightOffset"].SetValue(0.5f);

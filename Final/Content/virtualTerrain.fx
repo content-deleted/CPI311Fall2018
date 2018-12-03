@@ -17,6 +17,7 @@ float3 Color;
 float HeightOffset;
 Texture2D songData;
 float songPos;
+int avgE;
 //<float>
 sampler songSampler = sampler_state
 {
@@ -48,7 +49,7 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 	VertexShaderOutput output = (VertexShaderOutput)0;
     //dot(tex2D(songSampler, float2(input.Position.x, currentFrame)), float4(1, 1, 1, 1));
     float samp = songData.SampleLevel(songSampler, float2(input.Position.y / 1000, songPos/10), 1);
-    float h = HeightOffset + samp * samp;
+    float h = HeightOffset + samp * avgE / 50;
     output.WorldPosition = mul(input.Position + float4(0, h, 0,0), World);
     float4 viewPosition = mul(output.WorldPosition, View);
     output.Position = mul(viewPosition, Projection);
@@ -67,6 +68,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     //float edge = dot( (CameraPosition - input.WorldPosition.xyz), input.WorldNormal );
     //float4 color = (1, 1, 1, ((int) edge));
     float dist = abs(1 / (distance(CameraPosition, input.WorldPosition.xyz) / Offset));
+    dist = dist * dist;
     //edge = clamp(edge, 0.01, 1);
     clip(dist - 0.05);
     clip(input.normalClipCheck);
