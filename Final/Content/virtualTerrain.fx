@@ -74,7 +74,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     //edge = clamp(edge, 0.01, 1);
     clip(dist - 0.05); 
     clip(input.normalClipCheck); // flag for verticies attached at draw edges
-    clip(input.WorldPosition.z - (CameraPosition.z - 1) ); // dont bother with anything behind
+    clip(input.WorldPosition.z - (CameraPosition.z - 5) ); // dont bother with anything behind
 
     float3 altColor = float3(0.6, 0 , 0.6);
 

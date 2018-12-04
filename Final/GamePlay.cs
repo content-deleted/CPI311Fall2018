@@ -48,7 +48,7 @@ namespace Final {
         public Gameplay(SongSelect.songInfo s, PlayerIndex controllerIndex) {
             ControllingPlayer = controllerIndex;
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
-            TransitionOffTime = TimeSpan.FromSeconds(0.5);
+            TransitionOffTime = TimeSpan.FromSeconds(0);
 
             camera.Transform.LocalPosition += new Vector3(100, 0, 10);
             camera.Transform.Rotate(Vector3.Up, (float)Math.PI);
@@ -208,8 +208,17 @@ namespace Final {
             if (InputManager.IsKeyDown(Keys.Down)) camera.FieldOfView -= 0.01f;
 
             if (!noisyToggle) updateCam();
+
+            checkSongEnding();
             //pos.Y += terrainRenderer.avgE;
             //terrainRenderer.totalFrames = mp3Frames.Count();
+        }
+
+        public void checkSongEnding () {
+            // Fade out
+            float timeRemainingSeconds = reader.TotalTime.Seconds - waveOut.GetPositionTimeSpan().Seconds;
+
+                if (timeRemainingSeconds <= 0) ExitScreen();
         }
 
         public void cameraRestore() {
@@ -309,6 +318,15 @@ namespace Final {
 
                 sprite.Draw(renderTarget, new Rectangle(ScreenManager.GraphicsDevice.Viewport.X, ScreenManager.GraphicsDevice.Viewport.Y, ScreenManager.GraphicsDevice.Viewport.Width, ScreenManager.GraphicsDevice.Viewport.Height), Color.White);
                 sprite.End();
+            }
+
+            // Fade out
+            float timeRemainingSeconds = reader.TotalTime.Seconds - waveOut.GetPositionTimeSpan().Seconds;
+            if (timeRemainingSeconds < 5) {
+                ScreenManager.FadeBackBufferToBlack(255 / (1 + timeRemainingSeconds * 100));
+                if (timeRemainingSeconds <= 0) {
+                    ExitScreen();
+                }
             }
 
             //THIS IS THE TESTING CODE FOR DRAWING SOUND
