@@ -19,8 +19,9 @@ namespace Assignment1 {
 
 
         public override void Start() {
-            base.Start();
+            health = max;
             enemies.Add(this);
+            base.Start();
         }
         public void damage (float value) {
             health -= value;

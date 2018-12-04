@@ -16,13 +16,14 @@ namespace Assignment1
         Vector2 direction;
         bool facing = false;
 
-        public void Init (Texture2D spr, float spd, Vector2 dir, Vector2 scale, Color c)
+        public void Init (Texture2D spr, float spd, Vector2 dir, Vector2 scale, Color c, bool facing)
         {
             objSprite = new Sprite(spr);
             objSprite.Scale = scale;
             objSprite.Color = c;
             speed = spd;
             direction = dir;
+            this.facing = facing;
             if (facing) objSprite.Rotation = (float)Math.Atan2(direction.Y, direction.X);
         }
         override public void Update ()

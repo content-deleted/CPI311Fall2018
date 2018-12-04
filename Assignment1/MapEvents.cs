@@ -54,6 +54,7 @@ namespace Assignment1 {
 
             spawner.sprite = new AnimatedSprite(content.Load<Texture2D>("sunSprite"), 3, 1000,1000, true, 0);
             spawner.sprite.Scale *= 1;
+            spawner.sprite.collisionBox *= 0.85f;
             spawner.sprite.LayerDepth = 0.4f;
             spawner.addBehavior(new grazeEnemy());
             BulletSpawner b = new BulletSpawner();
@@ -95,14 +96,16 @@ namespace Assignment1 {
             boss.healthbar = bar;
 
             spawner.addBehavior(boss);
-            spawner.addBehavior(new enemyHealth());
+            var h = new enemyHealth();
+            h.max = 20000;
+            spawner.addBehavior(h);
         }
 
         static void spawnRoundCactus(Squared.Tiled.Object obj) {
             GameObject2d enemy = GameObject2d.Initialize();
 
             enemy.sprite = new Sprite(content.Load<Texture2D>("cactusRound"));
-
+            //enemy.sprite.Scale *= 1;
             enemy.sprite.LayerDepth = 0.4f;
             enemy.addBehavior(new grazeEnemy());
             enemy.addBehavior(new enemyHealth());
@@ -113,14 +116,15 @@ namespace Assignment1 {
             BulletSpawner b = new BulletSpawner();
             
             b.bulletSpeed = 2;
-            b.bulletAmount = 5;
+            b.bulletAmount = 6;
 
             b.bulletfrequency = 0.5f; // ms 
 
             b.spin = 0f;
 
             b.bulletSprite = content.Load<Texture2D>("needleBullet");
-            b.scale = Vector2.One * 0.4f;
+            b.facing = true;
+            b.scale = Vector2.One *0.7f;
             enemy.addBehavior(b);
 
         }

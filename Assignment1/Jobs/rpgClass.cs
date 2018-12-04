@@ -44,7 +44,7 @@ namespace Assignment1 {
         #region contentLoad
         public static Job [] Jobs = new Job[]
         {
-            new Job{ name = "Knight", description = "Defense", dimensions = new Vector2 (16,18), bulletDamage = 10, bulletRange = 10},
+            new Job{ name = "Knight", description = "Defense", dimensions = new Vector2 (16,18), bulletDamage = 10, bulletRange = 5},
             new Job{ name = "Magician", description = "Range", dimensions = new Vector2 (16,22), bulletDamage = 1, bulletRange = 200},
             //new charecterMenuData{ name = "Thief", description = "Offense"},
             //new charecterMenuData{ name = "Untitled", description = "Placeholder"} 

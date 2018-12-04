@@ -37,6 +37,8 @@ namespace Assignment1
         
         public Vector2 scale;
 
+        public bool facing = false;
+
         private bool spawn = true;
 
         public override void Update()
@@ -65,7 +67,7 @@ namespace Assignment1
                 BulletPoolObject b = BulletPoolObject.Initialize();
 
                 // Init bullet 
-                (b.GetBehavior<Bullet>() as Bullet).Init(bulletSprite, bulletSpeed, direction, scale, bulletTint); //direction, 0, bulletSpeed, null, bulletSprite, bulletTint, true);
+                (b.GetBehavior<Bullet>() as Bullet).Init(bulletSprite, bulletSpeed, direction, scale, bulletTint, facing); //direction, 0, bulletSpeed, null, bulletSprite, bulletTint, true);
 
                 // Set its position to this game objects ( or some offset )
                 b.sprite.Position = objSprite.Position;
