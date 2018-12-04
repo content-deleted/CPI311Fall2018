@@ -28,7 +28,10 @@ namespace Final {
         }
 
         public void getNextHoopPos () {
-            transform.LocalPosition = lastPos + new Vector3(ran.Next(-5, 5), ran.Next(-5, 5), 100);
+            float xOffset = -(lastPos.X - 100)/2; // should normalize around the center
+            Vector3 nextPos = lastPos + new Vector3(ran.Next(-25, 25) + xOffset, ran.Next(-8, 5) + (float)Math.Pow(MathHelper.Clamp(-(lastPos.Y - 23), 0, 5) , 2), +80);
+            if (nextPos.Y < 20) nextPos.Y = 20;
+            transform.LocalPosition = nextPos;
             lastPos = transform.LocalPosition;
         }
 

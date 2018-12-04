@@ -41,3 +41,5 @@ C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Content\postProcess.xnb
 C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Content\Box.xnb
 C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Content\skybox.xnb
 C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Content\Plane.xnb
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Content\static.wma
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Content\static.xnb

@@ -18,6 +18,7 @@ using NAudio.Utils;
 using NAudio.Wave.SampleProviders;
 using NAudio.Dsp;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Media;
 
 namespace Final {
 
@@ -26,7 +27,8 @@ namespace Final {
         public RenderTarget2D renderTarget;
         Effect postProcess;
 
-        Camera camera = new Camera();
+        public static Camera camera = new Camera();
+        Song staticNoise;
 
         Effect virtualTerrain;
         CustomTerrainRenderer terrainRenderer;
@@ -154,9 +156,9 @@ namespace Final {
             pos.Y = 2 + terrainRenderer.GetAltitude(camera.Transform.Position);
             camera.Transform.LocalPosition = pos;
             camera.NearPlane = 0.001f;
+
             // Setup skybox
             camera.skybox = new Skybox { skyboxModel = content.Load<Model>("Box"), skyboxTexture = background };
-
             Skybox.shader = content.Load<Effect>("skybox");
 
             //SET HOOP
@@ -164,12 +166,17 @@ namespace Final {
             hoopObject.lastPos = camera.Transform.LocalPosition + new Vector3(0, 2, 100);
             hoopObject.Initialize();
 
+            //sfx 
+            staticNoise = content.Load<Song>("static");
+            MediaPlayer.Volume = 0.2f;
+
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects) gameObject.Start();
             GameObject.gameStarted = true;
         }
 
         public bool songStarted = false;
 
+        
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
 
             InputManager.Update();
@@ -196,7 +203,10 @@ namespace Final {
             if (InputManager.IsKeyPressed(Keys.N)) noisyToggle = !noisyToggle;
             if (InputManager.IsKeyPressed(Keys.F)) GameScreenManager.graphics.ToggleFullScreen();
 
-            if(!noisyToggle) updateCam();
+            if (InputManager.IsKeyDown(Keys.Up)) camera.FieldOfView += 0.01f;
+            if (InputManager.IsKeyDown(Keys.Down)) camera.FieldOfView -= 0.01f;
+
+            if (!noisyToggle) updateCam();
             //pos.Y += terrainRenderer.avgE;
             //terrainRenderer.totalFrames = mp3Frames.Count();
         }
@@ -209,6 +219,7 @@ namespace Final {
             cameraCurrectVelocity = Vector3.Zero;
             curUpDown = 0;
             curLeftRight = 0;
+            MediaPlayer.Stop();
             waveOut.Play();
         }
 
@@ -228,6 +239,7 @@ namespace Final {
                     // camera crashes
                     noisyToggle = true;
                     waveOut.Pause();
+                    MediaPlayer.Play(staticNoise);
                     Time.timers.Add(new EventTimer(cameraRestore, 2));
                 }
                 else if (2 + height > camera.Transform.Position.Y) {

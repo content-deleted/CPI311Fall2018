@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/dev/CPI311Fall2018/Final/Content/static.mp3</SourceFile>
+  <SourceTime>2018-12-04T11:05:49.6101426-07:00</SourceTime>
+  <DestFile>C:/dev/CPI311Fall2018/Final/Content/bin/Windows/static.xnb</DestFile>
+  <DestTime>2018-12-04T11:09:09.9668567-07:00</DestTime>
+  <Importer>Mp3Importer</Importer>
+  <ImporterTime>2017-03-01T08:05:36-07:00</ImporterTime>
+  <Processor>SongProcessor</Processor>
+  <ProcessorTime>2017-03-01T08:05:36-07:00</ProcessorTime>
+  <Parameters>
+    <Key>Quality</Key>
+    <Value>Best</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput>
+    <string>C:/dev/CPI311Fall2018/Final/Content/bin/Windows/static.wma</string>
+  </BuildOutput>
+</PipelineBuildEvent>

@@ -32,14 +32,27 @@ namespace Final {
             base.OnDestory();
         }
     }
-
+    
     public class hoopLogic : Behavior3d {
         public static Camera player;
 
+        //public bool activated = false;
+
         public override void Update() {
             base.Update();
-            if(transform.LocalPosition.Z < player.Transform.LocalPosition.Z - 5) {
-                (obj as hoopObject).Destroy();
+
+            // first check if we're close
+            if (transform.LocalPosition.Z < player.Transform.LocalPosition.Z + 1) {
+
+                // if we're through then activate 
+                if(transform.LocalPosition.Z == player.Transform.LocalPosition.Z && Vector3.Distance(transform.LocalPosition, player.Transform.LocalPosition) < 2) {
+                    
+                }
+            
+                // if we're behind then destroy
+                if (transform.LocalPosition.Z < player.Transform.LocalPosition.Z - 5) {
+                    (obj as hoopObject).Destroy();
+                }
             }
         }
     }
