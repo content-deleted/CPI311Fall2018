@@ -23,6 +23,8 @@ namespace Final {
 
     public class Gameplay : GameScreen {
         SpriteBatch spriteBatch;
+        public RenderTarget2D renderTarget;
+        Effect postProcess;
 
         Camera camera = new Camera();
 
@@ -31,7 +33,6 @@ namespace Final {
         GameObject3d terrainObject;
 
         ContentManager content;
-
 
         Mp3FileReader reader;
         WaveOut waveOut;
@@ -127,11 +128,15 @@ namespace Final {
 
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
-
-
+            
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GameScreenManager.GraphicsDevice);
             background = content.Load<Texture2D>("back");
+
+            // Setting up render target
+            PresentationParameters pp = ScreenManager.GraphicsDevice.PresentationParameters;
+            renderTarget = new RenderTarget2D(ScreenManager.GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight, true, SurfaceFormat.Color, DepthFormat.Depth24);
+            postProcess = content.Load<Effect>("PostProcess");
 
             virtualTerrain = content.Load<Effect>("virtualTerrain");
             CustomTerrainRenderer.wire = content.Load<Texture2D>("wire");
@@ -160,22 +165,6 @@ namespace Final {
         public bool songStarted = false;
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen) {
-            /*
-            float speed = 20;
-            float rot = 4;
-
-            if (InputManager.IsKeyDown(Keys.W)) camera.Transform.LocalPosition += speed * camera.Transform.Forward * Time.ElapsedGameTime;
-            if (InputManager.IsKeyDown(Keys.S)) camera.Transform.LocalPosition += speed * camera.Transform.Backward * Time.ElapsedGameTime;
-
-            if (InputManager.IsKeyDown(Keys.A)) camera.Transform.LocalPosition += speed * camera.Transform.Left * Time.ElapsedGameTime;
-            if (InputManager.IsKeyDown(Keys.D)) camera.Transform.LocalPosition += speed * camera.Transform.Right * Time.ElapsedGameTime;
-            
-            if (InputManager.IsKeyDown(Keys.Left)) camera.Transform.Rotate(camera.Transform.Up, rot * Time.ElapsedGameTime);
-            if (InputManager.IsKeyDown(Keys.Right)) camera.Transform.Rotate(camera.Transform.Down, rot * Time.ElapsedGameTime);
-            if (InputManager.IsKeyDown(Keys.Up)) camera.Transform.Rotate(Vector3.Left, rot * Time.ElapsedGameTime / 3);
-            if (InputManager.IsKeyDown(Keys.Down)) camera.Transform.Rotate(Vector3.Right, rot * Time.ElapsedGameTime / 3);
-            */
-
 
             InputManager.Update();
             Time.Update(gameTime);
@@ -196,7 +185,8 @@ namespace Final {
                 newHoop();
                 waveOut.Play();
             }
-
+            if (InputManager.IsKeyPressed(Keys.T)) postToggle = !postToggle;
+            if (InputManager.IsKeyPressed(Keys.F)) GameScreenManager.graphics.ToggleFullScreen();
             updateCam();
             //pos.Y += terrainRenderer.avgE;
             //terrainRenderer.totalFrames = mp3Frames.Count();
@@ -238,16 +228,36 @@ namespace Final {
             curUpDown /= 1.2f;
         }
 
+        bool postToggle=true;
+
         public override void Draw(GameTime gameTime) {
+            // Set our graphics device to draw to a texture
+            ScreenManager.GraphicsDevice.SetRenderTarget(renderTarget);
             ScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
-            spriteBatch.Draw(background, new Rectangle(0, 0, ScreenManager.GraphicsDevice.Viewport.Width, ScreenManager.GraphicsDevice.Viewport.Height), Color.White);
-            spriteBatch.End();
+            // spriteBatch.Begin();
+            //  spriteBatch.Draw(background, new Rectangle(0, 0, ScreenManager.GraphicsDevice.Viewport.Width, ScreenManager.GraphicsDevice.Viewport.Height), Color.White);
+            // spriteBatch.End();
+
+            postProcess.Parameters["toggle"].SetValue(postToggle);
 
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects.ToList())
                 gameObject.Render(Tuple.Create(camera, GameScreenManager.GraphicsDevice));
-        
+
+            // Make sure to clear the graphics device render target
+            ScreenManager.GraphicsDevice.SetRenderTarget(null);
+
+            // Handle post processing effects
+            using (SpriteBatch sprite = new SpriteBatch(ScreenManager.GraphicsDevice)) {
+                //sprite.Begin();
+                
+                sprite.Begin(SpriteSortMode.Deferred, null, null, null, null, postProcess);
+
+                sprite.Draw(renderTarget, new Rectangle(ScreenManager.GraphicsDevice.Viewport.X, ScreenManager.GraphicsDevice.Viewport.Y, ScreenManager.GraphicsDevice.Viewport.Width, ScreenManager.GraphicsDevice.Viewport.Height), Color.White);
+                sprite.End();
+            }
+
+            //THIS IS THE TESTING CODE FOR DRAWING SOUND
             /*
             ScreenManager.GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
