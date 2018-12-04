@@ -76,7 +76,9 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     clip(input.normalClipCheck);
     clip(input.WorldPosition.z - (CameraPosition.z - 1) );
 
-    return float4(Color, min(dist, AlphaMax)); //input.Color;
+    float3 altColor = float3(1, 0, 1);
+
+    return float4(Color * dist + altColor / dist, AlphaMax); //input.Color;
 
 }
 

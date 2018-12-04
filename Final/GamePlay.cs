@@ -210,9 +210,9 @@ namespace Final {
         public float curLeftRight = 0;
         
         public void updateCam() {
-            if (songStarted && 2 + terrainRenderer.GetAltitude(camera.Transform.Position) > camera.Transform.Position.Y) {
+            if (songStarted && terrainRenderer.GetAltitude(camera.Transform.Position) > camera.Transform.Position.Y) {
                 // camera crashes
-                int i = 0;
+                noisyToggle = true;
             }
             
             if (InputManager.IsKeyDown(Keys.A)) curLeftRight += Time.ElapsedGameTime * leftRightSpeed;
