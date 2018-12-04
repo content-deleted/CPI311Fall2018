@@ -36,8 +36,23 @@ namespace Final {
     public class hoopLogic : Behavior3d {
         public static Camera player;
 
-        //public bool activated = false;
-
+        public const float MaxSpeed = 2;
+        public static void cameraSpeedCoroutineInc () {
+            if (player.FieldOfView < MaxSpeed) {
+                player.FieldOfView *= 1.05f;
+                Time.timers.Add(new EventTimer(cameraSpeedCoroutineInc, 0));
+            }
+            else Time.timers.Add(new EventTimer(cameraSpeedCoroutineDec, 1));
+        }
+        public static void cameraSpeedCoroutineDec() {
+            if (player.FieldOfView >= 1.05f) {
+                player.FieldOfView -= 0.002f;
+                Time.timers.Add(new EventTimer(cameraSpeedCoroutineDec, 0));
+            }
+            else
+                player.FieldOfView = 1;
+        }
+        bool active = false;
         public override void Update() {
             base.Update();
 
@@ -45,8 +60,9 @@ namespace Final {
             if (transform.LocalPosition.Z < player.Transform.LocalPosition.Z + 1) {
 
                 // if we're through then activate 
-                if(transform.LocalPosition.Z == player.Transform.LocalPosition.Z && Vector3.Distance(transform.LocalPosition, player.Transform.LocalPosition) < 2) {
-                    
+                if(!active && (int)transform.LocalPosition.Z == (int)player.Transform.LocalPosition.Z && Vector3.Distance(transform.LocalPosition, player.Transform.LocalPosition) < 5) {
+                    active = true;
+                    Time.timers.Add(new EventTimer(cameraSpeedCoroutineInc, 0) );
                 }
             
                 // if we're behind then destroy
@@ -54,6 +70,10 @@ namespace Final {
                     (obj as hoopObject).Destroy();
                 }
             }
+        }
+        public override void OnDestory() {
+            active = false;
+            base.OnDestory();
         }
     }
 }

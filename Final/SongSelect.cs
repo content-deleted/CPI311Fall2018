@@ -44,7 +44,7 @@ namespace Final {
 
         void SelectedSong(object sender, PlayerIndexEventArgs e) {
             songInfo song = (sender as SongEntry).songInfo;
-            ScreenManager.AddScreen(new Gameplay(song), null);
+             ScreenManager.AddScreen(new Gameplay(song, e.PlayerIndex), null);
         }
 
     

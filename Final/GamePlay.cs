@@ -23,6 +23,7 @@ using Microsoft.Xna.Framework.Media;
 namespace Final {
 
     public class Gameplay : GameScreen {
+        PlayerIndex ControllingPlayer;
         SpriteBatch spriteBatch;
         public RenderTarget2D renderTarget;
         Effect postProcess;
@@ -44,8 +45,8 @@ namespace Final {
 
         byte[] avgE;
 
-        public Gameplay(SongSelect.songInfo s) {
-
+        public Gameplay(SongSelect.songInfo s, PlayerIndex controllerIndex) {
+            ControllingPlayer = controllerIndex;
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
 
@@ -216,6 +217,7 @@ namespace Final {
             cameraPosition.Y = 5 + terrainRenderer.GetAltitude(cameraPosition);
             camera.Transform.LocalPosition = cameraPosition;
             noisyToggle = false;
+            camera.FieldOfView = 1;
             cameraCurrectVelocity = Vector3.Zero;
             curUpDown = 0;
             curLeftRight = 0;
@@ -226,7 +228,7 @@ namespace Final {
         // Camera update function because Im lazy
         public Vector3 cameraCurrectVelocity;
         public const float camForwardSpeed = 15;
-        public const float leftRightSpeed = 0.075f;
+        public const float leftRightSpeed = 0.065f;
         public const float upDownSpeed = 0.04f;
 
         public float curUpDown = 0;
@@ -249,24 +251,32 @@ namespace Final {
             else
                 if (camera.Transform.LocalPosition.Y < 22.5f) cameraCurrectVelocity.Y += 0.025f;
 
-            if (InputManager.IsKeyDown(Keys.A)) curLeftRight += Time.ElapsedGameTime * leftRightSpeed;
-            if (InputManager.IsKeyDown(Keys.D)) curLeftRight -= Time.ElapsedGameTime * leftRightSpeed;
+            // Input
+            if ((int)ControllingPlayer < 5) {
+                GamePadState state = GamePad.GetState(ControllingPlayer);
+                curLeftRight += Time.ElapsedGameTime * leftRightSpeed * -state.ThumbSticks.Left.X;
+                curUpDown += Time.ElapsedGameTime * upDownSpeed * -state.ThumbSticks.Left.Y;
+            }
+            else {
+                if (InputManager.IsKeyDown(Keys.A)) curLeftRight += Time.ElapsedGameTime * leftRightSpeed;
+                if (InputManager.IsKeyDown(Keys.D)) curLeftRight -= Time.ElapsedGameTime * leftRightSpeed;
 
-            if (InputManager.IsKeyDown(Keys.W)) curUpDown -= Time.ElapsedGameTime * upDownSpeed;
-            if (InputManager.IsKeyDown(Keys.S)) curUpDown += Time.ElapsedGameTime * upDownSpeed;
+                if (InputManager.IsKeyDown(Keys.W)) curUpDown -= Time.ElapsedGameTime * upDownSpeed;
+                if (InputManager.IsKeyDown(Keys.S)) curUpDown += Time.ElapsedGameTime * upDownSpeed;
+            }
 
             cameraCurrectVelocity.X += curLeftRight;
             cameraCurrectVelocity.Y += curUpDown;
 
-            cameraCurrectVelocity.Y = MathHelper.Clamp( cameraCurrectVelocity.Y, -0.1f, 0.1f);
-            cameraCurrectVelocity.X = MathHelper.Clamp(cameraCurrectVelocity.X, -0.15f, 0.15f);
+            cameraCurrectVelocity.Y = MathHelper.Clamp( cameraCurrectVelocity.Y, -0.12f, 0.12f);
+            cameraCurrectVelocity.X = MathHelper.Clamp(cameraCurrectVelocity.X, -0.2f, 0.2f);
             cameraCurrectVelocity.Z = (camForwardSpeed) * Time.ElapsedGameTime + cameraCurrectVelocity.Y / 5;
             
             camera.Transform.lookAt(camera.Transform.LocalPosition + cameraCurrectVelocity);
             camera.Transform.LocalPosition += cameraCurrectVelocity;
             camera.Transform.Rotate(camera.Transform.Forward, 1 * cameraCurrectVelocity.X);
 
-            curLeftRight /= 1.5f;
+            curLeftRight /= 1.2f;
             curUpDown /= 1.2f;
         }
 

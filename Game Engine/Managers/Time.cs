@@ -41,9 +41,12 @@ namespace CPI311.GameEngine
             // Update timers
             foreach (EventTimer timer in timers.ToList()) {
                 timer.ticks -= ElapsedGameTime;
-                if(timer.ticks <= 0) timer.action();
+                if (timer.ticks <= 0) {
+                    timer.action();
+                    timers.Remove(timer);
+                }
             }
-            timers.RemoveAll(x => x.ticks <= 0);
+            //timers.RemoveAll(x => x.ticks <= 0);
         }
     }
 
