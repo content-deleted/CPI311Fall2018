@@ -17,6 +17,8 @@ namespace Assignment1
         int lives = 5;
         float speed = 4f;
         bool invicible = false;
+        public float damage;
+        public float bulletRange;
 
         public Texture2D playerBullet;
 
@@ -53,10 +55,10 @@ namespace Assignment1
                 }
             }
 
-            hitbox.sprite.Update();
+            //hitbox.sprite.Update();
         }
 
-        const int walk = 2, run = 6;
+        const int walk = 2, run = 4;
 
         public void checkPlayerMovement() {
             // Movement Controls
@@ -100,12 +102,12 @@ namespace Assignment1
             }
 
             if (mov.X != 0) {
-                if (mov.X < 0) (objSprite as AnimatedSprite).swapAnimation(16, 8);
-                else (objSprite as AnimatedSprite).swapAnimation(24, 8);
+                if (mov.X < 0) (objSprite as AnimatedSprite).swapAnimation(9, 3);
+                else (objSprite as AnimatedSprite).swapAnimation(3, 3);
             }
             else if (mov.Y != 0) {
-                if (mov.Y < 0) (objSprite as AnimatedSprite).swapAnimation(0, 8);
-                else (objSprite as AnimatedSprite).swapAnimation(8, 8);
+                if (mov.Y < 0) (objSprite as AnimatedSprite).swapAnimation(0, 3);
+                else (objSprite as AnimatedSprite).swapAnimation(6, 3);
             }
 
             if (mov != Vector2.Zero) {
@@ -124,7 +126,7 @@ namespace Assignment1
             PlayerBullet behav = new PlayerBullet();
             b.addBehavior(behav);
             behav.facing = true;
-            behav.Init(playerBullet, 20, direction, Vector2.One);
+            behav.Init(playerBullet, 20, direction, Vector2.One, damage, bulletRange);
 
             // Set its position to this game objects ( or some offset )
             b.sprite.Position = objSprite.Position + direction * 25;
@@ -136,7 +138,7 @@ namespace Assignment1
             if (invicible) return; // Gross short circuit
             // Set sprite to invisible 
             objSprite.visible = false;
-            hitbox.sprite.visible = false;
+            //hitbox.sprite.visible = false;
 
             // Start counter
             Time.timers.Add(new EventTimer(respawnPlayer, 0.5f));
@@ -148,7 +150,7 @@ namespace Assignment1
 
         public void respawnPlayer() {
             objSprite.visible = true;
-            hitbox.sprite.visible = true;
+            //hitbox.sprite.visible = true;
             // Probably start a blinking thing and return player to middle of screen
             objSprite.Color = Color.Red;
             Time.timers.Add(new EventTimer(endIframes, 2));

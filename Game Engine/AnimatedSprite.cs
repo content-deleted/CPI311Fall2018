@@ -26,7 +26,7 @@ namespace CPI311.GameEngine {
 
         public float animationSpeed = 0.1f;
         
-        public AnimatedSprite(Texture2D texture, int frames, int height, int width, bool repeat, int start) : base (texture) {
+        public AnimatedSprite(Texture2D texture, int frames, int width, int height, bool repeat, int start) : base (texture) {
             loop = repeat;
             Texture = texture;
             Position = Vector2.Zero;

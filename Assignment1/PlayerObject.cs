@@ -43,18 +43,19 @@ namespace Assignment1
             p.controllingPlayer = control;
             p.playerJob = job;
             
-            p.sprite = new AnimatedSprite(p.playerJob.animationSheet, 8, 32, 32, true, 0);
+            p.sprite = new AnimatedSprite(p.playerJob.animationSheet, 3, (int)job.dimensions.X, (int)job.dimensions.Y, true, 0);
             p.sprite.enableCam = true;
             p.sprite.Position = position;
+            
 
             // This seems about right
             p.sprite.collisionBox = new Vector2(4, 4);
             activeGameObjects.Add(p);
 
             // Init Hitbox
-            GameObject2d h = GameObject2d.Initialize();
-            h.sprite = new AnimatedSprite(p.playerJob.hitboxSpriteSheet, 3, 8, 8, true, 0);
-            h.addBehavior(new AnchorPosBehavior(p.sprite));
+            //GameObject2d h = GameObject2d.Initialize();
+            //h.sprite = new AnimatedSprite(p.playerJob.hitboxSpriteSheet, 3, 8, 8, true, 0);
+            //h.addBehavior(new AnchorPosBehavior(p.sprite));
 
             // Old Mouse
             /*
@@ -66,9 +67,10 @@ namespace Assignment1
 
             // Init playerBehavior
             PlayerBehavior b = new PlayerBehavior();
-            b.hitbox = h;
+            //b.hitbox = h;
             b.playerBullet = p.playerJob.bulletSprite;
-
+            b.bulletRange = job.bulletRange;
+            b.damage = job.bulletDamage; 
             p.addBehavior(b);
 
             players.Add( p );

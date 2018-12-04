@@ -14,6 +14,7 @@ namespace CPI311.GameEngine
         virtual public void Update() { }
         virtual public void LateUpdate() { }
         virtual public void OnDestory() { }
+        virtual public void OnCollide() { }
 
         public void release() => obj.releaseBehavior(this);
     }
