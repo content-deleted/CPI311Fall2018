@@ -50,10 +50,6 @@ namespace Final {
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0);
 
-            camera.Transform.LocalPosition += new Vector3(100, 0, 10);
-            camera.Transform.Rotate(Vector3.Up, (float)Math.PI);
-
-
             //SONG LOADING AFTER THIS
             reader = new Mp3FileReader(s.songPath); //reader = new AudioFileReader(s.songPath);
 
@@ -140,6 +136,7 @@ namespace Final {
             PresentationParameters pp = ScreenManager.GraphicsDevice.PresentationParameters;
             renderTarget = new RenderTarget2D(ScreenManager.GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight, true, SurfaceFormat.Color, DepthFormat.Depth24);
             postProcess = content.Load<Effect>("PostProcess");
+            postProcess.Parameters["darkenFactor"].SetValue(1f);
 
             virtualTerrain = content.Load<Effect>("virtualTerrain");
             CustomTerrainRenderer.wire = content.Load<Texture2D>("wire");
@@ -153,6 +150,9 @@ namespace Final {
             terrainObject.material = terrainRenderer;
 
             //SET CAM
+            camera = new Camera();
+            camera.Transform.LocalPosition += new Vector3(100, 0, 10);
+            camera.Transform.Rotate(Vector3.Up, (float)Math.PI);
             Vector3 pos = camera.Transform.Position;
             pos.Y = 2 + terrainRenderer.GetAltitude(camera.Transform.Position);
             camera.Transform.LocalPosition = pos;
@@ -216,9 +216,15 @@ namespace Final {
 
         public void checkSongEnding () {
             // Fade out
-            float timeRemainingSeconds = reader.TotalTime.Seconds - waveOut.GetPositionTimeSpan().Seconds;
-
-                if (timeRemainingSeconds <= 0) ExitScreen();
+            float timeRemaining = reader.Length - waveOut.GetPosition();
+            if (timeRemaining <= 0) {
+                foreach(GameObject3d g in GameObject3d.activeGameObjects.ToList()) {
+                    g.Destroy();
+                }
+                ScreenManager.FadeBackBufferToBlack(0);
+                Time.timers.Clear();
+                ExitScreen();
+            }
         }
 
         public void cameraRestore() {
@@ -304,6 +310,12 @@ namespace Final {
             postProcess.Parameters["noisy"].SetValue(noisyToggle);
             if(songStarted) postProcess.Parameters["time"].SetValue(t += 0.02f );
 
+            // For some reason this is not fading
+            double timeRemainingSeconds = reader.Length - waveOut.GetPosition();
+            if (timeRemainingSeconds < 500000) {
+                postProcess.Parameters["darkenFactor"].SetValue((float)timeRemainingSeconds / 500000);
+            }
+
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects.ToList())
                 gameObject.Render(Tuple.Create(camera, GameScreenManager.GraphicsDevice));
 
@@ -318,15 +330,6 @@ namespace Final {
 
                 sprite.Draw(renderTarget, new Rectangle(ScreenManager.GraphicsDevice.Viewport.X, ScreenManager.GraphicsDevice.Viewport.Y, ScreenManager.GraphicsDevice.Viewport.Width, ScreenManager.GraphicsDevice.Viewport.Height), Color.White);
                 sprite.End();
-            }
-
-            // Fade out
-            float timeRemainingSeconds = reader.TotalTime.Seconds - waveOut.GetPositionTimeSpan().Seconds;
-            if (timeRemainingSeconds < 5) {
-                ScreenManager.FadeBackBufferToBlack(255 / (1 + timeRemainingSeconds * 100));
-                if (timeRemainingSeconds <= 0) {
-                    ExitScreen();
-                }
             }
 
             //THIS IS THE TESTING CODE FOR DRAWING SOUND

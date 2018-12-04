@@ -11,6 +11,7 @@ Texture2D SpriteTexture;
 bool toggle;
 bool noisy;
 float time;
+float darkenFactor;
 
 sampler2D SpriteTextureSampler = sampler_state
 {
@@ -33,7 +34,7 @@ float rand(float2 co)
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
     float dist = distance(input.TextureCoordinates.xy, float2(0.5, 0.5));
-    float4 color = (1 - dist/2) * input.Color;
+    float4 color = (1 - dist / (2 * darkenFactor)) * input.Color;
 
     float4 noise = float4(rand(input.TextureCoordinates.xy + float2(time, 1/time)) * float3(1, 1, 1), 1);
 
