@@ -8,78 +8,42 @@ using Microsoft.Xna.Framework;
 
 using CPI311.GameEngine;
 using System.Diagnostics;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Assignment1 {
-    class BossController : Behavior2d {
-        public ProgressBar healthbar;
+    class BasicTargetEnemy : Behavior2d {
 
         private enemyHealth health;
         private BulletSpawner spawner;
+        private Random ran;
+
+        public Texture2D bulletSprite;
 
         int state = 0;
 
         public override void Start() {
             base.Start();
+            ran = new Random();
             health = obj.GetBehavior<enemyHealth>() as enemyHealth;
-            health.boss = true;
             spawner = obj.GetBehavior<BulletSpawner>() as BulletSpawner;
+            spawner.scale = Vector2.One * 0.5f;
+            spawner.bulletSpeed = 2;
+            spawner.bulletSprite = bulletSprite;
         }
+        float speed = 4;
 
+
+        Vector2 direction;
+        int timer= 10;
         public override void Update() {
             base.Update();
-            updateHealthbar();
-
-            if(state == 0) spawner.scale = Vector2.One * (float) (Math.Abs(Math.Sin(Time.TotalGameTimeMilli * 100))* .75 + 0.33) ;
-
-            if (state == 2) {
-                spawner.bulletSpeed = (float)Math.Sin(Time.TotalGameTimeMilli * 100) * 5 ;
-            }
-        }
-
-        public void updateHealthbar() => healthbar.value = health.health / health.max;
-
-        public void changeState() {
-            state++;
-
-            updateHealthbar();
-
-            switch (state) {
-                case (1):
-                    health.health = health.max;
-                    healthbar.innerSprite.Color = Color.ForestGreen;
-                    // spawn pattern
-
-                    spawner.bulletSpeed = 4;
-                    spawner.bulletAmount = 6;
-
-                    spawner.bulletfrequency = 0.05f; // ms 
-
-                    spawner.spin = 1.8f;
-                    spawner.Wave = 0;
-
-                    spawner.bulletTint = Color.ForestGreen;
-                    //spawner.bulletSprite = bulletSprite;
-                    spawner.scale = Vector2.One * .5f;
-
-                    break;
-
-                case (2):
-                    health.health = health.max;
-                    healthbar.innerSprite.Color = Color.DarkBlue;
-
-                    spawner.bulletAmount = 15;
-                    spawner.spin = 0.4f;
-                    spawner.scale = Vector2.One * 0.4f;
-                    spawner.bulletTint = Color.DarkBlue;
-                    break;
-
-                case (3):
-                    enemyHealth.enemies.Remove(health);
-                    (obj as GameObject2d).Destroy();
-                    break;
-
+            timer--;
+            if (timer <= 0) {
+                timer = ran.Next(10, 40);
+                direction = new Vector2((float)ran.NextDouble(), (float)ran.NextDouble());
             }
 
+            objSprite.move(  direction * speed );
         }
     }
 }

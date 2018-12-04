@@ -97,3 +97,7 @@ C:\dev\CPI311Fall2018\Assignment1\bin\Windows\x86\Debug\Content\ready.xnb
 C:\dev\CPI311Fall2018\Assignment1\bin\Windows\x86\Debug\Content\MagicianBullet.xnb
 C:\dev\CPI311Fall2018\Assignment1\bin\Windows\x86\Debug\Content\MagicianPortrait.xnb
 C:\dev\CPI311Fall2018\Assignment1\bin\Windows\x86\Debug\Content\MagicianSpriteSheet.xnb
+C:\dev\CPI311Fall2018\Assignment1\bin\Windows\x86\Debug\Content\cactusRound.xnb
+C:\dev\CPI311Fall2018\Assignment1\bin\Windows\x86\Debug\Content\cactusRoundSmug.xnb
+C:\dev\CPI311Fall2018\Assignment1\bin\Windows\x86\Debug\Content\needleBullet.xnb
+C:\dev\CPI311Fall2018\Assignment1\bin\Windows\x86\Debug\Content\sunSprite.xnb

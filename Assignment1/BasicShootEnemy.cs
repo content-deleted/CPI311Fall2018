@@ -13,8 +13,6 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Assignment1 {
     class BasicShootEnemy : Behavior2d {
 
-        private enemyHealth health;
-        private BulletSpawner spawner;
         private Random ran;
 
         public Texture2D bulletSprite;
@@ -24,26 +22,21 @@ namespace Assignment1 {
         public override void Start() {
             base.Start();
             ran = new Random();
-            health = obj.GetBehavior<enemyHealth>() as enemyHealth;
-            spawner = obj.GetBehavior<BulletSpawner>() as BulletSpawner;
-            spawner.scale = Vector2.One * 0.5f;
-            spawner.bulletSpeed = 2;
-            spawner.bulletSprite = bulletSprite;
         }
-        float speed = 4;
+        float speed = 1;
 
 
         Vector2 direction;
-        int timer= 10;
+        int timer = 10;
         public override void Update() {
             base.Update();
             timer--;
             if (timer <= 0) {
                 timer = ran.Next(10, 40);
-                direction = new Vector2((float)ran.NextDouble(), (float)ran.NextDouble());
+                direction = Vector2.Normalize(new Vector2((float)ran.NextDouble() -0.5f, (float)ran.NextDouble() - 0.5f));
             }
 
-            objSprite.move(  direction * speed );
+            objSprite.move(direction * speed);
         }
     }
 }

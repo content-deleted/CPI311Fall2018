@@ -70,6 +70,14 @@ namespace Assignment1 {
             // THIS SHOULD BE MOVED
             Texture2D mosueSprite = content.Load<Texture2D>("mouse");
 
+            // PLACE PLAYER
+            foreach (PlayerObject p in PlayerObject.players)
+                p.sprite.Position = new Vector2(1900, 2400);
+            drawLoc = new Vector2(1900, 2400);
+            Vector2 newPos = drawLoc - new Vector2(PreferredBackBufferWidth, PreferredBackBufferHeight) / 2;
+
+            Sprite.cameraPosition = newPos;
+
             //init
             foreach (GameObject2d gameObject in GameObject2d.activeGameObjects) gameObject.Start();
         }

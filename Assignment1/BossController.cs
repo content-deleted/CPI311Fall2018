@@ -28,6 +28,7 @@ namespace Assignment1 {
         public override void Update() {
             base.Update();
             updateHealthbar();
+            (objSprite).Update();
 
             if(state == 0) spawner.scale = Vector2.One * (float) (Math.Abs(Math.Sin(Time.TotalGameTimeMilli * 100))* .75 + 0.33) ;
 

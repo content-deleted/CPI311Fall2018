@@ -43,6 +43,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AnchorPosBehavior.cs" />
+    <Compile Include="BasicShootEnemy.cs" />
+    <Compile Include="BasicTargetEnemy.cs" />
     <Compile Include="BossController.cs" />
     <Compile Include="Bullet.cs" />
     <Compile Include="BulletPoolObject.cs" />

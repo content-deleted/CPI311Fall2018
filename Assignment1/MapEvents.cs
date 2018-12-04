@@ -35,6 +35,9 @@ namespace Assignment1 {
                 case "Sun":
                     spawnSun(obj);
                     break;
+                case "RoundCactus":
+                    spawnRoundCactus(obj);
+                    break;
                 default:
                     // Put something here to indicate a load error on map
                     break;
@@ -49,8 +52,8 @@ namespace Assignment1 {
             //TEMP
             Texture2D bulletSprite = content.Load<Texture2D>("bullet_1");
 
-            spawner.sprite = new Sprite(bulletSprite);
-            spawner.sprite.Scale *= 2;
+            spawner.sprite = new AnimatedSprite(content.Load<Texture2D>("sunSprite"), 3, 1000,1000, true, 0);
+            spawner.sprite.Scale *= 1;
             spawner.sprite.LayerDepth = 0.4f;
             spawner.addBehavior(new grazeEnemy());
             BulletSpawner b = new BulletSpawner();
@@ -94,6 +97,33 @@ namespace Assignment1 {
             spawner.addBehavior(boss);
             spawner.addBehavior(new enemyHealth());
         }
-        #endregion
-    }
+
+        static void spawnRoundCactus(Squared.Tiled.Object obj) {
+            GameObject2d enemy = GameObject2d.Initialize();
+
+            enemy.sprite = new Sprite(content.Load<Texture2D>("cactusRound"));
+
+            enemy.sprite.LayerDepth = 0.4f;
+            enemy.addBehavior(new grazeEnemy());
+            enemy.addBehavior(new enemyHealth());
+            enemy.addBehavior(new BasicShootEnemy());
+
+            enemy.sprite.Position = new Vector2(obj.X, obj.Y);
+
+            BulletSpawner b = new BulletSpawner();
+            
+            b.bulletSpeed = 2;
+            b.bulletAmount = 5;
+
+            b.bulletfrequency = 0.5f; // ms 
+
+            b.spin = 0f;
+
+            b.bulletSprite = content.Load<Texture2D>("needleBullet");
+            b.scale = Vector2.One * 0.4f;
+            enemy.addBehavior(b);
+
+        }
+            #endregion
+        }
 }

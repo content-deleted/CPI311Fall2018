@@ -16,6 +16,8 @@ namespace Assignment1 {
 
         public static List<enemyHealth> enemies = new List<enemyHealth>();
 
+
+
         public override void Start() {
             base.Start();
             enemies.Add(this);
@@ -25,6 +27,10 @@ namespace Assignment1 {
             if (health <= 0)
                 if (!boss) (obj as GameObject2d).Destroy();
                 else (obj.GetBehavior<BossController>() as BossController).changeState();
+        }
+        public override void OnDestory() {
+            enemies.Remove(this);
+            base.OnDestory();
         }
     }
 }
