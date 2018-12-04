@@ -208,8 +208,7 @@ namespace CPI311.GameEngine {
             Vertices = new VertexPositionNormalTexture[rows * cols];
 
             for (int r = 0; r < rows; r++) {
-                //THIS IS TO BUFFER WITH SOME FLAT GROUND AT THE START
-                if (r > 120) heightAlter = 1;
+                if (r > 120) heightAlter = 1; //THIS IS TO BUFFER WITH SOME FLAT GROUND AT THE START
                 for (int c = 0; c < cols; c++)
                     Vertices[r * cols + c] = new VertexPositionNormalTexture(
                         new Vector3(c, GetHeight(c, r), r),
@@ -218,19 +217,19 @@ namespace CPI311.GameEngine {
             }
             //c / res.X, r / res.Y <-uv covers whole mesh
             // 
-            Indices = new int[(rows - 1) * (cols - 1) * 6];
+            Indices = new int[(rows) * (cols - 1) * 6];
             int index = 0;
-            for (int r = 0; r < rows - 1; r++)
+            for (int r = 0; r < rows; r++)
                 for (int c = 0; c < cols - 1; c++) {
                     Indices[index++] = r * cols + c;
                     Indices[index++] = r * cols + c + 1;
-                    Indices[index++] = (r + 1) * cols + c;
+                    Indices[index++] = ((r + 1) % rows) * cols + c;
 
                     //Vector3 n = generateNormal(Vertices[Indices[index - 1]].Position, Vertices[Indices[index - 2]].Position, Vertices[Indices[index - 3]].Position); 
 
-                    Indices[index++] = (r + 1) * cols + c;
+                    Indices[index++] = ((r + 1) % rows) * cols + c;
                     Indices[index++] = r * cols + c + 1;
-                    Indices[index++] = (r + 1) * cols + c + 1;
+                    Indices[index++] = ((r + 1) % rows) * cols + c + 1;
 
                     //Vector3 n2 = generateNormal(Vertices[Indices[index - 1]].Position, Vertices[Indices[index - 2]].Position, Vertices[Indices[index - 3]].Position);
 
