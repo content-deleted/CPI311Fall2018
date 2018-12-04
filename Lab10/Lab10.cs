@@ -25,7 +25,7 @@ namespace Lab10 {
 
             Time.Initialize();
             InputManager.Initialize();
-            ScreenManager.Initialize(graphics);
+            GameScreenManager.Initialize(graphics);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Lab10 {
 
 
             // *** Lab 8 Item ***********************
-            ScreenManager.Setup(false, 1080, 720);
+            GameScreenManager.Setup(false, 1080, 720);
             //***************************************
 
             GameObject3d TerrainObject = GameObject3d.Initialize();

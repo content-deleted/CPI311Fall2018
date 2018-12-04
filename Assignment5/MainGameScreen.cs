@@ -47,7 +47,7 @@ namespace Assignment5 {
 
             Time.Initialize();
             InputManager.Initialize();
-            ScreenManager.Initialize(graphics);
+            GameScreenManager.Initialize(graphics);
         } 
 
         protected override void Initialize() {
@@ -63,7 +63,7 @@ namespace Assignment5 {
         }
 
         protected override void LoadContent() {
-            spriteBatch = new SpriteBatch(ScreenManager.GraphicsDevice);
+            spriteBatch = new SpriteBatch(GameScreenManager.GraphicsDevice);
 
             // Fucking around
             backgrounds = new SpriteBatch(GraphicsDevice);
@@ -72,7 +72,7 @@ namespace Assignment5 {
 
 
             // *** Lab 8 Item ***********************
-            ScreenManager.Setup(false, 1080, 720);
+            GameScreenManager.Setup(false, 1080, 720);
             //***************************************
 
             particleManager = new ParticleManager(GraphicsDevice, 100);
@@ -141,13 +141,13 @@ namespace Assignment5 {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             backgrounds.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-            offset.Parameters["height"].SetValue((float)ScreenManager.Height);
+            offset.Parameters["height"].SetValue((float)GameScreenManager.Height);
             offset.Parameters["offset"].SetValue((float)Time.TotalGameTimeMilli / 1500);
             offset.CurrentTechnique.Passes[0].Apply();
             backgrounds.GraphicsDevice.Viewport = camera.Viewport;
             backgrounds.Draw(background, new Rectangle(0, 0,
-                                                        (int)(camera.Size.X * ScreenManager.Width),
-                                                        (int)(camera.Size.Y * ScreenManager.Height)), Color.White);
+                                                        (int)(camera.Size.X * GameScreenManager.Width),
+                                                        (int)(camera.Size.Y * GameScreenManager.Height)), Color.White);
             backgrounds.End();
 
 

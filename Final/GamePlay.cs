@@ -185,13 +185,15 @@ namespace Final {
 
             terrainRenderer.songPos = (float)waveOut.GetPosition() / (float)reader.Length;
             if (terrainRenderer.songPos < 1) terrainRenderer.avgE = 1 / (float)(avgE[(int)(avgE.Length*terrainRenderer.songPos)] - 100);
-
+            
             if (!songStarted && terrainRenderer.lastRowDepth > 100) {
                 songStarted = true;
                 newHoop();
                 waveOut.Play();
             }
+            
             if (InputManager.IsKeyPressed(Keys.T)) postToggle = !postToggle;
+            if (InputManager.IsKeyPressed(Keys.N)) noisyToggle = !noisyToggle;
             if (InputManager.IsKeyPressed(Keys.F)) GameScreenManager.graphics.ToggleFullScreen();
             updateCam();
             //pos.Y += terrainRenderer.avgE;
@@ -235,6 +237,7 @@ namespace Final {
         }
 
         bool postToggle=true;
+        bool noisyToggle = false;
 
         public override void Draw(GameTime gameTime) {
             // Set our graphics device to draw to a texture
@@ -244,6 +247,8 @@ namespace Final {
             camera.drawSkybox(GameScreenManager.GraphicsDevice);
 
             postProcess.Parameters["toggle"].SetValue(postToggle);
+            postProcess.Parameters["noisy"].SetValue(noisyToggle);
+            postProcess.Parameters["time"].SetValue(camera.Transform.Position.Z);
 
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects.ToList())
                 gameObject.Render(Tuple.Create(camera, GameScreenManager.GraphicsDevice));

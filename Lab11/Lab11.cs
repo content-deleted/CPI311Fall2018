@@ -33,7 +33,7 @@ namespace Lab11 {
         protected override void Initialize() {
             // TODO: Add your initialization logic here
             Time.Initialize();
-            ScreenManager.Initialize(graphics);
+            GameScreenManager.Initialize(graphics);
 
             
 
