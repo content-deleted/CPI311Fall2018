@@ -32,3 +32,4 @@ C:\dev\CPI311Fall2018\Lab8\obj\x86\Debug\Lab8.exe
 C:\dev\CPI311Fall2018\Lab8\obj\x86\Debug\Lab8.pdb
 C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Debug\Content\offset.xnb
 C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Debug\Content\Gun.xnb
+C:\dev\CPI311Fall2018\Lab8\bin\Windows\x86\Debug\Content\Box.xnb

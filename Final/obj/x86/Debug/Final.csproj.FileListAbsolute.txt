@@ -38,3 +38,6 @@ C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Content\back.xnb
 C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Content\DOGGIE.xnb
 C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Content\offset.xnb
 C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Content\postProcess.xnb
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Content\Box.xnb
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Content\skybox.xnb
+C:\dev\CPI311Fall2018\Final\bin\Windows\x86\Debug\Content\Plane.xnb

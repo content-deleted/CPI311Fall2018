@@ -42,7 +42,7 @@ namespace Lab8 {
         protected override void Initialize() {
             Time.Initialize();
             InputManager.Initialize();
-            ScreenManager.Initialize(graphics);
+            GameScreenManager.Initialize(graphics);
 
             this.IsMouseVisible = true;
             base.Initialize();
@@ -55,13 +55,13 @@ namespace Lab8 {
         protected override void LoadContent() {
             backgrounds = new SpriteBatch(GraphicsDevice);
             StandardLightingMaterial.effect = Content.Load<Effect>("Standard");
-            model = Content.Load<Model>("model");
+            model = Content.Load<Model>("box");
             background = Content.Load<Texture2D>("DOGGIE");
             offset = Content.Load<Effect>("offset");
             gunSound = Content.Load<SoundEffect>("Gun");
 
             // *** Lab 8 Item ***********************
-            ScreenManager.Setup(false, 1080, 720);
+            GameScreenManager.Setup(false, 1080, 720);
             //***************************************
 
             camera1 = new Camera();
@@ -160,13 +160,13 @@ namespace Lab8 {
 
             backgrounds.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
             foreach (Camera camera in cameras) {
-                offset.Parameters["height"].SetValue((float)ScreenManager.Height);
+                offset.Parameters["height"].SetValue((float)GameScreenManager.Height);
                 offset.Parameters["offset"].SetValue((float)Time.TotalGameTimeMilli / 1500);
                 offset.CurrentTechnique.Passes[0].Apply();
                 backgrounds.GraphicsDevice.Viewport = camera.Viewport;
                 backgrounds.Draw(background, new Rectangle(0,0,
-                                                          (int)(camera.Size.X * ScreenManager.Width),
-                                                          (int)(camera.Size.Y * ScreenManager.Height)), Color.White);
+                                                          (int)(camera.Size.X * GameScreenManager.Width),
+                                                          (int)(camera.Size.Y * GameScreenManager.Height)), Color.White);
             }
             backgrounds.End();
 

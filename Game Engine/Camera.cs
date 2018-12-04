@@ -10,6 +10,10 @@ namespace CPI311.GameEngine
 {
     public class Camera
     {
+        public void drawSkybox(GraphicsDevice g) => skybox.draw(Transform.LocalPosition, this, g);
+
+        public Skybox skybox;
+
         public const float standardAspc = 16f / 9f;
         private float fov = 1;
         public float FieldOfView { get=>fov; set => fov = (value < Math.PI && value > 0) ? value : fov; }
@@ -18,10 +22,10 @@ namespace CPI311.GameEngine
         public float AspectRatio { get => aspect; set => aspect = value; }
 
         private float near = 1;
-        public float NearPlane { get => near; set => near = (value < far) ? far : value; }
+        public float NearPlane { get => near; set => near = (value < far) ? value : near; }
 
         private float far = 1000;
-        public float FarPlane { get => far; set => far = (value > near) ? far : value; }
+        public float FarPlane { get => far; set => far = (value > near) ? value : far; }
 
         public Transform Transform { get; set; }
 

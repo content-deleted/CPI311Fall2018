@@ -71,6 +71,7 @@
     <Compile Include="ScreenManager\MenuScreen.cs" />
     <Compile Include="ScreenManager\PlayerIndexEventArgs.cs" />
     <Compile Include="ScreenManager\ScreenManager.cs" />
+    <Compile Include="Skybox.cs" />
     <Compile Include="SphereCollider.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Managers\Time.cs" />

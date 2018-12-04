@@ -128,7 +128,7 @@ namespace Final {
 
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
-            
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GameScreenManager.GraphicsDevice);
             background = content.Load<Texture2D>("back");
@@ -153,6 +153,12 @@ namespace Final {
             Vector3 pos = camera.Transform.Position;
             pos.Y = 2 + terrainRenderer.GetAltitude(camera.Transform.Position);
             camera.Transform.LocalPosition = pos;
+            camera.NearPlane = 0.001f;
+            // Setup skybox
+            camera.skybox = new Skybox { skyboxModel = content.Load<Model>("Box"), skyboxTexture = background };
+
+            Skybox.shader = content.Load<Effect>("skybox");
+
             //SET HOOP
             hoopLogic.player = camera;
             hoopObject.lastPos = camera.Transform.LocalPosition + new Vector3(0, 2, 100);
@@ -233,11 +239,9 @@ namespace Final {
         public override void Draw(GameTime gameTime) {
             // Set our graphics device to draw to a texture
             ScreenManager.GraphicsDevice.SetRenderTarget(renderTarget);
-            ScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
+            ScreenManager.GraphicsDevice.Clear(Color.Purple);
 
-            // spriteBatch.Begin();
-            //  spriteBatch.Draw(background, new Rectangle(0, 0, ScreenManager.GraphicsDevice.Viewport.Width, ScreenManager.GraphicsDevice.Viewport.Height), Color.White);
-            // spriteBatch.End();
+            camera.drawSkybox(GameScreenManager.GraphicsDevice);
 
             postProcess.Parameters["toggle"].SetValue(postToggle);
 

@@ -112,7 +112,6 @@ namespace Assignment1 {
             // T I L E M A P   L O G I C
             PlayerLoc = PlayerObject.players[0].sprite.Position;
 
-
             Vector2 newPos = PlayerLoc - new Vector2(PreferredBackBufferWidth, PreferredBackBufferHeight) / 2;
 
             if (!(PlayerLoc.X < 0 || PlayerLoc.X > map.Width * map.TileWidth - PreferredBackBufferWidth)) {
