@@ -195,26 +195,48 @@ namespace Final {
             if (InputManager.IsKeyPressed(Keys.T)) postToggle = !postToggle;
             if (InputManager.IsKeyPressed(Keys.N)) noisyToggle = !noisyToggle;
             if (InputManager.IsKeyPressed(Keys.F)) GameScreenManager.graphics.ToggleFullScreen();
-            updateCam();
+
+            if(!noisyToggle) updateCam();
             //pos.Y += terrainRenderer.avgE;
             //terrainRenderer.totalFrames = mp3Frames.Count();
         }
 
+        public void cameraRestore() {
+            Vector3 cameraPosition = new Vector3(100,0 , camera.Transform.LocalPosition.Z);
+            cameraPosition.Y = 5 + terrainRenderer.GetAltitude(cameraPosition);
+            camera.Transform.LocalPosition = cameraPosition;
+            noisyToggle = false;
+            cameraCurrectVelocity = Vector3.Zero;
+            curUpDown = 0;
+            curLeftRight = 0;
+            waveOut.Play();
+        }
+
         // Camera update function because Im lazy
         public Vector3 cameraCurrectVelocity;
-        public float camForwardSpeed = 15;
-        public float leftRightSpeed = 0.075f;
-        public float upDownSpeed = 0.04f;
+        public const float camForwardSpeed = 15;
+        public const float leftRightSpeed = 0.075f;
+        public const float upDownSpeed = 0.04f;
 
         public float curUpDown = 0;
         public float curLeftRight = 0;
         
         public void updateCam() {
-            if (songStarted && terrainRenderer.GetAltitude(camera.Transform.Position) > camera.Transform.Position.Y) {
-                // camera crashes
-                noisyToggle = true;
+            if (songStarted && t > 2) {
+                var height = terrainRenderer.GetAltitude(camera.Transform.Position);
+                if (0.5f + height > camera.Transform.Position.Y) {
+                    // camera crashes
+                    noisyToggle = true;
+                    waveOut.Pause();
+                    Time.timers.Add(new EventTimer(cameraRestore, 2));
+                }
+                else if (2 + height > camera.Transform.Position.Y) {
+                    // graze
+                }
             }
-            
+            else
+                if (camera.Transform.LocalPosition.Y < 22.5f) cameraCurrectVelocity.Y += 0.025f;
+
             if (InputManager.IsKeyDown(Keys.A)) curLeftRight += Time.ElapsedGameTime * leftRightSpeed;
             if (InputManager.IsKeyDown(Keys.D)) curLeftRight -= Time.ElapsedGameTime * leftRightSpeed;
 
@@ -238,6 +260,7 @@ namespace Final {
 
         bool postToggle=true;
         bool noisyToggle = false;
+        float t;
 
         public override void Draw(GameTime gameTime) {
             // Set our graphics device to draw to a texture
@@ -245,10 +268,10 @@ namespace Final {
             ScreenManager.GraphicsDevice.Clear(Color.Purple);
 
             camera.drawSkybox(GameScreenManager.GraphicsDevice);
-
+           
             postProcess.Parameters["toggle"].SetValue(postToggle);
             postProcess.Parameters["noisy"].SetValue(noisyToggle);
-            postProcess.Parameters["time"].SetValue(camera.Transform.Position.Z);
+            if(songStarted) postProcess.Parameters["time"].SetValue(t += 0.02f );
 
             foreach (GameObject3d gameObject in GameObject3d.activeGameObjects.ToList())
                 gameObject.Render(Tuple.Create(camera, GameScreenManager.GraphicsDevice));

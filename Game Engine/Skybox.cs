@@ -28,7 +28,7 @@ namespace CPI311.GameEngine {
                 CullMode = CullMode.None
             };
 
-            Matrix world = Matrix.CreateScale(Vector3.One) * Matrix.CreateFromQuaternion(Quaternion.Identity) * Matrix.CreateTranslation(position+Vector3.Backward*1.5f);
+            Matrix world = Matrix.CreateScale(Vector3.One) * Matrix.CreateFromQuaternion(Quaternion.Identity) * Matrix.CreateTranslation(position + Vector3.Backward * 1.25f + Vector3.Down * 0.05f);
 
             Matrix view = c.View;
             Matrix projection = c.Projection;

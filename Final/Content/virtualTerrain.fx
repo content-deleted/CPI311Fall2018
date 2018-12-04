@@ -69,16 +69,16 @@ float4 MainPS(VertexShaderOutput input) : COLOR
 {
     //float edge = dot( (CameraPosition - input.WorldPosition.xyz), input.WorldNormal );
     //float4 color = (1, 1, 1, ((int) edge));
-    float dist = abs(1 / (distance(CameraPosition, input.WorldPosition.xyz) / Offset));
-    dist = dist * dist;
+    float dist = abs(1 / (distance(CameraPosition, input.WorldPosition.xyz) / (Offset + 35)));
+    dist = dist;
     //edge = clamp(edge, 0.01, 1);
-    clip(dist - 0.05);
-    clip(input.normalClipCheck);
-    clip(input.WorldPosition.z - (CameraPosition.z - 1) );
+    clip(dist - 0.05); 
+    clip(input.normalClipCheck); // flag for verticies attached at draw edges
+    clip(input.WorldPosition.z - (CameraPosition.z - 1) ); // dont bother with anything behind
 
-    float3 altColor = float3(1, 0, 1);
+    float3 altColor = float3(0.6, 0 , 0.6);
 
-    return float4(Color * dist + altColor / dist, AlphaMax); //input.Color;
+    return float4(Color + clamp(altColor / (dist) -0.15, float3(0, 0, 0), float3(1, 1, 1)), AlphaMax); //input.Color;
 
 }
 

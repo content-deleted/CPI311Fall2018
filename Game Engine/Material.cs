@@ -310,8 +310,8 @@ namespace CPI311.GameEngine {
             }
 
             // Specific Params
-            effect.Parameters["Offset"].SetValue(25f);
-            effect.Parameters["Color"].SetValue(new Vector3(1,0,0));
+            effect.Parameters["Offset"].SetValue(40f);
+            effect.Parameters["Color"].SetValue(new Vector3(0.8f,0,0.2f));
             effect.Parameters["AlphaMax"].SetValue(1f);
             effect.Parameters["HeightOffset"].SetValue(0.5f);
             
