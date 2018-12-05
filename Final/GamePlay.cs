@@ -227,6 +227,7 @@ namespace Final {
             }
         }
         public void ExitGameplay() {
+            waveOut.Stop();
             foreach (GameObject3d g in GameObject3d.activeGameObjects.ToList()) {
                 g.Destroy();
             }
@@ -241,6 +242,7 @@ namespace Final {
             camera.Transform.LocalPosition = cameraPosition;
             noisyToggle = false;
             camera.FieldOfView = 1;
+            hoopLogic.MaxSpeed = hoopLogic.lowMaxSpeed; 
             cameraCurrectVelocity = Vector3.Zero;
             curUpDown = 0;
             curLeftRight = 0;
@@ -300,7 +302,7 @@ namespace Final {
             
             camera.Transform.lookAt(camera.Transform.LocalPosition + cameraCurrectVelocity);
             camera.Transform.LocalPosition += cameraCurrectVelocity;
-            camera.Transform.Rotate(camera.Transform.Forward, 1 * cameraCurrectVelocity.X);
+            camera.Transform.Rotate(camera.Transform.Forward, 2*cameraCurrectVelocity.X);
 
             curLeftRight /= 1.2f;
             curUpDown /= 1.2f;

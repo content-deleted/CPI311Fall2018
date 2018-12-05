@@ -35,8 +35,8 @@ namespace Final {
     
     public class hoopLogic : Behavior3d {
         public static Camera player;
-
-        public const float MaxSpeed = 2;
+        public const float lowMaxSpeed = 1.75f;
+        public static float MaxSpeed =2f;
         public static void cameraSpeedCoroutineInc () {
             if (player.FieldOfView < MaxSpeed) {
                 player.FieldOfView *= 1.05f;
@@ -45,8 +45,8 @@ namespace Final {
             else Time.timers.Add(new EventTimer(cameraSpeedCoroutineDec, 1));
         }
         public static void cameraSpeedCoroutineDec() {
-            if (player.FieldOfView >= 1.05f) {
-                player.FieldOfView -= 0.002f;
+            if (player.FieldOfView >= 1.1f) {
+                //player.FieldOfView -= 0.02f;
                 Time.timers.Add(new EventTimer(cameraSpeedCoroutineDec, 0));
             }
             else
@@ -61,12 +61,20 @@ namespace Final {
 
                 // if we're through then activate 
                 if(!active && (int)transform.LocalPosition.Z == (int)player.Transform.LocalPosition.Z && Vector3.Distance(transform.LocalPosition, player.Transform.LocalPosition) < 5) {
+                    //MaxSpeed += 0.1f;
                     active = true;
                     Time.timers.Add(new EventTimer(cameraSpeedCoroutineInc, 0) );
                 }
             
                 // if we're behind then destroy
                 if (transform.LocalPosition.Z < player.Transform.LocalPosition.Z - 5) {
+                    // If the player missed the hoop
+                    if (!active) {
+                        //MaxSpeed = lowMaxSpeed;
+                        Time.timers.Add(new EventTimer(cameraSpeedCoroutineDec, 0));
+                    }
+
+                    // Either way
                     (obj as hoopObject).Destroy();
                 }
             }
