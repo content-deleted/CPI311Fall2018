@@ -226,6 +226,14 @@ namespace Final {
                 ExitScreen();
             }
         }
+        public void ExitGameplay() {
+            foreach (GameObject3d g in GameObject3d.activeGameObjects.ToList()) {
+                g.Destroy();
+            }
+            ScreenManager.FadeBackBufferToBlack(0);
+            Time.timers.Clear();
+            ExitScreen();
+        }
 
         public void cameraRestore() {
             Vector3 cameraPosition = new Vector3(100,0 , camera.Transform.LocalPosition.Z);
@@ -269,10 +277,13 @@ namespace Final {
             // Input
             if ((int)ControllingPlayer < 5) {
                 GamePadState state = GamePad.GetState(ControllingPlayer);
+                if (state.IsButtonDown(Buttons.Back)) ExitGameplay();
                 curLeftRight += Time.ElapsedGameTime * leftRightSpeed * -state.ThumbSticks.Left.X;
                 curUpDown += Time.ElapsedGameTime * upDownSpeed * -state.ThumbSticks.Left.Y;
             }
             else {
+                if(InputManager.IsKeyPressed(Keys.Escape)) ExitGameplay();
+
                 if (InputManager.IsKeyDown(Keys.A)) curLeftRight += Time.ElapsedGameTime * leftRightSpeed;
                 if (InputManager.IsKeyDown(Keys.D)) curLeftRight -= Time.ElapsedGameTime * leftRightSpeed;
 

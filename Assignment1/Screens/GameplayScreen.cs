@@ -110,7 +110,8 @@ namespace Assignment1 {
             backgrounds.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null);
 
             // T I L E M A P   L O G I C
-            PlayerLoc = PlayerObject.players[0].sprite.Position;
+            PlayerLoc = PlayerObject.players.Select(p => p.sprite.Position).Aggregate((x, agg) => agg += x);
+            PlayerLoc /= PlayerObject.players.Count();
 
             Vector2 newPos = PlayerLoc - new Vector2(PreferredBackBufferWidth, PreferredBackBufferHeight) / 2;
 
