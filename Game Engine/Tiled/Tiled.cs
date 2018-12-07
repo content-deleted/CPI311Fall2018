@@ -58,6 +58,10 @@ Copyright (C) 2009 Kevin Gadd
  * 
  * TODO: Ideally want to have a single Draw method that copes with isometric and normal maps, at the moment it uses DrawISO and Draw.
  */
+ /* Modifications by Jacob Hann 2018 
+  * - Fixed small bug with objects of the same name 
+  * - Modified drawing slighly to control layers through tiled order
+  * */
 
 using System;
 using System.Collections;

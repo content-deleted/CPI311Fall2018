@@ -18,6 +18,8 @@ using Microsoft.Xna.Framework.Content;
 namespace Assignment1 {
     class MainGameplayScreen : GameScreen {
 
+        public static MainGameplayScreen currentGame;
+
         ContentManager content;
 
         SpriteBatch spriteBatch;
@@ -31,13 +33,36 @@ namespace Assignment1 {
 
         public RenderTarget2D renderTarget;
 
+        #region gameConstants
+        
+        #endregion
+
 
         public MainGameplayScreen() {
+            currentGame = this;
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
 
             InputManager.Initialize();
             Time.Initialize();
+        }
+
+        public void loadMap(string mapFileName) {
+            if (map != null) {
+                // Reset gameobjects other than players
+                foreach (object g in GameObject3d.activeGameObjects) {
+                    if (g is PlayerObject p) { }
+                    else if (g is BulletPoolObject b) b.Destroy();
+                    else if (g is GameObject3d o) o.Destroy();
+                }
+            }
+            map = Map.Load(Path.Combine(content.RootDirectory, mapFileName), content);
+            // Set on sprites
+            Sprite.currentMap = map;
+
+            // Parse out and create our events
+            ObjectGroup Events = map.ObjectGroups["EVENTS"];
+            MapEvents.parseEvents(Events, content);
         }
 
         public override void LoadContent() {
@@ -46,13 +71,7 @@ namespace Assignment1 {
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
             // The testing for tilemaps
-            map = Map.Load(Path.Combine(content.RootDirectory, "TESTMAP.tmx"), content);
-            // Set on sprites
-            Sprite.currentMap = map;
-
-            // Parse out and create our events
-            ObjectGroup Events = map.ObjectGroups["EVENTS"];
-            MapEvents.parseEvents(Events, content);
+            loadMap("TESTMAP.tmx");
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(ScreenManager.GraphicsDevice);
