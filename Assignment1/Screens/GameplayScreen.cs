@@ -47,13 +47,13 @@ namespace Assignment1 {
             Time.Initialize();
         }
 
-        public void loadMap(string mapFileName) {
+        public void loadMap(string mapFileName, Vector2 playerLocation) {
             if (map != null) {
                 // Reset gameobjects other than players
-                foreach (object g in GameObject3d.activeGameObjects) {
+                foreach (object g in GameObject2d.activeGameObjects.ToList()) {
                     if (g is PlayerObject p) { }
                     else if (g is BulletPoolObject b) b.Destroy();
-                    else if (g is GameObject3d o) o.Destroy();
+                    else if (g is GameObject2d o) o.Destroy();
                 }
             }
             map = Map.Load(Path.Combine(content.RootDirectory, mapFileName), content);
@@ -63,6 +63,14 @@ namespace Assignment1 {
             // Parse out and create our events
             ObjectGroup Events = map.ObjectGroups["EVENTS"];
             MapEvents.parseEvents(Events, content);
+
+            // PLACE PLAYER
+            foreach (PlayerObject p in PlayerObject.players)
+                p.sprite.Position = playerLocation;
+            drawLoc = playerLocation;
+            Vector2 newPos = drawLoc - new Vector2(PreferredBackBufferWidth, PreferredBackBufferHeight) / 2;
+
+            Sprite.cameraPosition = newPos;
         }
 
         public override void LoadContent() {
@@ -71,7 +79,7 @@ namespace Assignment1 {
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
             // The testing for tilemaps
-            loadMap("TESTMAP.tmx");
+            loadMap("TESTMAP.tmx", new Vector2(1900, 2400));
 
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(ScreenManager.GraphicsDevice);
@@ -88,14 +96,6 @@ namespace Assignment1 {
             
             // THIS SHOULD BE MOVED
             Texture2D mosueSprite = content.Load<Texture2D>("mouse");
-
-            // PLACE PLAYER
-            foreach (PlayerObject p in PlayerObject.players)
-                p.sprite.Position = new Vector2(1900, 2400);
-            drawLoc = new Vector2(1900, 2400);
-            Vector2 newPos = drawLoc - new Vector2(PreferredBackBufferWidth, PreferredBackBufferHeight) / 2;
-
-            Sprite.cameraPosition = newPos;
 
             //init
             foreach (GameObject2d gameObject in GameObject2d.activeGameObjects) gameObject.Start();

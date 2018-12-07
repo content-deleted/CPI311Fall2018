@@ -36,6 +36,8 @@ namespace Assignment1 {
             obj.Y -= MainGameplayScreen.PreferredBackBufferHeight / 2;
         }
 
+        static Vector2 fixForScreenSize(Vector2 v) => v - new Vector2(MainGameplayScreen.PreferredBackBufferWidth / 2, MainGameplayScreen.PreferredBackBufferHeight / 2);
+
         // First event for enemy spawns this is probably most of what will be here
         static void SpawnEnemy(Squared.Tiled.Object obj) {
             fixForScreenSize(obj);
@@ -142,15 +144,17 @@ namespace Assignment1 {
             fixForScreenSize(obj);
 
             string mapfilename = obj.Name + ".tmx";
-            void switchMap (PlayerObject p) =>  MainGameplayScreen.currentGame.loadMap(mapfilename);
+            Vector2 spawnLocation = fixForScreenSize(new Vector2(Int32.Parse(obj.Properties["playerLocationX"]), Int32.Parse(obj.Properties["playerLocationY"])));
+            void switchMap (PlayerObject p) =>  MainGameplayScreen.currentGame.loadMap(mapfilename, spawnLocation);
 
-            GameObject3d g = GameObject3d.Initialize();
+            GameObject2d g = GameObject2d.Initialize();
+            g.sprite.visible = false;
             g.addBehavior(new eventLocation(switchMap, new Vector2(obj.X, obj.Y), 32));
         }
 
         public delegate void mapLocalEvent(PlayerObject triggerPlayer);
 
-        public class eventLocation : Behavior3d {
+        public class eventLocation : Behavior2d {
             private Vector2 mapPosition;
             private float triggerRadius;
             private mapLocalEvent mapEvent;
