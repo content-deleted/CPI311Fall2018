@@ -25,6 +25,7 @@ namespace Assignment1 {
 
         new public static ProgressBar Initialize () {
             ProgressBar b = new ProgressBar();
+            b.sprite.LayerDepth = 0.1f;
             activeGameObjects.Add(b);
             return b;
         }

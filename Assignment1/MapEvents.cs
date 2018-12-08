@@ -48,6 +48,9 @@ namespace Assignment1 {
                 case "RoundCactus":
                     spawnRoundCactus(obj);
                     break;
+                case "Susumu":
+                    spawnSusumu(obj);
+                    break;
                 default:
                     // Put something here to indicate a load error on map
                     break;
@@ -137,6 +140,62 @@ namespace Assignment1 {
             b.scale = Vector2.One * 0.7f;
             enemy.addBehavior(b);
 
+        }
+
+        static void spawnSusumu(Squared.Tiled.Object obj) {
+
+            GameObject2d spawner = GameObject2d.Initialize();
+            
+            Texture2D bulletSprite = content.Load<Texture2D>("note2");
+
+            spawner.sprite = new AnimatedSprite(content.Load<Texture2D>("susumu"), 10, 180, 180, true, 0);
+            spawner.sprite.Scale *= 3;
+            spawner.sprite.collisionBox *= 0.85f;
+            spawner.sprite.LayerDepth = 0.4f;
+            spawner.addBehavior(new grazeEnemy());
+            BulletSpawner b = new BulletSpawner();
+            spawner.sprite.Position = new Vector2(obj.X, obj.Y);
+            spawner.sprite.Effects = SpriteEffects.FlipHorizontally;
+
+            b.bulletSpeed = 2;
+            b.bulletAmount = 3;
+
+            b.bulletfrequency = 0.05f; // ms 
+
+            b.spin = 0.3f;
+            b.Wave = 0.2f;
+
+            b.bulletSprite = bulletSprite;
+            b.scale = Vector2.One * 0.4f;
+            spawner.addBehavior(b);
+
+
+            // Bar
+            Vector2 barscale = Vector2.One * 0.29f;
+            Vector2 barPos = new Vector2(300, 45);
+
+            ProgressBar bar = ProgressBar.Initialize() as ProgressBar;
+            bar.sprite = new Sprite(content.Load<Texture2D>("bar"));
+            bar.sprite.Position = barPos;
+            bar.sprite.Scale = barscale;
+            bar.sprite.LayerDepth = 0.01f;
+            bar.sprite.enableCam = false;
+
+            bar.innerSprite = new Sprite(content.Load<Texture2D>("inner"));
+            bar.innerSprite.Position = barPos;
+            bar.innerSprite.Color = Color.BlanchedAlmond;
+            bar.innerSprite.Scale = barscale;
+            bar.innerSprite.enableCam = false;
+            bar.value = 100;
+
+            // more boss stuff?
+            Susumu boss = new Susumu();
+            boss.healthbar = bar;
+
+            spawner.addBehavior(boss);
+            var h = new enemyHealth();
+            h.max = 20000;
+            spawner.addBehavior(h);
         }
         #endregion
 

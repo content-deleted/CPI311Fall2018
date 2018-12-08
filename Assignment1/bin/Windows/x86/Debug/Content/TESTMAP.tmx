@@ -232,8 +232,8 @@
   <object id="33" name="RoundCactus" type="Enemy" x="1692.08" y="197.067" width="53.7222" height="57.5595"/>
   <object id="34" name="SecretBoss" type="Map" x="2479.07" y="973.652" width="1.37231" height="4.11692">
    <properties>
-    <property name="playerLocationX" type="int" value="650"/>
-    <property name="playerLocationY" type="int" value="650"/>
+    <property name="playerLocationX" type="int" value="700"/>
+    <property name="playerLocationY" type="int" value="350"/>
    </properties>
   </object>
  </objectgroup>

@@ -101,3 +101,6 @@ C:\dev\CPI311Fall2018\Assignment1\bin\Windows\x86\Debug\Content\cactusRound.xnb
 C:\dev\CPI311Fall2018\Assignment1\bin\Windows\x86\Debug\Content\cactusRoundSmug.xnb
 C:\dev\CPI311Fall2018\Assignment1\bin\Windows\x86\Debug\Content\needleBullet.xnb
 C:\dev\CPI311Fall2018\Assignment1\bin\Windows\x86\Debug\Content\sunSprite.xnb
+C:\dev\CPI311Fall2018\Assignment1\bin\Windows\x86\Debug\Content\musicNote1.xnb
+C:\dev\CPI311Fall2018\Assignment1\bin\Windows\x86\Debug\Content\note2.xnb
+C:\dev\CPI311Fall2018\Assignment1\bin\Windows\x86\Debug\Content\susumu.xnb

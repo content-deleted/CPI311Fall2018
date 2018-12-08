@@ -71,6 +71,9 @@ namespace Assignment1 {
             Vector2 newPos = drawLoc - new Vector2(PreferredBackBufferWidth, PreferredBackBufferHeight) / 2;
 
             Sprite.cameraPosition = newPos;
+
+            // start gameobjects
+            foreach (GameObject2d gameObject in GameObject2d.activeGameObjects) gameObject.Start();
         }
 
         public override void LoadContent() {
@@ -98,7 +101,7 @@ namespace Assignment1 {
             Texture2D mosueSprite = content.Load<Texture2D>("mouse");
 
             //init
-            foreach (GameObject2d gameObject in GameObject2d.activeGameObjects) gameObject.Start();
+            ///foreach (GameObject2d gameObject in GameObject2d.activeGameObjects) gameObject.Start();
         }
 
         Vector2 b = Vector2.One;
